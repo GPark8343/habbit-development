@@ -1,4 +1,5 @@
 import 'package:habbit/models/folder.dart';
+import 'package:habbit/models/story.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqlite_api.dart';
@@ -6,10 +7,10 @@ import 'package:sqflite/sqlite_api.dart';
 class DBHelper {
   static Future<Database> storyDatabase() async {
     final dbPath = await sql.getDatabasesPath();
-    return sql.openDatabase(path.join(dbPath, 'story.db'),
+    return sql.openDatabase(path.join(dbPath, 'istories.db'),
         onCreate: (db, version) {
       return db.execute(
-          'CREATE TABLE users_story(id TEXT PRIMARY KEY, title TEXT, image TEXT, description TEXT, created_at TEXT, category TEXT, folder_id TEXT)');
+          'CREATE TABLE i_user_stories(id TEXT PRIMARY KEY, title TEXT, image TEXT, description TEXT, created_at TEXT, category TEXT, folder_id TEXT, is_uploaded INTEGER)');
     }, version: 1);
   }
 
@@ -22,6 +23,17 @@ class DBHelper {
     final db = await DBHelper.storyDatabase();
     return db.query(table);
   }
+
+ static Future updateStory(String table, Story story) async {
+  final db = await DBHelper.storyDatabase();
+  await db.update(
+    table,  // table name
+    story.toMap()
+    ,  // update post row data
+    where: 'id = ?',
+    whereArgs: [story.id],
+  );
+}
 
 //   Future update(String table, Map<String, Object> data, String title) async {
 //   final db = await DBHelper.database();
@@ -47,10 +59,10 @@ class DBHelper {
 
    static Future<Database> folderDatabase() async {
     final dbPath = await sql.getDatabasesPath();
-    return sql.openDatabase(path.join(dbPath, 'folder.db'),
+    return sql.openDatabase(path.join(dbPath, 'folders.db'),
         onCreate: (db, version) {
       return db.execute(
-          'CREATE TABLE user_folder(id TEXT PRIMARY KEY, title TEXT, description TEXT, created_at TEXT, category TEXT, days INTEGER)');
+          'CREATE TABLE iuser_folder(id TEXT PRIMARY KEY, title TEXT, description TEXT, created_at TEXT, category TEXT, days INTEGER)');
     }, version: 1);
   }
 

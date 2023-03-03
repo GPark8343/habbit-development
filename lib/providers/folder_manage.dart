@@ -25,7 +25,7 @@ class FolderManage extends ChangeNotifier {
         days: 0);
     _folders.add(newFolder);
     notifyListeners();
-    DBHelper.insertFolder('user_folder', {
+    DBHelper.insertFolder('iuser_folder', {
       'id': newFolder.id,
       'title': newFolder.title,
       'description': newFolder.description,
@@ -36,7 +36,7 @@ class FolderManage extends ChangeNotifier {
   }
 
   Future<void> fetchAndSetFolders() async {
-    final datalist = await DBHelper.getFolderData('user_folder');
+    final datalist = await DBHelper.getFolderData('iuser_folder');
     _folders = datalist
         .map((item) => Folder(
             id: item['id'],
@@ -51,21 +51,20 @@ class FolderManage extends ChangeNotifier {
   }
 
   Future<void> deleteFolders(String id) async {
-    DBHelper.deleteFolder('user_folder', id);
+    DBHelper.deleteFolder('iuser_folder', id);
   }
 
   void plusOneDay(Folder findedFolder) {
     Folder updatedFolder = findedFolder.copyWith(
       days: findedFolder.days + 1,
     );
-    DBHelper.updateFolder('user_folder', updatedFolder);
+    DBHelper.updateFolder('iuser_folder', updatedFolder);
   }
 
   void minusOneDay(Folder findedFolder) {
     Folder updatedFolder = findedFolder.copyWith(
       days: findedFolder.days - 1,
     );
-    DBHelper.updateFolder('user_folder', updatedFolder);
-    
+    DBHelper.updateFolder('iuser_folder', updatedFolder);
   }
 }

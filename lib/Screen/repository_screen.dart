@@ -26,18 +26,13 @@ class RepositoryScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               )
             : Consumer<StoryManage>(
-                child: Scaffold(
-                  appBar: AppBar(
-                    title: Text('write story'),
-                  ),
-                  body: Center(
-                      child: Column(
-                    children: [
-                      AddStoryButton(folderId, category),
-                      const Text('Got no stories yet, start adding some!'),
-                    ],
-                  )),
-                ),
+                child: Center(
+                    child: Column(
+                  children: [
+                    AddStoryButton(folderId, category),
+                    const Text('Got no stories yet, start adding some!'),
+                  ],
+                )),
                 builder: (ctx, greatStories, ch) {
                   List<Story> storiesOfFoler = greatStories.items
                       .where((element) => element.folderId == folderId)
@@ -64,10 +59,10 @@ class RepositoryScreen extends StatelessWidget {
                                         StoryDetailScreen.routeName,
                                         arguments: {
                                           'story_id': storiesOfFoler[i].id,
-                                          'is_uploaded': false
                                         });
                                   },
-                                  trailing: Text(storiesOfFoler[i].category),
+                                  trailing: Text(
+                                      '${storiesOfFoler[i].category} ${storiesOfFoler[i].isUploaded}'),
                                 ),
                               ),
                             ),

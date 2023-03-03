@@ -32,10 +32,11 @@ class StoryManage extends ChangeNotifier {
         image: pickedImage,
         createdAt: DateTime.now().toString(),
         category: pickedCategory,
-        folderId: pickedFolderId);
+        folderId: pickedFolderId,
+        isUploaded: 0);
     _items.add(newStory);
     notifyListeners();
-    DBHelper.insertStory('users_story', {
+    DBHelper.insertStory('i_user_stories', {
       'id': newStory.id,
       'title': newStory.title,
       'image': newStory.image.path,
@@ -43,11 +44,12 @@ class StoryManage extends ChangeNotifier {
       'created_at': newStory.createdAt,
       'category': newStory.category,
       'folder_id': newStory.folderId,
+      'is_uploaded': newStory.isUploaded,
     });
   }
 
   Future<void> fetchAndSetStories() async {
-    final datalist = await DBHelper.getStoryData('users_story');
+    final datalist = await DBHelper.getStoryData('i_user_stories');
     _items = datalist
         .map((item) => Story(
             id: item['id'],
@@ -56,13 +58,21 @@ class StoryManage extends ChangeNotifier {
             description: item['description'],
             createdAt: item['created_at'],
             category: item['category'],
-            folderId: item['folder_id']))
+            folderId: item['folder_id'],
+            isUploaded: item['is_uploaded']))
         .toList();
     print(items);
     notifyListeners();
   }
 
+  void changeIsUploaded(Story findedStory) {
+    Story updatedStory = findedStory.copyWith(
+      isUploaded: findedStory.isUploaded == 0 ? 1 : 0,
+    );
+    DBHelper.updateStory('i_user_stories', updatedStory);
+  }
+
   Future<void> deleteStories(String id) async {
-    DBHelper.deleteStory('users_story', id);
+    DBHelper.deleteStory('i_user_stories', id);
   }
 }

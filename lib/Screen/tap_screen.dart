@@ -54,14 +54,36 @@ class _TapScreenState extends State<TapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+          child: ListView(
+        children: [
+          DrawerHeader(
+            child: Text('Drawer Header'),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+          ),
+          ListTile(
+            title: Text('Item 1'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: Text('Item 2'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      )),
       appBar: AppBar(
         title: Text("Habbit"),
       ),
       body: SafeArea(
-        child:   _pages[_selectedPageIndex]['page'] as Widget,
+        child: _pages[_selectedPageIndex]['page'] as Widget,
         // AdWidget(ad: banner!)
-         
-          ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
           onTap: _selectPage,
           backgroundColor: Theme.of(context).primaryColor,

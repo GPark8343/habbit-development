@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:habbit/Screen/auth_screen.dart';
 import 'package:habbit/Screen/edit_profile_screen.dart';
+import 'package:habbit/Screen/post_detail_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
 import 'package:habbit/Screen/splash_screen.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
@@ -76,6 +77,7 @@ class MyApp extends StatelessWidget {
             // PlaceDetailScreen.routeName: (ctx) => PlaceDetailScreen(),
             // UploadScreen.routeName: (ctx) =>  UploadScreen(),
             StoryDetailScreen.routeName: (ctx) => StoryDetailScreen(),
+            PostDetailScreen.routeName: (ctx) => PostDetailScreen(),
             EditProfileScreen.routeName: (ctx) => EditProfileScreen(),
             RepositoryScreen.routeName: (ctx) => RepositoryScreen(),
           },

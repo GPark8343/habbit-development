@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/edit_profile_screen.dart';
+import 'package:habbit/Screen/post_detail_screen.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
 import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/widgets/avatar_widget.dart';
@@ -242,9 +243,9 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                   await Provider.of<StoryManage>(context, listen: false)
                       .fetchAndSetStories(); // update db information
                   await Navigator.of(context)
-                      .pushNamed(StoryDetailScreen.routeName, arguments: {
+                      .pushNamed(PostDetailScreen.routeName, arguments: {
                     'story_id': docs[index]['uid'],
-                    'is_uploaded': true
+               
                   });
                 },
                 child: CachedNetworkImage(

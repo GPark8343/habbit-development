@@ -21,11 +21,12 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
   Widget build(BuildContext context) {
     final storyId =
         (ModalRoute.of(context)?.settings.arguments as Map)['story_id'];
-    final isuploaded =
-        (ModalRoute.of(context)?.settings.arguments as Map)['is_uploaded'];
+
     final upload = Provider.of<Upload>(context, listen: false);
     final selectedStory =
         Provider.of<StoryManage>(context, listen: false).findById(storyId);
+    final isUploaded = selectedStory.isUploaded;
+
     fetchAndSetStories() {
       Provider.of<StoryManage>(context, listen: false).fetchAndSetStories();
     }
@@ -34,17 +35,24 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
       Provider.of<Upload>(context, listen: false).deletePost(selectedStoryId);
     }
 
-    deleteStoryAndPost(String selectedStoryId) {
-      Provider.of<Upload>(context, listen: false).deletePost(selectedStoryId);
-           Folder findedFolder = Provider.of<FolderManage>(context, listen: false)
-        .findById(selectedStory.folderId);
+    deleteStory(String selectedStoryId) {
+      Folder findedFolder = Provider.of<FolderManage>(context, listen: false)
+          .findById(selectedStory.folderId);
       Provider.of<StoryManage>(context, listen: false)
           .deleteStories(selectedStoryId);
       Provider.of<FolderManage>(context, listen: false)
           .minusOneDay(findedFolder);
     }
 
-   
+    deleteStoryAndPost(String selectedStoryId) {
+      Provider.of<Upload>(context, listen: false).deletePost(selectedStoryId);
+      Folder findedFolder = Provider.of<FolderManage>(context, listen: false)
+          .findById(selectedStory.folderId);
+      Provider.of<StoryManage>(context, listen: false)
+          .deleteStories(selectedStoryId);
+      Provider.of<FolderManage>(context, listen: false)
+          .minusOneDay(findedFolder);
+    }
 
     return FutureBuilder(
         future: fetchAndSetStories(),
@@ -101,8 +109,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
-                                  content: Text(
-                                      '${isuploaded ? '스토리' : '포스트'}를 내릴까요?'),
+                                  content: Text('스토리 를 내릴까요?'),
                                   actions: <Widget>[
                                     ElevatedButton(
                                       child: Text('아니오.'),
@@ -113,8 +120,8 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                     ElevatedButton(
                                       child: Text('네. 삭제합니다.'),
                                       onPressed: () {
-                                        isuploaded
-                                            ? deletePost(storyId)
+                                        isUploaded == 0
+                                            ? deleteStory(storyId)
                                             : deleteStoryAndPost(storyId);
                                         Navigator.of(context).pop();
                                         Navigator.of(context).pop();
@@ -127,33 +134,33 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
 
                           // 여기에 화면 다시 업데이트하는 함수 만들기
                         },
-                        child: Text('delete ${isuploaded ? 'post' : 'story'}'),
+                        child: Text('delete story'),
                         style:
                             TextButton.styleFrom(foregroundColor: Colors.white),
                       ),
-                      isuploaded
-                          ? Container()
-                          : ElevatedButton(
-                              onPressed: () async {
-                                Navigator.of(context).pop();
-                                // firebase upload function
-                                IUser? userInfo = await upload.loadUserByUid(
-                                    FirebaseAuth.instance.currentUser!.uid);
-                                upload.uplaodPost(
-                                    Post(
-                                        userId: FirebaseAuth
-                                            .instance.currentUser!.uid,
-                                        userInfo: userInfo,
-                                        description: selectedStory.description,
-                                        uid: selectedStory.id,
-                                        createdAt: DateTime.now(),
-                                        category: selectedStory.category),
-                                    selectedStory.image,
-                                    selectedStory.id);
-                                // upload.uploadFile(selectedStory.image, '/${selectedStory.id}/${Uuid().v4()}.jpg');
-                                // upload.updatePost(Post(id: 'post', userInfo: userInfo,description:selectedStory.description ,thumbnail:selectedStory.image. ,uid: id ));
-                              },
-                              child: Text('upload story'))
+                      ElevatedButton(
+                          onPressed: () async {
+                            Navigator.of(context).pop();
+                            // firebase upload function
+                            IUser? userInfo = await upload.loadUserByUid(
+                                FirebaseAuth.instance.currentUser!.uid);
+                            upload.uplaodPost(
+                                Post(
+                                    userId:
+                                        FirebaseAuth.instance.currentUser!.uid,
+                                    userInfo: userInfo,
+                                    description: selectedStory.description,
+                                    uid: selectedStory.id,
+                                    createdAt: DateTime.now(),
+                                    category: selectedStory.category),
+                                selectedStory.image,
+                                selectedStory.id);
+                            Provider.of<StoryManage>(context, listen: false)
+                                .changeIsUploaded(selectedStory);
+                            // upload.uploadFile(selectedStory.image, '/${selectedStory.id}/${Uuid().v4()}.jpg');
+                            // upload.updatePost(Post(id: 'post', userInfo: userInfo,description:selectedStory.description ,thumbnail:selectedStory.image. ,uid: id ));
+                          },
+                          child: Text('upload story'))
                     ],
                   ),
           );
