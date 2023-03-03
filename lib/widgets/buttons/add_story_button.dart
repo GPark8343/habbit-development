@@ -50,8 +50,8 @@ class _AddStoryButtonState extends State<AddStoryButton> {
           _descriptionController.text,
           widget.category,
           widget.folderId);
-      Provider.of<FolderManage>(context, listen: false)
-          .plusOneDay(findedFolder);
+      // Provider.of<FolderManage>(context, listen: false)
+      //     .plusOneDay(findedFolder);
       Navigator.of(context).pop();
     }
 

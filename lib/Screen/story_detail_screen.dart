@@ -40,8 +40,8 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
           .findById(selectedStory.folderId);
       Provider.of<StoryManage>(context, listen: false)
           .deleteStories(selectedStoryId);
-      Provider.of<FolderManage>(context, listen: false)
-          .minusOneDay(findedFolder);
+      // Provider.of<FolderManage>(context, listen: false)
+      //     .minusOneDay(findedFolder);
     }
 
     deleteStoryAndPost(String selectedStoryId) {
@@ -50,8 +50,8 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
           .findById(selectedStory.folderId);
       Provider.of<StoryManage>(context, listen: false)
           .deleteStories(selectedStoryId);
-      Provider.of<FolderManage>(context, listen: false)
-          .minusOneDay(findedFolder);
+      // Provider.of<FolderManage>(context, listen: false)
+      //     .minusOneDay(findedFolder);
     }
 
     return FutureBuilder(

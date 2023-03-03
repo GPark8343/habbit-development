@@ -62,7 +62,7 @@ class RepositoryScreen extends StatelessWidget {
                                         });
                                   },
                                   trailing: Text(
-                                      '${storiesOfFoler[i].category} ${storiesOfFoler[i].isUploaded}'),
+                                      '${storiesOfFoler[i].category} 업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}'),
                                 ),
                               ),
                             ),

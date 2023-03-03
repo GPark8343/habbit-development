@@ -67,4 +67,10 @@ class FolderManage extends ChangeNotifier {
     );
     DBHelper.updateFolder('iuser_folder', updatedFolder);
   }
+   void controlDay(Folder findedFolder, int allDifferenceTypeOfDay) {
+    Folder updatedFolder = findedFolder.copyWith(
+      days: allDifferenceTypeOfDay,
+    );
+    DBHelper.updateFolder('iuser_folder', updatedFolder);
+  }
 }

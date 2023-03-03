@@ -1,13 +1,13 @@
 
 import 'package:flutter/material.dart';
-import 'package:habbit/providers/timer.dart';
+import 'package:habbit/providers/time_manage.dart';
 import 'package:provider/provider.dart';
 class HourTimer extends StatelessWidget {
   const HourTimer({super.key});
 
   @override
   Widget build(BuildContext context) {
-     var timer = Provider.of<Time>(context);
+     var timer = Provider.of<TimeManage>(context);
     var seconds = timer.seconds;
     var isRunning = timer.isRunning;
     void startTimer() {

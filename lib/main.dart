@@ -17,7 +17,7 @@ import 'package:habbit/data/category_all_list.dart';
 import 'package:habbit/providers/category_list.dart';
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
-import 'package:habbit/providers/timer.dart';
+import 'package:habbit/providers/time_manage.dart';
 import 'package:habbit/providers/upload.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider.value(
-            value: Time(),
+            value: TimeManage(),
           ),
           ChangeNotifierProvider.value(
             value: StoryManage(),
