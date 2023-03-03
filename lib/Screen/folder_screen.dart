@@ -1,0 +1,118 @@
+import 'package:flutter/material.dart';
+import 'package:habbit/Screen/repository_screen.dart';
+import 'package:habbit/helper/db_helper.dart';
+import 'package:habbit/models/story.dart';
+import 'package:habbit/providers/folder_manage.dart';
+import 'package:habbit/providers/story_manage.dart';
+import 'package:habbit/providers/upload.dart';
+import 'package:habbit/widgets/buttons/add_folder_button.dart';
+import 'package:provider/provider.dart';
+
+class FolderScreen extends StatelessWidget {
+  const FolderScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    _deleteFolderStoryAndPost(String selectedFolderId) async {
+      await Provider.of<StoryManage>(context, listen: false)
+          .fetchAndSetStories(); // 
+          List<Story> storiesOfFoler =
+          Provider.of<StoryManage>(context, listen: false)
+              .findByFolderId(selectedFolderId);
+  
+      storiesOfFoler.map((story) {
+        Provider.of<Upload>(context, listen: false).deletePost(story.id);
+        Provider.of<StoryManage>(context, listen: false)
+            .deleteStories(story.id);
+            
+      });
+       await  Provider.of<FolderManage>(context, listen: false)
+          .deleteFolders(selectedFolderId);
+    }
+
+    return FutureBuilder(
+      //  FutureBuilder는 서버에서 데이터를 모두 받아오기전 화면을 그려줄수 있게 되는 장점을 가진다.
+      future: Provider.of<FolderManage>(context, listen: false)
+          .fetchAndSetFolders(),
+      builder: (ctx, snapshot) => snapshot.connectionState ==
+              ConnectionState.waiting
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Consumer<FolderManage>(
+              child: Center(
+                  child: Column(
+                children: [
+                  AddFolderButton(),
+                  const Text('Got no folders yet, start adding some!'),
+                ],
+              )),
+              builder: (ctx, greatFolders, ch) =>
+                  greatFolders.folders.length <= 0
+                      ? ch!
+                      : Column(
+                          children: [
+                            AddFolderButton(),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: greatFolders.folders.length,
+                              itemBuilder: (ctx, i) => Dismissible(
+                                key: UniqueKey(),
+                                onDismissed: (direction) =>
+                                    _deleteFolderStoryAndPost(
+                                        greatFolders.folders[i].id),
+                                confirmDismiss: (direction) {
+                                  return showDialog(
+                                      context: context,
+                                      builder: (ctx) {
+                                        return AlertDialog(
+                                          title: const Text('Are you sure?'),
+                                          content: Text(
+                                              'Now I am deleting ${greatFolders.folders[i].title}'),
+                                          actions: <Widget>[
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                return Navigator.of(context)
+                                                    .pop(false);
+                                              },
+                                              child: const Text('CANCEL'),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                return Navigator.of(context)
+                                                    .pop(true);
+                                              },
+                                              child: const Text('DELETE'),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                                child: ListTile(
+                                  // leading: CircleAvatar(
+                                  //   backgroundImage:
+                                  //       FileImage(greatFolders.folders[i].image),
+                                  // ),
+                                  title: Text(greatFolders.folders[i].title),
+                                  subtitle: Text((greatFolders
+                                      .folders[i].description) as String),
+                                  onTap: () {
+                                    Navigator.of(context).pushNamed(
+                                        RepositoryScreen.routeName,
+                                        arguments: {
+                                          'folder_id':
+                                              greatFolders.folders[i].id,
+                                          'category':
+                                              greatFolders.folders[i].category
+                                        });
+                                  },
+                                  trailing: Text(
+                                      "${greatFolders.folders[i].category} ${greatFolders.folders[i].days}"),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+    );
+  }
+}

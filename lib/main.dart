@@ -1,0 +1,84 @@
+
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:habbit/Screen/auth_screen.dart';
+import 'package:habbit/Screen/edit_profile_screen.dart';
+import 'package:habbit/Screen/repository_screen.dart';
+import 'package:habbit/Screen/splash_screen.dart';
+import 'package:habbit/Screen/story_detail_screen.dart';
+import 'package:habbit/Screen/tap_screen.dart';
+import 'package:habbit/Screen/upload_screen.dart';
+import 'package:habbit/colors.dart';
+import 'package:habbit/data/category_all_list.dart';
+import 'package:habbit/providers/category_list.dart';
+import 'package:habbit/providers/folder_manage.dart';
+import 'package:habbit/providers/story_manage.dart';
+import 'package:habbit/providers/timer.dart';
+import 'package:habbit/providers/upload.dart';
+import 'package:provider/provider.dart';
+import 'firebase_options.dart';
+
+import 'package:intl/date_symbol_data_local.dart';
+
+void main() async {
+  await initializeDateFormatting();
+  WidgetsFlutterBinding.ensureInitialized();
+   MobileAds.instance.initialize();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(
+            value: Time(),
+          ),
+          ChangeNotifierProvider.value(
+            value: StoryManage(),
+          ),
+          ChangeNotifierProvider.value(
+            value: Upload(),
+          ),
+          ChangeNotifierProvider.value(
+            value: FolderManage(),
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'FlutterChat',
+          theme: ThemeData.dark().copyWith(
+            scaffoldBackgroundColor: backgroundColor,
+            appBarTheme: const AppBarTheme(
+              color: appBarColor,
+            ),
+          ),
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (ctx, userSnapshot) {
+              if (userSnapshot.connectionState == ConnectionState.waiting) {
+                return SplashScreen();
+              }
+              if (userSnapshot
+                  .hasData /*|| FirebaseAuth.instance.currentUser != null*/) {
+                return TapScreen();
+              } else
+                return AuthScreen();
+            },
+          ),
+          routes: {
+            // PlaceDetailScreen.routeName: (ctx) => PlaceDetailScreen(),
+            // UploadScreen.routeName: (ctx) =>  UploadScreen(),
+            StoryDetailScreen.routeName: (ctx) => StoryDetailScreen(),
+            EditProfileScreen.routeName: (ctx) => EditProfileScreen(),
+            RepositoryScreen.routeName: (ctx) => RepositoryScreen(),
+          },
+        ));
+  }
+}
