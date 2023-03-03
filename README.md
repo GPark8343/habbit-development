@@ -68,3 +68,9 @@ storage 데이터 안 쓰는 거를 삭제하지 말고 하루에 한 번 프로
     int allDifferenceTypeOfDay =
         365 * yearDifference + 30 * monthDifference + dayDifference;
         //몇 월이냐에 따라 일수가 다를 수 있음 이거 고쳐애 함
+
+
+{지금 고민인게 days는 그냥 폴더 만든 날짜로부터 몇일이냐고 체크 됐는지 안 됐는지 확인할 방법이 필요
++
+폴더에 따라 도장 달라야 함}
+이거 내일 하기

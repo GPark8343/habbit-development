@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habbit/widgets/buttons/upload_button.dart';
-import 'package:habbit/widgets/calendar.dart';
+import 'package:habbit/widgets/calendar/calendar.dart';
 import 'package:habbit/widgets/hout_timer.dart';
 
 
