@@ -22,7 +22,7 @@ class FolderManage extends ChangeNotifier {
         description: pickedDescription,
         createdAt: DateTime.now().toString(),
         category: pickedCategory,
-        days: 0);
+        days: 1);
     _folders.add(newFolder);
     notifyListeners();
     DBHelper.insertFolder('iuser_folder', {
@@ -31,7 +31,7 @@ class FolderManage extends ChangeNotifier {
       'description': newFolder.description,
       'created_at': newFolder.createdAt,
       'category': newFolder.category,
-      'days': 0,
+      'days': 1,
     });
   }
 
@@ -69,7 +69,7 @@ class FolderManage extends ChangeNotifier {
   }
    void controlDay(Folder findedFolder, int allDifferenceTypeOfDay) {
     Folder updatedFolder = findedFolder.copyWith(
-      days: allDifferenceTypeOfDay,
+      days: allDifferenceTypeOfDay+1,
     );
     DBHelper.updateFolder('iuser_folder', updatedFolder);
   }

@@ -15,6 +15,7 @@ class RepositoryScreen extends StatelessWidget {
         (ModalRoute.of(context)?.settings.arguments as Map)['folder_id'];
     final category =
         (ModalRoute.of(context)?.settings.arguments as Map)['category'];
+
     return FutureBuilder(
       //  FutureBuilder는 서버에서 데이터를 모두 받아오기전 화면을 그려줄수 있게 되는 장점을 가진다.
       future:
@@ -37,11 +38,29 @@ class RepositoryScreen extends StatelessWidget {
                   List<Story> storiesOfFoler = greatStories.items
                       .where((element) => element.folderId == folderId)
                       .toList();
+                  Widget isSameDate() {
+                    return storiesOfFoler
+                                .where((element) {
+                                  DateTime now = DateTime.now();
+                                  DateTime dateTime =
+                                      DateTime.parse(element.createdAt);
+                                  return DateTime.utc(dateTime.year,
+                                          dateTime.month, dateTime.day) ==
+                                      DateTime.utc(
+                                          now.year, now.month, now.day);
+                                })
+                                .toList()
+                                .length ==
+                            0
+                        ? AddStoryButton(folderId, category)
+                        : Text('오늘 스토리를 업로드하였습니다.');
+                  }
+
                   return storiesOfFoler.length <= 0
                       ? ch!
                       : Column(
                           children: [
-                            AddStoryButton(folderId, category),
+                            isSameDate(),
                             ListView.builder(
                               shrinkWrap: true,
                               itemCount: storiesOfFoler.length,

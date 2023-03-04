@@ -65,6 +65,8 @@ class StoryManage extends ChangeNotifier {
     notifyListeners();
   }
 
+
+
   void changeIsUploaded(Story findedStory) {
     Story updatedStory = findedStory.copyWith(
       isUploaded: findedStory.isUploaded == 0 ? 1 : 0,

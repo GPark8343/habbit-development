@@ -40,6 +40,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
           .findById(selectedStory.folderId);
       Provider.of<StoryManage>(context, listen: false)
           .deleteStories(selectedStoryId);
+            Provider.of<StoryManage>(context, listen: false).fetchAndSetStories();
       // Provider.of<FolderManage>(context, listen: false)
       //     .minusOneDay(findedFolder);
     }

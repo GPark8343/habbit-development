@@ -40,6 +40,7 @@ class _AddFolderButtonState extends State<AddFolderButton> {
       Navigator.of(context).pop();
       Provider.of<FolderManage>(context, listen: false).addFolders(
           _titleController.text, _descriptionController.text, _pickedCategory!);
+          Provider.of<FolderManage>(context, listen: false).fetchAndSetFolders();
     }
 
     @override

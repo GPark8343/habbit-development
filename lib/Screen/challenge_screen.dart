@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/providers/folder_manage.dart';
+import 'package:habbit/providers/marker_manage.dart';
 import 'package:habbit/widgets/calendar/calendar.dart';
 import 'package:habbit/widgets/hout_timer.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
         Provider.of<FolderManage>(context, listen: false).folders;
     int folderListLength = folderList.length;
     void moveLeftIndex() {
+
       if (index - 1 < 0) {
         setState(() {
           index = folderListLength - 1;
@@ -30,9 +32,11 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
           index--;
         });
       }
+          Provider.of<MarkerManage>(context, listen: false).addMarker();
     }
 
     void moveRightIndex() {
+  
       if (index + 1 > folderListLength - 1) {
         setState(() {
           index = 0;
@@ -42,6 +46,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
           index++;
         });
       }
+          Provider.of<MarkerManage>(context, listen: false).addMarker();
     }
 
     return FutureBuilder(

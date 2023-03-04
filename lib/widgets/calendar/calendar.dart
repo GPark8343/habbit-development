@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:habbit/models/folder.dart';
+import 'package:habbit/models/story.dart';
+import 'package:habbit/providers/marker_manage.dart';
+import 'package:habbit/providers/story_manage.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class Event {
-  String title;
 
-  Event(this.title);
-}
 
 class Calendar extends StatefulWidget {
   final Folder folder;
@@ -17,10 +17,8 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
-  Map<DateTime, List<Event>> events = {
-    DateTime.utc(2023, 3, 01): [Event('')],
-    DateTime.utc(2023, 3, 02): [Event('')],
-  };
+  //
+
   // void addAll() {
   //   int folderYear = DateTime.parse(widget.folder.createdAt).year;
   //   String folderMonth = DateTime.parse(widget.folder.createdAt).month < 10
@@ -40,37 +38,68 @@ class _CalendarState extends State<Calendar> {
   //   }
   // }
 
-  List<Event> _getEventsForDay(DateTime day) {
-    return events[day] ?? [];
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text('${widget.folder.title} 폴더의 days: ${widget.folder.days.toString()}'),
-        TableCalendar(
-          locale: 'ko_KR', // 추가
-          firstDay: DateTime.utc(2021, 10, 16),
-          lastDay: DateTime.utc(2030, 3, 14),
-          focusedDay: DateTime.now(),
-          headerStyle: HeaderStyle(
-              formatButtonVisible: false,
-              titleTextStyle: TextStyle(
-                  fontSize: 20,
-                  color: Colors.deepPurple,
-                  fontWeight: FontWeight.w800)),
-          calendarStyle: CalendarStyle(
-              markerSize: 10.0,
-              markerDecoration:
-                  BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-              todayTextStyle: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold)),
-          eventLoader: _getEventsForDay,
-        ),
-      ],
-    );
+    List<DateTime> attendanceDate =
+        Provider.of<MarkerManage>(context, listen: false).attendanceDate;
+    Map events = Provider.of<MarkerManage>(context, listen: false).events;
+
+    List<Event> _getEventsForDay(DateTime day) {
+      return events[day] ?? [];
+    }
+
+    List<Story> items = Provider.of<StoryManage>(context, listen: false)
+        .items
+        .where((element) => element.folderId == widget.folder.id)
+        .toList();
+    int attendanceProgress = items.length;
+
+    Future<List<DateTime>>? _getAttendanceDate() {
+      print('${items}이거 보고 싶어');
+      items.forEach(
+          (story) => attendanceDate.add(DateTime.parse(story.createdAt)));
+      print('${attendanceDate}이거 보고 싶어');
+    }
+
+    Future? first() async {
+      await Provider.of<StoryManage>(context, listen: false)
+          .fetchAndSetStories();
+      await _getAttendanceDate();
+      Provider.of<MarkerManage>(context, listen: false).addMarker();
+      return null;
+    }
+
+    return FutureBuilder(
+        future: first(),
+        builder: (context, snapshot) {
+          return Column(
+            children: [
+              Text('${attendanceProgress}/${widget.folder.days}'),
+              Text(
+                  '${widget.folder.title} 폴더의 days: ${widget.folder.days.toString()}'),
+              TableCalendar(
+                locale: 'ko_KR', // 추가
+                firstDay: DateTime.utc(2021, 10, 16),
+                lastDay: DateTime.utc(2030, 3, 14),
+                focusedDay: DateTime.now(),
+                headerStyle: HeaderStyle(
+                    formatButtonVisible: false,
+                    titleTextStyle: TextStyle(
+                        fontSize: 20,
+                        color: Colors.deepPurple,
+                        fontWeight: FontWeight.w800)),
+                calendarStyle: CalendarStyle(
+                    markerSize: 10.0,
+                    markerDecoration: BoxDecoration(
+                        color: Colors.red, shape: BoxShape.circle),
+                    todayTextStyle: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold)),
+                eventLoader: _getEventsForDay,
+              ),
+            ],
+          );
+        });
   }
 }

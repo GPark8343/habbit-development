@@ -16,6 +16,7 @@ import 'package:habbit/colors.dart';
 import 'package:habbit/data/category_all_list.dart';
 import 'package:habbit/providers/category_list.dart';
 import 'package:habbit/providers/folder_manage.dart';
+import 'package:habbit/providers/marker_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/providers/time_manage.dart';
 import 'package:habbit/providers/upload.dart';
@@ -49,6 +50,8 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider.value(
             value: FolderManage(),
+          ),  ChangeNotifierProvider.value(
+            value: MarkerManage(),
           ),
         ],
         child: MaterialApp(
