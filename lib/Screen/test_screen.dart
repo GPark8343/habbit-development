@@ -8,6 +8,7 @@ import 'package:habbit/Screen/story_detail_screen.dart';
 import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/widgets/avatar_widget.dart';
 import 'package:habbit/widgets/buttons/signout-button.dart';
+import 'package:habbit/widgets/deco.dart';
 import 'package:habbit/widgets/image_frame.dart';
 import 'package:habbit/widgets/user_card.dart';
 import 'package:provider/provider.dart';
@@ -83,7 +84,7 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Expanded(child: _statisticsOne('Post', 15)),
+                          Expanded(child: _statisticsOne('Level', 1)),
                           Expanded(child: _statisticsOne('Followers', 11)),
                           Expanded(child: _statisticsOne('Following', 3)),
                         ],
@@ -270,6 +271,7 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
           // _discoverPeople(),
           SignOutButton(),
           const SizedBox(height: 20),
+          Deco(),
           _tabMenu(),
           _tabView(),
         ],

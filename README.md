@@ -75,5 +75,7 @@ storage 데이터 안 쓰는 거를 삭제하지 말고 하루에 한 번 프로
 폴더에 따라 도장 달라야 함}
 이거 내일 하기
 
-Text('folder를 먼저 추가해주세요') error 발견
+{Text('folder를 먼저 추가해주세요') error 발견
 marker 디자인 바꾸기
+addmarker 이상하게 됨 folder랑 story 전부 다 삭제하고 다시 test
+리워드 지급}
