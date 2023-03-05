@@ -29,7 +29,8 @@ class Upload with ChangeNotifier {
           uid: FirebaseAuth.instance.currentUser!.uid,
           nickname: FirebaseAuth.instance.currentUser!.displayName,
           thumbnail: FirebaseAuth.instance.currentUser!.photoURL,
-          description: FirebaseAuth.instance.currentUser!.email // 이 부분은 수정 필요
+          description: FirebaseAuth.instance.currentUser!.email, // 이 부분은 수정 필요
+          numberOfReward: [],
           );
       await FirebaseFirestore.instance.collection('users').add(user.toMap());
       return true;

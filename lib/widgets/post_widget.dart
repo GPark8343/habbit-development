@@ -60,38 +60,38 @@ class PostWidget extends StatelessWidget {
     );
   }
 
-  Widget _infoCount() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              ImageFrame(
-                IconsPath.likeOffIcon,
-                width: 65,
-              ),
-              const SizedBox(width: 15),
-              ImageFrame(
-                IconsPath.replyIcon,
-                width: 60,
-              ),
-              const SizedBox(width: 15),
-              ImageFrame(
-                IconsPath.directMessage,
-                width: 55,
-              ),
-            ],
-          ),
-          ImageFrame(
-            IconsPath.bookMarkOffIcon,
-            width: 50,
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _infoCount() {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(horizontal: 15.0),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Row(
+  //           children: [
+  //             ImageFrame(
+  //               IconsPath.likeOffIcon,
+  //               width: 65,
+  //             ),
+  //             const SizedBox(width: 15),
+  //             ImageFrame(
+  //               IconsPath.replyIcon,
+  //               width: 60,
+  //             ),
+  //             const SizedBox(width: 15),
+  //             ImageFrame(
+  //               IconsPath.directMessage,
+  //               width: 55,
+  //             ),
+  //           ],
+  //         ),
+  //         ImageFrame(
+  //           IconsPath.bookMarkOffIcon,
+  //           width: 50,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _infoDescription() {
     return StreamBuilder(
@@ -136,18 +136,18 @@ class PostWidget extends StatelessWidget {
         });
   }
 
-  Widget _replyTextBtn() {
-    return GestureDetector(
-      onTap: () {},
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15.0),
-        child: Text(
-          '댓글 199개 모두 보기',
-          style: TextStyle(color: Colors.grey, fontSize: 13),
-        ),
-      ),
-    );
-  }
+  // Widget _replyTextBtn() {
+  //   return GestureDetector(
+  //     onTap: () {},
+  //     child: const Padding(
+  //       padding: EdgeInsets.symmetric(horizontal: 15.0),
+  //       child: Text(
+  //         '댓글 199개 모두 보기',
+  //         style: TextStyle(color: Colors.grey, fontSize: 13),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _dateAgo() {
     return Padding(
@@ -170,11 +170,11 @@ class PostWidget extends StatelessWidget {
           const SizedBox(height: 15),
           _image(),
           const SizedBox(height: 15),
-          _infoCount(),
-          const SizedBox(height: 5),
+          // _infoCount(),
+          // const SizedBox(height: 5),
           _infoDescription(),
-          const SizedBox(height: 5),
-          _replyTextBtn(),
+          // const SizedBox(height: 5),
+          // _replyTextBtn(),
           const SizedBox(height: 5),
           _dateAgo(),
         ],

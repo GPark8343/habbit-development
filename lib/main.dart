@@ -15,6 +15,7 @@ import 'package:habbit/Screen/upload_screen.dart';
 import 'package:habbit/colors.dart';
 import 'package:habbit/data/category_all_list.dart';
 import 'package:habbit/providers/category_list.dart';
+import 'package:habbit/providers/deco_manage.dart';
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/marker_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
@@ -52,6 +53,9 @@ class MyApp extends StatelessWidget {
             value: FolderManage(),
           ),  ChangeNotifierProvider.value(
             value: MarkerManage(),
+          ),
+           ChangeNotifierProvider.value(
+            value: DecoManage(),
           ),
         ],
         child: MaterialApp(

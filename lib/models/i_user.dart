@@ -3,12 +3,13 @@ class IUser {
   String? nickname;
   String? thumbnail;
   String? description;
-  IUser({
-    this.uid,
-    this.nickname,
-    this.thumbnail,
-    this.description,
-  });
+  List numberOfReward;
+  IUser(
+      {this.uid,
+      this.nickname,
+      this.thumbnail,
+      this.description,
+      required this.numberOfReward});
 
   factory IUser.fromJson(Map<String, dynamic> json) {
     return IUser(
@@ -17,6 +18,9 @@ class IUser {
       thumbnail: json['thumbnail'] == null ? '' : json['thumbnail'] as String,
       description:
           json['description'] == null ? '' : json['description'] as String,
+      numberOfReward: json['number_of_reward'] == null
+          ? []
+          : json['number_of_reward'] as List,
     );
   }
 
@@ -26,6 +30,7 @@ class IUser {
       'nickname': nickname,
       'thumbnail': thumbnail,
       'description': description,
+      'number_of_reward': numberOfReward,
     };
   }
 
@@ -34,12 +39,14 @@ class IUser {
     String? nickname,
     String? thumbnail,
     String? description,
+    List? numberOfReward,
   }) {
     return IUser(
       uid: uid ?? this.uid,
       nickname: nickname ?? this.nickname,
       thumbnail: thumbnail ?? this.thumbnail,
       description: description ?? this.description,
+      numberOfReward: numberOfReward ?? this.numberOfReward,
     );
   }
 }

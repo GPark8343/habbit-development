@@ -22,7 +22,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
         Provider.of<FolderManage>(context, listen: false).folders;
     int folderListLength = folderList.length;
     void moveLeftIndex() {
-
+    
       if (index - 1 < 0) {
         setState(() {
           index = folderListLength - 1;
@@ -32,11 +32,11 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
           index--;
         });
       }
-          Provider.of<MarkerManage>(context, listen: false).addMarker();
+     
     }
 
     void moveRightIndex() {
-  
+
       if (index + 1 > folderListLength - 1) {
         setState(() {
           index = 0;
@@ -46,7 +46,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
           index++;
         });
       }
-          Provider.of<MarkerManage>(context, listen: false).addMarker();
+   
     }
 
     return FutureBuilder(
@@ -59,6 +59,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                   ? Text('folder를 먼저 추가해주세요')
                   : Column(
                       children: [
+                        Calendar(folderList[index]),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -70,7 +71,6 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                                 child: Icon(Icons.arrow_right)),
                           ],
                         ),
-                        Calendar(folderList[index]),
                       ],
                     ),
             ),

@@ -79,3 +79,12 @@ storage 데이터 안 쓰는 거를 삭제하지 말고 하루에 한 번 프로
 marker 디자인 바꾸기
 addmarker 이상하게 됨 folder랑 story 전부 다 삭제하고 다시 test
 리워드 지급}
+
+{Text('folder를 먼저 추가해주세요') error 발견
+marker 디자인 바꾸기
+addmarker 이상하게 됨 folder랑 story 전부 다 삭제하고 다시 test,
+60일 연속으로 할 껀지 아님 그냥 60개 올리는 건지 훈장 구분, 레벨업 시스템 마련,
+배포하기 전에 쓸 데 없는 디자인 빼기}
+
+
+빈칸으로 제출하면 안된다고 경고문 주기

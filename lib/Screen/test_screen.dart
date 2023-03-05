@@ -75,8 +75,7 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                   children: [
                     AvatarWidget(
                       type: AvatarType.TYPE3,
-                      thumbPath:
-                          docs!.first.data()['thumbnail'], //
+                      thumbPath: docs!.first.data()['thumbnail'], //
                       size: 80,
                     ),
                     const SizedBox(width: 10),
@@ -85,8 +84,8 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Expanded(child: _statisticsOne('Level', 1)),
-                          Expanded(child: _statisticsOne('Followers', 11)),
-                          Expanded(child: _statisticsOne('Following', 3)),
+                          Expanded(child: _statisticsOne('Followers', 0)),
+                          Expanded(child: _statisticsOne('Following', 0)),
                         ],
                       ),
                     )
@@ -137,17 +136,17 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                 )),
           ),
           const SizedBox(width: 8),
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              border: Border.all(
-                color: const Color(0xffdedede),
-              ),
-              color: const Color(0xffefefef),
-            ),
-            child: ImageFrame(IconsPath.addFriend),
-          )
+          // Container(
+          //   padding: const EdgeInsets.all(4),
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(3),
+          //     border: Border.all(
+          //       color: const Color(0xffdedede),
+          //     ),
+          //     color: const Color(0xffefefef),
+          //   ),
+          //   child: ImageFrame(IconsPath.addFriend),
+          // )
         ],
       ),
     );
@@ -197,23 +196,23 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _tabMenu() {
-    return TabBar(
-      controller: _tabController,
-      indicatorColor: Colors.black,
-      indicatorWeight: 1,
-      tabs: [
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: ImageFrame(IconsPath.gridViewOn),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: ImageFrame(IconsPath.myTagImageOff),
-        ),
-      ],
-    );
-  }
+  // Widget _tabMenu() {
+  //   return TabBar(
+  //     controller: _tabController,
+  //     indicatorColor: Colors.black,
+  //     indicatorWeight: 1,
+  //     tabs: [
+  //       Container(
+  //         padding: const EdgeInsets.symmetric(vertical: 10),
+  //         child: ImageFrame(IconsPath.gridViewOn),
+  //       ),
+  //       Container(
+  //         padding: const EdgeInsets.symmetric(vertical: 10),
+  //         child: ImageFrame(IconsPath.myTagImageOff),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _tabView() {
     return StreamBuilder(
@@ -246,7 +245,6 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                   await Navigator.of(context)
                       .pushNamed(PostDetailScreen.routeName, arguments: {
                     'story_id': docs[index]['uid'],
-               
                   });
                 },
                 child: CachedNetworkImage(
@@ -269,10 +267,30 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
           _information(),
           _menu(),
           // _discoverPeople(),
-          SignOutButton(),
           const SizedBox(height: 20),
           Deco(),
-          _tabMenu(),
+          // _tabMenu(),
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 2),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              border: Border.all(
+                color: const Color(0xffdedede),
+              ),
+            ),
+            child: Text(
+              'your posts',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+         
+          
           _tabView(),
         ],
       ),

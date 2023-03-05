@@ -6,8 +6,6 @@ import 'package:habbit/providers/story_manage.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-
-
 class Calendar extends StatefulWidget {
   final Folder folder;
   const Calendar(this.folder);
@@ -55,9 +53,12 @@ class _CalendarState extends State<Calendar> {
     int attendanceProgress = items.length;
 
     Future<List<DateTime>>? _getAttendanceDate() {
+      attendanceDate = [];
       print('${items}이거 보고 싶어');
       items.forEach(
           (story) => attendanceDate.add(DateTime.parse(story.createdAt)));
+      Provider.of<MarkerManage>(context, listen: false)
+          .updateAttendanceDate(attendanceDate);
       print('${attendanceDate}이거 보고 싶어');
     }
 
@@ -65,7 +66,7 @@ class _CalendarState extends State<Calendar> {
       await Provider.of<StoryManage>(context, listen: false)
           .fetchAndSetStories();
       await _getAttendanceDate();
-      Provider.of<MarkerManage>(context, listen: false).addMarker();
+      await Provider.of<MarkerManage>(context, listen: false).addMarker();
       return null;
     }
 
@@ -77,6 +78,9 @@ class _CalendarState extends State<Calendar> {
               Text('${attendanceProgress}/${widget.folder.days}'),
               Text(
                   '${widget.folder.title} 폴더의 days: ${widget.folder.days.toString()}'),
+              SizedBox(
+                height: 30,
+              ),
               TableCalendar(
                 locale: 'ko_KR', // 추가
                 firstDay: DateTime.utc(2021, 10, 16),

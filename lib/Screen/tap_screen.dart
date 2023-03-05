@@ -9,6 +9,7 @@ import 'package:habbit/Screen/repository_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/test_screen.dart';
 import 'package:habbit/widgets/buttons/add_story_button.dart';
+import 'package:habbit/widgets/buttons/signout-button.dart';
 import 'package:habbit/widgets/buttons/upload_button.dart';
 
 class TapScreen extends StatefulWidget {
@@ -37,7 +38,6 @@ class _TapScreenState extends State<TapScreen> {
     )..load();
     _pages = [
       {'page': TestScreen(), 'title': 'Profile'},
-      {'page': MainScreen(), 'title': 'Main'},
       {'page': InstaScreen(), 'title': 'upload'},
       {'page': FolderScreen(), 'title': 'folder'},
       {'page': ChallengeScreen(), 'title': 'challenge'},
@@ -63,18 +63,8 @@ class _TapScreenState extends State<TapScreen> {
               color: Colors.blue,
             ),
           ),
-          ListTile(
-            title: Text('Item 1'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: Text('Item 2'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
+               SignOutButton(),
+          
         ],
       )),
       appBar: AppBar(
@@ -95,10 +85,7 @@ class _TapScreenState extends State<TapScreen> {
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.aspect_ratio_rounded),
                 label: 'Profile'),
-            BottomNavigationBarItem(
-                backgroundColor: Theme.of(context).primaryColor,
-                icon: Icon(Icons.animation_outlined),
-                label: 'main'),
+        
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.upload_file),

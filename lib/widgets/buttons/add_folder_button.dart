@@ -6,7 +6,7 @@ import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/widgets/category/category_list.dart';
 import 'package:provider/provider.dart';
 
-enum Fruit { Apple, Grapes, Pear, Lemon }
+enum Kind { Reading, Exercise, Language, Etc }
 
 class AddFolderButton extends StatefulWidget {
   @override
@@ -22,9 +22,9 @@ class _AddFolderButtonState extends State<AddFolderButton> {
     final _descriptionController = TextEditingController();
 
     String? _pickedCategory;
-    Fruit? _fruit = Fruit.Apple;
+    Kind? _kind = Kind.Reading;
 
-    void _selectCategory(Fruit pickedCategory) {
+    void _selectCategory(Kind pickedCategory) {
       _pickedCategory = pickedCategory.toString();
       print(_pickedCategory);
     }
@@ -95,7 +95,7 @@ class _AddFolderButtonState extends State<AddFolderButton> {
                       ElevatedButton(
                         child: Text('선택 완료'),
                         onPressed: () {
-                          _selectCategory(_fruit);
+                          _selectCategory(_kind);
                           showDialog(
                               context: context,
                               builder: (context) {
