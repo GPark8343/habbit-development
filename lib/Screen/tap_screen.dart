@@ -89,7 +89,7 @@ class _TapScreenState extends State<TapScreen> {
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.upload_file),
-                label: 'insta'),
+                label: 'upload'),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.category),

@@ -107,7 +107,7 @@ class _AddFolderButtonState extends State<AddFolderButton> {
                                       children: [
                                         SingleChildScrollView(
                                           child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
+                                            padding: EdgeInsets.all(MediaQuery.of(context).size.width/360*10.0),
                                             child: Column(
                                               children: [
                                                 Text(
@@ -131,7 +131,7 @@ class _AddFolderButtonState extends State<AddFolderButton> {
                                                   },
                                                 ),
                                                 SizedBox(
-                                                  height: 10,
+                                                  height: MediaQuery.of(context).size.width/360*10,
                                                 ),
                                                 TextFormField(
                                                   controller:

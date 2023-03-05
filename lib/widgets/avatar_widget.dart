@@ -19,28 +19,13 @@ class AvatarWidget extends StatelessWidget {
     this.size = 65,
   }) : super(key: key);
 
-  Widget type1Widget() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5),
-      padding: const EdgeInsets.all(2),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            Colors.purple,
-            Colors.orange,
-          ],
-        ),
-        shape: BoxShape.circle,
-      ),
-      child: type2Widget(),
-    );
-  }
+ 
 
-  Widget type2Widget() {
+  @override
+  Widget build(BuildContext context) {
+     Widget type2Widget() {
     return Container(
-      padding: const EdgeInsets.all(2),
+      padding:  EdgeInsets.all(MediaQuery.of(context).size.width/360*2),
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.white,
@@ -59,6 +44,26 @@ class AvatarWidget extends StatelessWidget {
       ),
     );
   }
+    Widget type1Widget() {
+    return Container(
+      margin:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/360*5),
+      padding:  EdgeInsets.all(MediaQuery.of(context).size.width/360*2),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Colors.purple,
+            Colors.orange,
+          ],
+        ),
+        shape: BoxShape.circle,
+      ),
+      child: type2Widget(),
+    );
+  }
+
+ 
 
   Widget type3Widget() {
     return Row(
@@ -66,17 +71,15 @@ class AvatarWidget extends StatelessWidget {
         type1Widget(),
         Text(
           nickname ?? '',
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 16,
+            fontSize:MediaQuery.of(context).size.width/360* 16,
           ),
         ),
       ],
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
     switch (type) {
       case AvatarType.TYPE1:
         return type1Widget();

@@ -74,7 +74,7 @@ class Upload with ChangeNotifier {
     return ref.putFile(file, metadata);
   }
 
-  void uplaodPost(Post post, File file, String id) {
+  void uploadPost(Post post, File file, String id) {
     var filename = '/${post.uid}.jpg';
     var task = _uploadPostFile(file, filename);
     if (task != null) {

@@ -26,6 +26,7 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -34,16 +35,16 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
       children: [
         Text(
           value.toString(),
-          style: const TextStyle(
-            fontSize: 20,
+          style: TextStyle(
+            fontSize: MediaQuery.of(context).size.width/360*20,
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 15,
+          style:  TextStyle(
+            fontSize: MediaQuery.of(context).size.width/360*15,
             color: Colors.white,
           ),
         ),
@@ -66,7 +67,8 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
           final docs = snapshot.data?.docs;
 
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / 360 * 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -76,9 +78,10 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                     AvatarWidget(
                       type: AvatarType.TYPE3,
                       thumbPath: docs!.first.data()['thumbnail'], //
-                      size: 80,
+                      size: MediaQuery.of(context).size.width / 360 * 80,
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width / 360 * 10),
                     Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -91,11 +94,11 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                     )
                   ],
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: MediaQuery.of(context).size.width / 360 * 10),
                 Text(
                   FirebaseAuth.instance.currentUser!.email!,
-                  style: const TextStyle(
-                    fontSize: 13,
+                  style:  TextStyle(
+                    fontSize: MediaQuery.of(context).size.width/360*13,
                     color: Colors.white,
                   ),
                 )
@@ -107,14 +110,18 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
 
   Widget _menu() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 360 * 15,
+          vertical: MediaQuery.of(context).size.width / 360 * 25),
       child: Row(
         children: [
           Expanded(
             child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 7),
+                padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.width / 360 * 7),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(3),
+                  borderRadius: BorderRadius.circular(
+                      MediaQuery.of(context).size.width / 360 * 3),
                   border: Border.all(
                     color: const Color(0xffdedede),
                   ),
@@ -128,14 +135,14 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                     'Edit profile',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 14,
+                      fontSize: MediaQuery.of(context).size.width/360*14,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 )),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: MediaQuery.of(context).size.width / 360 * 8),
           // Container(
           //   padding: const EdgeInsets.all(4),
           //   decoration: BoxDecoration(
@@ -156,22 +163,24 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width / 360 * 15,
+              vertical: MediaQuery.of(context).size.width / 360 * 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
               Text(
                 'Discover People',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 15,
+                  fontSize: MediaQuery.of(context).size.width/360*15,
                   color: Colors.white,
                 ),
               ),
               Text(
                 'See All',
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: MediaQuery.of(context).size.width/360*15,
                   color: Colors.blue,
                   fontWeight: FontWeight.w500,
                 ),
@@ -181,7 +190,8 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width / 360 * 12),
           child: Row(
             children: List.generate(
               10,
@@ -267,14 +277,16 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
           _information(),
           _menu(),
           // _discoverPeople(),
-          const SizedBox(height: 20),
+          SizedBox(height: MediaQuery.of(context).size.width / 360 * 20),
           Deco(),
           // _tabMenu(),
-          const SizedBox(height: 20),
+          SizedBox(height: MediaQuery.of(context).size.width / 360 * 20),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 2),
+            padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.width / 360 * 2),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
+              borderRadius: BorderRadius.circular(
+                  MediaQuery.of(context).size.width / 360 * 3),
               border: Border.all(
                 color: const Color(0xffdedede),
               ),
@@ -283,14 +295,15 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
               'your posts',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 14,
+                fontSize: MediaQuery.of(context).size.width/360*14,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
           ),
-         
-          
+          SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
+          Divider(color: Colors.white, thickness: MediaQuery.of(context).size.width / 360*2.0),
+               SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
           _tabView(),
         ],
       ),

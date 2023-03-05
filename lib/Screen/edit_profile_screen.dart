@@ -23,7 +23,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final picker = ImagePicker();
     final imageFile = await picker.pickImage(
       source: ImageSource.gallery,
-      maxWidth: 600,
+      maxWidth: MediaQuery.of(context).size.width / 360 * 600,
     );
     if (imageFile == null) {
       return;

@@ -79,7 +79,7 @@ class _CalendarState extends State<Calendar> {
               Text(
                   '${widget.folder.title} 폴더의 days: ${widget.folder.days.toString()}'),
               SizedBox(
-                height: 30,
+                height: MediaQuery.of(context).size.width / 360 * 30,
               ),
               TableCalendar(
                 locale: 'ko_KR', // 추가
@@ -89,7 +89,7 @@ class _CalendarState extends State<Calendar> {
                 headerStyle: HeaderStyle(
                     formatButtonVisible: false,
                     titleTextStyle: TextStyle(
-                        fontSize: 20,
+                        fontSize: MediaQuery.of(context).size.width/360*20,
                         color: Colors.deepPurple,
                         fontWeight: FontWeight.w800)),
                 calendarStyle: CalendarStyle(
@@ -97,7 +97,7 @@ class _CalendarState extends State<Calendar> {
                     markerDecoration: BoxDecoration(
                         color: Colors.red, shape: BoxShape.circle),
                     todayTextStyle: TextStyle(
-                        fontSize: 20,
+                        fontSize: MediaQuery.of(context).size.width/360*20,
                         color: Colors.white,
                         fontWeight: FontWeight.bold)),
                 eventLoader: _getEventsForDay,

@@ -75,7 +75,7 @@ class _AddStoryButtonState extends State<AddStoryButton> {
                       children: [
                         SingleChildScrollView(
                           child: Padding(
-                            padding: const EdgeInsets.all(10.0),
+                            padding:  EdgeInsets.all(MediaQuery.of(context).size.width/360*10.0),
                             child: Column(
                               children: [
                                 Text('write your story'),
@@ -96,11 +96,11 @@ class _AddStoryButtonState extends State<AddStoryButton> {
                                   },
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height:MediaQuery.of(context).size.width/360*10,
                                 ),
                                 ImageInput(_selectImage),
                                 SizedBox(
-                                  height: 10,
+                                  height: MediaQuery.of(context).size.width/360*10,
                                 ),
                                 TextFormField(
                                   controller: _descriptionController,

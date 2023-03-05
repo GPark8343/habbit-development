@@ -25,15 +25,17 @@ class PostWidget extends StatelessWidget {
           }
           final docData = snapshot.data?.docs.first.data();
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / 360 * 15.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AvatarWidget(
                     type: AvatarType.TYPE3,
                     nickname: docData!['nickname'],
-                    size: 40,
-                    thumbPath: docData['thumbnail']),Text(
+                    size: MediaQuery.of(context).size.width / 360 * 40,
+                    thumbPath: docData['thumbnail']),
+                Text(
                   '카테고리 ${post.category ?? ''}',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
@@ -107,7 +109,8 @@ class PostWidget extends StatelessWidget {
           }
           final docData = snapshot.data?.docs.first.data();
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / 360 * 15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -115,7 +118,6 @@ class PostWidget extends StatelessWidget {
                   '좋아요 ${post.likeCount ?? 0}개',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                
                 ExpandableText(
                   post.description ?? '',
                   prefixText: docData!['nickname'],
@@ -149,12 +151,12 @@ class PostWidget extends StatelessWidget {
   //   );
   // }
 
-  Widget _dateAgo() {
+  Widget _dateAgo(double size) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      padding: EdgeInsets.symmetric(horizontal: size * 15.0),
       child: Text(
         timeago.format(post.createdAt!),
-        style: const TextStyle(color: Colors.grey, fontSize: 11),
+        style: TextStyle(color: Colors.grey, fontSize: size * 11),
       ),
     );
   }
@@ -162,21 +164,22 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 20),
+      margin:
+          EdgeInsets.only(top: MediaQuery.of(context).size.width / 360 * 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _header(),
-          const SizedBox(height: 15),
+          SizedBox(height: MediaQuery.of(context).size.width / 360 * 15),
           _image(),
-          const SizedBox(height: 15),
+          SizedBox(height: MediaQuery.of(context).size.width / 360 * 15),
           // _infoCount(),
           // const SizedBox(height: 5),
           _infoDescription(),
           // const SizedBox(height: 5),
           // _replyTextBtn(),
-          const SizedBox(height: 5),
-          _dateAgo(),
+          SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
+          _dateAgo(MediaQuery.of(context).size.width / 360),
         ],
       ),
     );

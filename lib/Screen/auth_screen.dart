@@ -32,8 +32,7 @@ class AuthScreen extends StatelessWidget {
           await FirebaseAuth.instance.signInWithCredential(credential);
       final user = authResult.user;
       final upload = Provider.of<Upload>(context, listen: false);
-      upload.registerUser(
-          );
+      upload.registerUser();
     } catch (error) {
       print(error);
     }
@@ -43,30 +42,32 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: Container(
-          padding: EdgeInsets.only(top: 110),
-          child: Center(
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    signInWithGoogle(context);
-                  },
-                  child: Container(
-                    child: Text('구글 로그인'),
-                    width: 200,
-                    height: 50,
-                    // decoration: BoxDecoration(
-                    //     image: DecorationImage(
-                    //         image: AssetImage(
-                    //             'assets/images/google_sign_in_button.png'),
-                    //         fit: BoxFit.cover)),
+      body: SafeArea(
+        child: Container(
+            padding: EdgeInsets.only(top: MediaQuery.of(context).size.width/360*110),
+            child: Center(
+              child: Card(
+                child: Padding(
+                  padding:  EdgeInsets.all(MediaQuery.of(context).size.width/360*8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      signInWithGoogle(context);
+                    },
+                    child: Container(
+                      child: Text('구글 로그인'),
+                      width: MediaQuery.of(context).size.width / 360 * 200,
+                      height: MediaQuery.of(context).size.width / 360 * 50,
+                      // decoration: BoxDecoration(
+                      //     image: DecorationImage(
+                      //         image: AssetImage(
+                      //             'assets/images/google_sign_in_button.png'),
+                      //         fit: BoxFit.cover)),
+                    ),
                   ),
                 ),
               ),
-            ),
-          )),
+            )),
+      ),
     );
   }
 }

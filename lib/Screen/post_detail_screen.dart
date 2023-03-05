@@ -51,7 +51,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 : Column(
                     children: [
                       Container(
-                        height: 250,
+                        height: MediaQuery.of(context).size.width/360*250,
                         width: double.infinity,
                         child: Image.file(
                           selectedStory.image,
@@ -60,31 +60,31 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: MediaQuery.of(context).size.width/360*10,
                       ),
                       Text(
                         selectedStory.createdAt as String,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: MediaQuery.of(context).size.width/360*20, color: Colors.grey),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: MediaQuery.of(context).size.width/360*10,
                       ),
                       Text(
                         selectedStory.description as String,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: MediaQuery.of(context).size.width/360*20, color: Colors.grey),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: MediaQuery.of(context).size.width/360*10,
                       ),
                       Text(
                         selectedStory.category as String,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: MediaQuery.of(context).size.width/360*20, color: Colors.grey),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: MediaQuery.of(context).size.width/360*10,
                       ),
                       TextButton(
                         onPressed: () {

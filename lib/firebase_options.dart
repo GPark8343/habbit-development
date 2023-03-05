@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDXxifosLt1tp1XnQzJQoW9NTvuzrrg6B8',
-    appId: '1:549537613641:android:97b8583258c89532783c98',
+    appId: '1:549537613641:android:57fdd578db0fc744783c98',
     messagingSenderId: '549537613641',
     projectId: 'habbit-b3622',
     storageBucket: 'habbit-b3622.appspot.com',
@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '549537613641',
     projectId: 'habbit-b3622',
     storageBucket: 'habbit-b3622.appspot.com',
+    androidClientId: '549537613641-03e2iidc636e0opbkk1ici3nvm04dpbh.apps.googleusercontent.com',
     iosClientId: '549537613641-7f4ljodr8gjs5ltl00gvsfdhf6jasc9k.apps.googleusercontent.com',
     iosBundleId: 'com.example.habbit',
   );

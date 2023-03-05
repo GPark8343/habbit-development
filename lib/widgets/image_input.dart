@@ -19,7 +19,7 @@ class _ImageInputState extends State<ImageInput> {
     final picker = ImagePicker();
     final imageFile = await picker.pickImage(
       source: ImageSource.camera,
-      maxWidth: 600,
+      maxWidth: MediaQuery.of(context).size.width / 360 * 600,
     );
     if (imageFile == null) {
       return;
@@ -37,7 +37,7 @@ class _ImageInputState extends State<ImageInput> {
     final picker = ImagePicker();
     final imageFile = await picker.pickImage(
       source: ImageSource.gallery,
-      maxWidth: 600,
+      maxWidth: MediaQuery.of(context).size.width / 360 * 600,
     );
     if (imageFile == null) {
       return;
@@ -55,10 +55,12 @@ class _ImageInputState extends State<ImageInput> {
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
-        width: 150,
-        height: 100,
-        decoration:
-            BoxDecoration(border: Border.all(width: 1, color: Colors.grey)),
+        width: MediaQuery.of(context).size.width / 360 * 150,
+        height: MediaQuery.of(context).size.width / 360 * 100,
+        decoration: BoxDecoration(
+            border: Border.all(
+                width: MediaQuery.of(context).size.width / 360,
+                color: Colors.grey)),
         child: _storedImage != null
             ? Image.file(
                 _storedImage!,
@@ -72,14 +74,15 @@ class _ImageInputState extends State<ImageInput> {
         alignment: Alignment.center,
       ),
       SizedBox(
-        width: 10,height: 20,
+        width: MediaQuery.of(context).size.width / 360 * 10,
+        height: MediaQuery.of(context).size.width / 360 * 20,
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            width: 100,
-            height: 50,
+            width: MediaQuery.of(context).size.width / 360 * 100,
+            height: MediaQuery.of(context).size.width / 360 * 50,
             child: TextButton.icon(
               onPressed: _takePicture,
               icon: Icon(Icons.camera),
@@ -90,8 +93,8 @@ class _ImageInputState extends State<ImageInput> {
             ),
           ),
           Container(
-            width: 100,
-            height: 50,
+            width: MediaQuery.of(context).size.width / 360 * 100,
+            height: MediaQuery.of(context).size.width / 360 * 50,
             child: TextButton.icon(
               onPressed: _takeGallery,
               icon: Icon(Icons.browse_gallery),

@@ -1,5 +1,3 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +21,17 @@ import 'package:habbit/providers/time_manage.dart';
 import 'package:habbit/providers/upload.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-
+import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   await initializeDateFormatting();
   WidgetsFlutterBinding.ensureInitialized();
-   MobileAds.instance.initialize();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  MobileAds.instance.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(MyApp());
@@ -38,6 +40,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return MultiProvider(
         providers: [
           ChangeNotifierProvider.value(
@@ -51,10 +54,11 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider.value(
             value: FolderManage(),
-          ),  ChangeNotifierProvider.value(
+          ),
+          ChangeNotifierProvider.value(
             value: MarkerManage(),
           ),
-           ChangeNotifierProvider.value(
+          ChangeNotifierProvider.value(
             value: DecoManage(),
           ),
         ],

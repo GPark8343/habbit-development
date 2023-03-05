@@ -36,7 +36,8 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     }
 
     void moveRightIndex() {
-
+print(MediaQuery.of(context).size.height);
+    print(MediaQuery.of(context).size.width);
       if (index + 1 > folderListLength - 1) {
         setState(() {
           index = 0;

@@ -40,7 +40,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
           .findById(selectedStory.folderId);
       Provider.of<StoryManage>(context, listen: false)
           .deleteStories(selectedStoryId);
-            Provider.of<StoryManage>(context, listen: false).fetchAndSetStories();
+      Provider.of<StoryManage>(context, listen: false).fetchAndSetStories();
       // Provider.of<FolderManage>(context, listen: false)
       //     .minusOneDay(findedFolder);
     }
@@ -69,7 +69,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                 : Column(
                     children: [
                       Container(
-                        height: 250,
+                        height: MediaQuery.of(context).size.width / 360 * 250,
                         width: double.infinity,
                         child: Image.file(
                           selectedStory.image,
@@ -78,31 +78,31 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: MediaQuery.of(context).size.width / 360 * 10,
                       ),
                       Text(
                         selectedStory.createdAt as String,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: MediaQuery.of(context).size.width/360*20, color: Colors.grey),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: MediaQuery.of(context).size.width / 360 * 10,
                       ),
                       Text(
                         selectedStory.description as String,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: MediaQuery.of(context).size.width/360*20, color: Colors.grey),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: MediaQuery.of(context).size.width / 360 * 10,
                       ),
                       Text(
                         selectedStory.category as String,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 20, color: Colors.grey),
+                        style: TextStyle(fontSize: MediaQuery.of(context).size.width/360*20, color: Colors.grey),
                       ),
                       SizedBox(
-                        height: 10,
+                        height: MediaQuery.of(context).size.width / 360 * 10,
                       ),
                       TextButton(
                         onPressed: () {
@@ -145,7 +145,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                             // firebase upload function
                             IUser? userInfo = await upload.loadUserByUid(
                                 FirebaseAuth.instance.currentUser!.uid);
-                            upload.uplaodPost(
+                            upload.uploadPost(
                                 Post(
                                     userId:
                                         FirebaseAuth.instance.currentUser!.uid,

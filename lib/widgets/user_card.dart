@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habbit/widgets/avatar_widget.dart';
 
-
 class UserCard extends StatelessWidget {
   final String userId;
   final String description;
@@ -14,11 +13,12 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 3),
-      width: 150,
-      height: 220,
+      margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/360*3),
+      width: MediaQuery.of(context).size.width / 360 * 150,
+      height: MediaQuery.of(context).size.width / 360 * 220,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius:
+            BorderRadius.circular(MediaQuery.of(context).size.width / 360 * 5),
         border: Border.all(
           color: Colors.black12,
         ),
@@ -32,25 +32,25 @@ class UserCard extends StatelessWidget {
             bottom: 0,
             child: Column(
               children: [
-                const SizedBox(height: 10),
+                 SizedBox(height: MediaQuery.of(context).size.width/360*10),
                 AvatarWidget(
                   type: AvatarType.TYPE2,
                   thumbPath:
                       'https://thumbs.dreamstime.com/b/photo-portrait-cheerful-cool-swag-trend-trendy-guy-leaving-his-feedback-social-media-network-using-smart-phone-photo-145377495.jpg',
-                  size: 80,
+                size:MediaQuery.of(context).size.width/360*80,  
                 ),
-                const SizedBox(height: 10),
+               SizedBox(height: MediaQuery.of(context).size.width/360*10),
                 Text(
                   userId,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 13,
+                    fontSize: MediaQuery.of(context).size.width/360*13,
                   ),
                 ),
                 Text(
                   description,
-                  style: const TextStyle(
-                    fontSize: 13,
+                  style:  TextStyle(
+                    fontSize: MediaQuery.of(context).size.width/360*13,
                   ),
                   textAlign: TextAlign.center,
                 ),

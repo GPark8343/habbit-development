@@ -88,3 +88,10 @@ addmarker 이상하게 됨 folder랑 story 전부 다 삭제하고 다시 test,
 
 
 빈칸으로 제출하면 안된다고 경고문 주기
+
+MediaQuery.of(context).size.height=752px
+MediaQuery.of(context).size.width=360px
+
+만약에 디바이스 바뀌면 어케 하냐
+로컬 db에 있는 정보 다 날라가고 구글 계정에 올라간 포스트만 남음 이게 문제네
+60일 채우면 firebase에 전부 업로드 자동 저장
