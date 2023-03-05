@@ -12,7 +12,16 @@ class StoryManage extends ChangeNotifier {
   }
 
   Story findById(String id) {
-    return _items.firstWhere((story) => story.id == id);
+    return _items.firstWhere((story) => story.id == id,
+        orElse: () => Story(
+            id: 'no_found',
+            title: 'title',
+            description: 'description',
+            image: File('image'),
+            createdAt: 'createdAt',
+            category: 'category',
+            folderId: 'folderId',
+            isUploaded: 0));
   }
 
   List<Story> findByFolderId(String folderId) {
@@ -64,8 +73,6 @@ class StoryManage extends ChangeNotifier {
     print(items);
     notifyListeners();
   }
-
-
 
   void changeIsUploaded(Story findedStory) {
     Story updatedStory = findedStory.copyWith(

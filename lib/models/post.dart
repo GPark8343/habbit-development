@@ -1,8 +1,7 @@
-
-
 import 'package:habbit/models/i_user.dart';
 
 class Post {
+  final String? title;
   final String? userId;
   final String? thumbnail;
   final String? description;
@@ -15,6 +14,7 @@ class Post {
   final String? category;
 
   Post({
+    this.title,
     this.userId,
     this.thumbnail,
     this.description,
@@ -30,6 +30,7 @@ class Post {
   factory Post.init(IUser userInfo) {
     var time = DateTime.now();
     return Post(
+      title: '',
       thumbnail: '',
       userInfo: userInfo,
       uid: userInfo.uid,
@@ -42,6 +43,7 @@ class Post {
 
   factory Post.fromJson(String docId, Map<String, dynamic> json) {
     return Post(
+      title: json['title'] == null ? '' : json['title'] as String,
       userId: json['userId'] == null ? '' : json['userId'] as String,
       thumbnail: json['thumbnail'] == null ? '' : json['thumbnail'] as String,
       description:
@@ -56,13 +58,14 @@ class Post {
       updatedAt: json['updated_at'] == null
           ? DateTime.now()
           : json['updated_at'].toDate(),
-      deletedAt: json['deleted_at'] == null ? null : json['deleted_at'].toDate(),
+      deletedAt:
+          json['deleted_at'] == null ? null : json['deleted_at'].toDate(),
       category: json['category'] == null ? '' : json['category'] as String,
-
     );
   }
 
   Post copyWith({
+    String? title,
     String? userId,
     String? thumbnail,
     String? description,
@@ -73,9 +76,9 @@ class Post {
     DateTime? updatedAt,
     DateTime? deletedAt,
     String? category,
-
   }) {
     return Post(
+      title: title ?? this.title,
       userId: userId ?? this.userId,
       thumbnail: thumbnail ?? this.thumbnail,
       description: description ?? this.description,
@@ -86,12 +89,12 @@ class Post {
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
       category: category ?? this.category,
-
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'title': title,
       'userId': userId,
       'thumbnail': thumbnail,
       'description': description,

@@ -19,6 +19,7 @@ class PostDetailScreen extends StatefulWidget {
 class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState>? _scaffoldKey = GlobalKey<ScaffoldState>();
     final storyId =
         (ModalRoute.of(context)?.settings.arguments as Map)['story_id'];
 
@@ -32,15 +33,20 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     }
 
     deletePost(String selectedStoryId) {
-      Provider.of<StoryManage>(context, listen: false)
-          .changeIsUploaded(selectedStory);
-      Provider.of<Upload>(context, listen: false).deletePost(selectedStoryId);
+      if (selectedStory.id == 'no_found') {
+        Provider.of<Upload>(context, listen: false).deletePost(selectedStoryId);
+      } else {
+        Provider.of<StoryManage>(context, listen: false)
+            .changeIsUploaded(selectedStory);
+        Provider.of<Upload>(context, listen: false).deletePost(selectedStoryId);
+      }
     }
 
     return FutureBuilder(
         future: fetchAndSetStories(),
         builder: (context, snapshot) {
           return Scaffold(
+            key: _scaffoldKey,
             appBar: AppBar(
               title: Text(selectedStory.title),
             ),
@@ -48,80 +54,113 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : Column(
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.width/360*250,
-                        width: double.infinity,
-                        child: Image.file(
-                          selectedStory.image,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
+                : selectedStory.id == 'no_found'
+                    ? Center(
+                        child: Column(
+                          children: [
+                            Text('스토리가 남아 있지 않습니다.'),
+                            ElevatedButton(
+                              child: Text('네. 삭제합니다.'),
+                              onPressed: () {
+                                deletePost(storyId);
+                                Navigator.of(context).pop();
+                                // 화면 업데이트 추가
+                              },
+                            ),
+                          ],
                         ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.width/360*10,
-                      ),
-                      Text(
-                        selectedStory.createdAt as String,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: MediaQuery.of(context).size.width/360*20, color: Colors.grey),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.width/360*10,
-                      ),
-                      Text(
-                        selectedStory.description as String,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: MediaQuery.of(context).size.width/360*20, color: Colors.grey),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.width/360*10,
-                      ),
-                      Text(
-                        selectedStory.category as String,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: MediaQuery.of(context).size.width/360*20, color: Colors.grey),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.width/360*10,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          showDialog<bool>(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  content: Text('포스트 를 내릴까요?'),
-                                  actions: <Widget>[
-                                    ElevatedButton(
-                                      child: Text('아니오.'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop(false);
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      child: Text('네. 삭제합니다.'),
-                                      onPressed: () {
-                                        deletePost(storyId);
+                      )
+                    : Column(
+                        children: [
+                          Container(
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 250,
+                            width: double.infinity,
+                            child: Image.file(
+                              selectedStory.image,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                            ),
+                          ),
+                          SizedBox(
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 10,
+                          ),
+                          Text(
+                            selectedStory.createdAt as String,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: MediaQuery.of(context).size.width /
+                                    360 *
+                                    20,
+                                color: Colors.grey),
+                          ),
+                          SizedBox(
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 10,
+                          ),
+                          Text(
+                            selectedStory.description as String,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: MediaQuery.of(context).size.width /
+                                    360 *
+                                    20,
+                                color: Colors.grey),
+                          ),
+                          SizedBox(
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 10,
+                          ),
+                          Text(
+                            selectedStory.category as String,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: MediaQuery.of(context).size.width /
+                                    360 *
+                                    20,
+                                color: Colors.grey),
+                          ),
+                          SizedBox(
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 10,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              showDialog<bool>(
+                                  context: _scaffoldKey!.currentContext!,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      content: Text('포스트 를 내릴까요?'),
+                                      actions: <Widget>[
+                                        ElevatedButton(
+                                          child: Text('아니오.'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false);
+                                          },
+                                        ),
+                                        ElevatedButton(
+                                          child: Text('네. 삭제합니다.'),
+                                          onPressed: () {
+                                            deletePost(storyId);
 
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).pop();
-                                        // 화면 업데이트 추가
-                                      },
-                                    ),
-                                  ],
-                                );
-                              });
+                                            Navigator.of(context).pop();
+                                            Navigator.of(context).pop();
+                                            // 화면 업데이트 추가
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  });
 
-                          // 여기에 화면 다시 업데이트하는 함수 만들기
-                        },
-                        child: Text('delete post'),
-                        style:
-                            TextButton.styleFrom(foregroundColor: Colors.white),
+                              // 여기에 화면 다시 업데이트하는 함수 만들기
+                            },
+                            child: Text('delete post'),
+                            style: TextButton.styleFrom(
+                                foregroundColor: Colors.white),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
           );
         });
   }

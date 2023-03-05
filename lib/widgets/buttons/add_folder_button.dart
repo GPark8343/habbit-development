@@ -173,7 +173,7 @@ class _AddFolderButtonState extends State<AddFolderButton> {
                                         // Navigator.of(context).pop();
                                       },
                                       icon: Icon(Icons.add),
-                                      label: Text('Add Story'),
+                                      label: Text('Add Folder'),
                                     )
                                   ],
                                 );

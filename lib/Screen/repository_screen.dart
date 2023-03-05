@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
+import 'package:habbit/models/folder.dart';
 import 'package:habbit/models/story.dart';
+import 'package:habbit/providers/fame_repository_manage.dart';
+import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/widgets/buttons/add_story_button.dart';
 import 'package:provider/provider.dart';
@@ -11,17 +16,59 @@ class RepositoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Folder? folder;
+    bool? isFame;
+    bool? isRegistered;
     final folderId =
         (ModalRoute.of(context)?.settings.arguments as Map)['folder_id'];
     final category =
         (ModalRoute.of(context)?.settings.arguments as Map)['category'];
+    final stories = Provider.of<StoryManage>(context, listen: false).items;
+    Future first() async {
+      await Provider.of<StoryManage>(context, listen: false)
+          .fetchAndSetStories();
+      await Provider.of<FolderManage>(context, listen: false)
+          .fetchAndSetFolders();
+      folder = await Provider.of<FolderManage>(context, listen: false)
+          .findById(folderId);
+      isFame = stories
+              .where((element) => element.folderId == folder?.id)
+              .toList()
+              .length >=
+          60;
+      await FirebaseFirestore.instance
+          .collection('fame_repository')
+          .where('folderId', isEqualTo: folderId)
+          .get()
+          .then((value) => isRegistered = value.docs.isNotEmpty);
+
+      print(isRegistered);
+    }
 
     return FutureBuilder(
       //  FutureBuilder는 서버에서 데이터를 모두 받아오기전 화면을 그려줄수 있게 되는 장점을 가진다.
-      future:
-          Provider.of<StoryManage>(context, listen: false).fetchAndSetStories(),
+      future: first(),
       builder: (ctx, snapshot) => Scaffold(
-        appBar: AppBar(title: Text('folder repository')),
+        appBar: AppBar(
+          title: Text('folder repository'),
+          actions: [
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        !(isRegistered ?? true) || (isFame ?? false)
+                            ? Colors.blue
+                            : Colors.grey),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  !(isRegistered ?? true) || (isFame ?? false)
+                      ? Provider.of<FameRepositoryManage>(context,
+                              listen: false)
+                          .registerFameStories(folder!, stories)
+                      : print('');
+                },
+                child: Text((isRegistered ?? true) ? '이미 등록됨' : '명예의 전당 등록'))
+          ],
+        ),
         body: snapshot.connectionState == ConnectionState.waiting
             ? Center(
                 child: CircularProgressIndicator(),

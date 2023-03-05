@@ -36,7 +36,7 @@ class PostWidget extends StatelessWidget {
                     size: MediaQuery.of(context).size.width / 360 * 40,
                     thumbPath: docData['thumbnail']),
                 Text(
-                  '카테고리 ${post.category ?? ''}',
+                  ' 카테고리 ${post.category ?? ''}',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 // GestureDetector(

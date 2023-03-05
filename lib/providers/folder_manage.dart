@@ -11,7 +11,14 @@ class FolderManage extends ChangeNotifier {
   }
 
   Folder findById(String id) {
-    return _folders.firstWhere((folder) => folder.id == id);
+    return _folders.firstWhere((folder) => folder.id == id,
+        orElse: () => Folder(
+            id: 'id',
+            title: 'title',
+            description: 'description',
+            createdAt: 'createdAt',
+            category: 'category',
+            days: 0));
   }
 
   Future<void> addFolders(String pickedTitle, String pickedDescription,
@@ -67,9 +74,10 @@ class FolderManage extends ChangeNotifier {
     );
     DBHelper.updateFolder('iuser_folder', updatedFolder);
   }
-   void controlDay(Folder findedFolder, int allDifferenceTypeOfDay) {
+
+  void controlDay(Folder findedFolder, int allDifferenceTypeOfDay) {
     Folder updatedFolder = findedFolder.copyWith(
-      days: allDifferenceTypeOfDay+1,
+      days: allDifferenceTypeOfDay + 1,
     );
     DBHelper.updateFolder('iuser_folder', updatedFolder);
   }

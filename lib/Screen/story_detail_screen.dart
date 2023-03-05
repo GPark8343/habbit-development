@@ -55,10 +55,12 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
       //     .minusOneDay(findedFolder);
     }
 
+    final GlobalKey<ScaffoldState>? _scaffoldKey = GlobalKey<ScaffoldState>();
     return FutureBuilder(
         future: fetchAndSetStories(),
         builder: (context, snapshot) {
           return Scaffold(
+            key: _scaffoldKey,
             appBar: AppBar(
               title: Text(selectedStory.title),
             ),
@@ -83,7 +85,10 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                       Text(
                         selectedStory.createdAt as String,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: MediaQuery.of(context).size.width/360*20, color: Colors.grey),
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width / 360 * 20,
+                            color: Colors.grey),
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.width / 360 * 10,
@@ -91,7 +96,10 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                       Text(
                         selectedStory.description as String,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: MediaQuery.of(context).size.width/360*20, color: Colors.grey),
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width / 360 * 20,
+                            color: Colors.grey),
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.width / 360 * 10,
@@ -99,7 +107,10 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                       Text(
                         selectedStory.category as String,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: MediaQuery.of(context).size.width/360*20, color: Colors.grey),
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width / 360 * 20,
+                            color: Colors.grey),
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.width / 360 * 10,
@@ -107,7 +118,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                       TextButton(
                         onPressed: () {
                           showDialog<bool>(
-                              context: context,
+                              context: _scaffoldKey!.currentContext!,
                               builder: (context) {
                                 return AlertDialog(
                                   content: Text('스토리 를 내릴까요?'),
@@ -147,6 +158,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                 FirebaseAuth.instance.currentUser!.uid);
                             upload.uploadPost(
                                 Post(
+                                    title: selectedStory.title,
                                     userId:
                                         FirebaseAuth.instance.currentUser!.uid,
                                     userInfo: userInfo,

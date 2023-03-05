@@ -14,6 +14,8 @@ import 'package:habbit/colors.dart';
 import 'package:habbit/data/category_all_list.dart';
 import 'package:habbit/providers/category_list.dart';
 import 'package:habbit/providers/deco_manage.dart';
+import 'package:habbit/providers/fame_manage.dart';
+import 'package:habbit/providers/fame_repository_manage.dart';
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/marker_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
@@ -40,7 +42,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
         providers: [
           ChangeNotifierProvider.value(
@@ -59,7 +60,13 @@ class MyApp extends StatelessWidget {
             value: MarkerManage(),
           ),
           ChangeNotifierProvider.value(
+            value: FameManage(),
+          ),
+          ChangeNotifierProvider.value(
             value: DecoManage(),
+          ),
+          ChangeNotifierProvider.value(
+            value: FameRepositoryManage(),
           ),
         ],
         child: MaterialApp(

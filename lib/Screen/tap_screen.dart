@@ -4,7 +4,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:habbit/Screen/challenge_screen.dart';
 import 'package:habbit/Screen/folder_screen.dart';
 import 'package:habbit/Screen/insta_screen.dart';
-import 'package:habbit/Screen/main_screen.dart';
+import 'package:habbit/Screen/fame_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/test_screen.dart';
@@ -38,6 +38,7 @@ class _TapScreenState extends State<TapScreen> {
     )..load();
     _pages = [
       {'page': TestScreen(), 'title': 'Profile'},
+      {'page': FameScreen(), 'title': 'Hall of Fame'},
       {'page': InstaScreen(), 'title': 'upload'},
       {'page': FolderScreen(), 'title': 'folder'},
       {'page': ChallengeScreen(), 'title': 'challenge'},
@@ -63,8 +64,11 @@ class _TapScreenState extends State<TapScreen> {
               color: Colors.blue,
             ),
           ),
-               SignOutButton(),
-          
+          SignOutButton(),
+          Center(child: Text('*주의')),
+          Text('단, 앱을 삭제하면 지금까지 모은 모든 폴더와 스토리가 삭제됩니다.'),
+          Text('60일을 달성하면 해당 구글 계정에서 앱을 지워도 그 폴더의 데이터는 영구 보존됩니다.'),
+          Text('(이 경우는 앱을 삭제하고 어느 기기든 다시 설치하면 해당 폴더와 스토리 복구)'),
         ],
       )),
       appBar: AppBar(
@@ -85,7 +89,10 @@ class _TapScreenState extends State<TapScreen> {
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.aspect_ratio_rounded),
                 label: 'Profile'),
-        
+            BottomNavigationBarItem(
+                backgroundColor: Theme.of(context).primaryColor,
+                icon: Icon(Icons.aspect_ratio_rounded),
+                label: 'Hall of Fame'),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.upload_file),
