@@ -167,7 +167,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                     createdAt: DateTime.now(),
                                     category: selectedStory.category),
                                 selectedStory.image,
-                                selectedStory.id);
+                              );
                             Provider.of<StoryManage>(context, listen: false)
                                 .changeIsUploaded(selectedStory);
                             // upload.uploadFile(selectedStory.image, '/${selectedStory.id}/${Uuid().v4()}.jpg');

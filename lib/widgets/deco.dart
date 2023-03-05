@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 class Deco extends StatelessWidget {
   const Deco({super.key});
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,7 @@ class Deco extends StatelessWidget {
 
     Widget Reward() {
       return StreamBuilder(
+        
           stream: FirebaseFirestore.instance
               .collection('users')
               .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
@@ -47,7 +49,7 @@ class Deco extends StatelessWidget {
               );
             }
             final List rewardList =
-                snapshot.data?.docs.first.data()['number_of_reward']??[];
+                snapshot.data?.docs.first.data()['number_of_reward'] ?? [];
             int rewardStandard =
                 rewardList.where((number) => number >= 60).toList().length;
             if (rewardStandard == 0) {
@@ -62,7 +64,7 @@ class Deco extends StatelessWidget {
           });
     }
 
-    return FutureBuilder(
+    return FutureBuilder(  key: key,
         future: first(),
         builder: (context, snapshot) {
           return Reward();

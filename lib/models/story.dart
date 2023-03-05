@@ -55,4 +55,5 @@ class Story {
       'is_uploaded': isUploaded
     };
   }
+  
 }

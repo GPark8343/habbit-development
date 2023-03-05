@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/models/folder.dart';
+import 'package:habbit/models/post.dart';
 import 'package:habbit/models/story.dart';
 
 class FameRepositoryManage extends ChangeNotifier {
+
+
+
   registerFameStories(Folder folder, List<Story> stories) async {
     
       List<Map> fameData = stories
@@ -17,9 +24,12 @@ class FameRepositoryManage extends ChangeNotifier {
         'userId': FirebaseAuth.instance.currentUser!.uid,
         'fameData': fameData,
         'folder': folder.toMap(),
-        'folderId':folder.id
+        'folderId':folder.id,
+        'created_at': DateTime.now()
       });
     
 
   }
+
+  
 }

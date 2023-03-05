@@ -74,7 +74,7 @@ class Upload with ChangeNotifier {
     return ref.putFile(file, metadata);
   }
 
-  void uploadPost(Post post, File file, String id) {
+  void uploadPost(Post post, File file) {
     var filename = '/${post.uid}.jpg';
     var task = _uploadPostFile(file, filename);
     if (task != null) {
@@ -94,6 +94,8 @@ class Upload with ChangeNotifier {
       );
     }
   }
+
+
 
   _deleteFile(String id) async {
 // Create a reference to the file to delete
