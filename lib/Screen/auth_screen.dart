@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:habbit/models/i_user.dart';
 import 'package:habbit/providers/upload.dart';
 import 'package:provider/provider.dart';
 

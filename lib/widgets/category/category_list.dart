@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:habbit/providers/category_list.dart';
 import 'package:provider/provider.dart';
 
 enum Kind { Reading, Exercise, Language, Etc }

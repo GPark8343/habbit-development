@@ -11,12 +11,8 @@ import 'package:habbit/Screen/repository_screen.dart';
 import 'package:habbit/Screen/splash_screen.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
 import 'package:habbit/Screen/tap_screen.dart';
-import 'package:habbit/Screen/upload_screen.dart';
 import 'package:habbit/colors.dart';
-import 'package:habbit/data/category_all_list.dart';
-import 'package:habbit/providers/category_list.dart';
 import 'package:habbit/providers/deco_manage.dart';
-import 'package:habbit/providers/fame_manage.dart';
 import 'package:habbit/providers/fame_repository_manage.dart';
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/marker_manage.dart';
@@ -26,7 +22,7 @@ import 'package:habbit/providers/upload.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/date_symbol_data_local.dart';//이거 필수 await initializeDateFormatting(); 때문에
 
 void main() async {
   await initializeDateFormatting();
@@ -61,9 +57,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(
             value: MarkerManage(),
           ),
-          ChangeNotifierProvider.value(
-            value: FameManage(),
-          ),
+         
           ChangeNotifierProvider.value(
             value: DecoManage(),
           ),

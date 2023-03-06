@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/providers/folder_manage.dart';
-import 'package:habbit/providers/marker_manage.dart';
 import 'package:habbit/widgets/calendar/calendar.dart';
-import 'package:habbit/widgets/hout_timer.dart';
 import 'package:provider/provider.dart';
 
 class ChallengeScreen extends StatefulWidget {

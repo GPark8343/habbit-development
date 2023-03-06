@@ -1,13 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:habbit/Screen/upload_screen.dart';
 import 'package:habbit/models/folder.dart';
-import 'package:habbit/providers/category_list.dart';
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
-import 'package:habbit/widgets/category/category_filter.dart';
-import 'package:habbit/widgets/category/category_list.dart';
 import 'package:habbit/widgets/image_input.dart';
 import 'package:provider/provider.dart';
 
