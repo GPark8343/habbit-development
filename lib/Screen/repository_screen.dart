@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/models/story.dart';
 import 'package:habbit/providers/fame_repository_manage.dart';
@@ -42,7 +43,7 @@ class RepositoryScreen extends StatelessWidget {
           .where('folderId', isEqualTo: folderId)
           .get()
           .then((value) => isRegistered = value.docs.isNotEmpty);
-
+      print(isFame);
       print(isRegistered);
     }
 
@@ -50,18 +51,20 @@ class RepositoryScreen extends StatelessWidget {
       //  FutureBuilder는 서버에서 데이터를 모두 받아오기전 화면을 그려줄수 있게 되는 장점을 가진다.
       future: first(),
       builder: (ctx, snapshot) => Scaffold(
-        appBar: AppBar(
-          title: Text('folder repository'),
+        appBar: AppBar( iconTheme: IconThemeData(
+              color: mainColor, //색변경
+            ),
+          title: Text('folder repository',style: TextStyle(color: mainColor),),
           actions: [
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     backgroundColor:
-                        !(isRegistered ?? true) || (isFame ?? false)
-                            ? Colors.blue
+                        !(isRegistered ?? true) && (isFame ?? false)
+                            ? mainColor
                             : Colors.grey),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  !(isRegistered ?? true) || (isFame ?? false)
+                  !(isRegistered ?? true) && (isFame ?? false)
                       ? Provider.of<FameRepositoryManage>(context,
                               listen: false)
                           .registerFameStories(folder!, stories)
@@ -87,7 +90,6 @@ class RepositoryScreen extends StatelessWidget {
                       .where((element) => element.folderId == folderId)
                       .toList();
                   Widget isSameDate() {
-               
                     return storiesOfFoler
                                 .where((element) {
                                   DateTime now = DateTime.now();

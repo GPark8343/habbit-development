@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:habbit/Screen/edit_profile_screen.dart';
 import 'package:habbit/Screen/post_detail_screen.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/widgets/avatar_widget.dart';
 import 'package:habbit/widgets/buttons/signout-button.dart';
@@ -13,14 +14,15 @@ import 'package:habbit/widgets/image_frame.dart';
 import 'package:habbit/widgets/user_card.dart';
 import 'package:provider/provider.dart';
 
-class TestScreen extends StatefulWidget {
-  const TestScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  State<TestScreen> createState() => _TestScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen>
+    with TickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -36,16 +38,16 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
         Text(
           value.toString(),
           style: TextStyle(
-            fontSize: MediaQuery.of(context).size.width/360*20,
-            color: Colors.white,
+            fontSize: MediaQuery.of(context).size.width / 360 * 20,
+            color: textColor,
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
           title,
-          style:  TextStyle(
-            fontSize: MediaQuery.of(context).size.width/360*15,
-            color: Colors.white,
+          style: TextStyle(
+            fontSize: MediaQuery.of(context).size.width / 360 * 15,
+            color: textColor,
           ),
         ),
       ],
@@ -97,9 +99,9 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                 SizedBox(height: MediaQuery.of(context).size.width / 360 * 10),
                 Text(
                   FirebaseAuth.instance.currentUser!.email!,
-                  style:  TextStyle(
-                    fontSize: MediaQuery.of(context).size.width/360*13,
-                    color: Colors.white,
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 360 * 13,
+                    color: textColor,
                   ),
                 )
               ],
@@ -134,8 +136,8 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
                   child: Text(
                     'Edit profile',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: MediaQuery.of(context).size.width/360*14,
+                      color: textColor,
+                      fontSize: MediaQuery.of(context).size.width / 360 * 14,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
@@ -159,52 +161,7 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _discoverPeople() {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width / 360 * 15,
-              vertical: MediaQuery.of(context).size.width / 360 * 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Discover People',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: MediaQuery.of(context).size.width/360*15,
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                'See All',
-                style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width/360*15,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500,
-                ),
-              )
-            ],
-          ),
-        ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width / 360 * 12),
-          child: Row(
-            children: List.generate(
-              10,
-              (index) => UserCard(
-                userId: '개남$index',
-                description: '개남e$index님이 팔로우합니다.',
-              ),
-            ).toList(),
-          ),
-        ),
-      ],
-    );
-  }
+
 
   // Widget _tabMenu() {
   //   return TabBar(
@@ -274,6 +231,7 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
     return SingleChildScrollView(
       child: Column(
         children: [
+           SizedBox(height: MediaQuery.of(context).size.width / 360 * 10),
           _information(),
           _menu(),
           // _discoverPeople(),
@@ -294,16 +252,18 @@ class _TestScreenState extends State<TestScreen> with TickerProviderStateMixin {
             child: Text(
               'your posts',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: MediaQuery.of(context).size.width/360*14,
+                color: textColor,
+                fontSize: MediaQuery.of(context).size.width / 360 * 14,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.center,
             ),
           ),
           SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
-          Divider(color: Colors.white, thickness: MediaQuery.of(context).size.width / 360*2.0),
-               SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
+          Divider(
+              color: backgroundColor,
+              thickness: MediaQuery.of(context).size.width / 360 * 2.0),
+          SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
           _tabView(),
         ],
       ),

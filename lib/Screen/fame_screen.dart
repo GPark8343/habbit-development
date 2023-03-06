@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/fame_repository_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
+import 'package:habbit/colors.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FameScreen extends StatefulWidget {
@@ -46,25 +47,27 @@ class _FameScreenState extends State<FameScreen> {
               return ListView.builder(
                   shrinkWrap: true,
                   itemCount: docs1?.length,
-                  itemBuilder: (ctx, i) => StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('users')
-                          .where('uid', isEqualTo: docs1?[i]['userId'])
-                          .snapshots(),
-                      builder: (ctx, snapshot2) {
-                        if (snapshot2.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: const CircularProgressIndicator(),
-                          );
-                        }
-                        final docs2 = snapshot2.data?.docs;
+                  itemBuilder: (ctx, i) {
+                    print(docs1?[i]['folderId']);
+                    return StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('users')
+                            .where('uid', isEqualTo: docs1?[i]['userId'])
+                            .snapshots(),
+                        builder: (ctx, snapshot2) {
+                          if (snapshot2.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: const CircularProgressIndicator(),
+                            );
+                          }
+                          final docs2 = snapshot2.data?.docs;
 
-                        return 
-                           Container(
+                          return Container(
                             width: MediaQuery.of(context).size.width / 3,
                             child: ListTile(
                               leading: CircleAvatar(
+                                backgroundColor: mainColor,
                                 backgroundImage: NetworkImage(
                                     docs2!.first.data()['thumbnail']),
                               ),
@@ -75,7 +78,7 @@ class _FameScreenState extends State<FameScreen> {
                                 Navigator.of(context).pushNamed(
                                     FameRepositoryScreen.routeName,
                                     arguments: {
-                                      'folder_id': docs1?[i]['folder']
+                                      'folder_id': docs1?[i]
                                           ['folderId'],
                                       'userId': docs1?[i]['userId'],
                                     });
@@ -84,8 +87,8 @@ class _FameScreenState extends State<FameScreen> {
                                   '${timeago.format(docs1?[i]['created_at'].toDate())}'),
                             ),
                           );
-                        
-                      }));
+                        });
+                  });
             }),
       ],
     );

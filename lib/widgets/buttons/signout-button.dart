@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:habbit/colors.dart';
 
 class SignOutButton extends StatelessWidget {
   const SignOutButton({super.key});
@@ -22,13 +23,15 @@ class SignOutButton extends StatelessWidget {
                   return AlertDialog(
                     content: Text('앱을 종료할까요?'),
                     actions: <Widget>[
-                      ElevatedButton(
+                      ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                         child: Text('아니오.'),
                         onPressed: () {
                           Navigator.of(context).pop(false);
                         },
                       ),
-                      ElevatedButton(
+                      ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                         child: Text('네. 종료합니다.'),
                         onPressed: () {
                           Navigator.of(context).pop(true);

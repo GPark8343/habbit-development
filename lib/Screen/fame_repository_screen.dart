@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 import 'package:habbit/Screen/fame_detail_screen.dart';
+import 'package:habbit/colors.dart';
 
 class FameRepositoryScreen extends StatelessWidget {
   const FameRepositoryScreen({super.key});
@@ -15,7 +16,9 @@ class FameRepositoryScreen extends StatelessWidget {
          final userId =
         (ModalRoute.of(context)?.settings.arguments as Map)['userId'];
     return Scaffold(
-      appBar: AppBar(title: Text('명예의 전당 스토리')),
+      appBar: AppBar( iconTheme: IconThemeData(
+              color: mainColor, //색변경
+            ),title: Text('명예의 전당 스토리',style: TextStyle(color: mainColor),)),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('fame_repository')
@@ -44,7 +47,6 @@ class FameRepositoryScreen extends StatelessWidget {
                     Navigator.of(context)
                         .pushNamed(FameDetailScreen.routeName, arguments: {
                       'userId': userId,
-                    
                       'created_at': data[index]['created_at'],
                       'title': data[index]['title'],
                       'description': data[index]['description'],

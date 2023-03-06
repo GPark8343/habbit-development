@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/widgets/category/category_list.dart';
@@ -50,7 +51,8 @@ class _AddFolderButtonState extends State<AddFolderButton> {
       super.dispose();
     }
 
-    return ElevatedButton(
+    return ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
       child: Text('add your folder'),
       onPressed: () {
         showDialog<bool>(
@@ -86,13 +88,15 @@ class _AddFolderButtonState extends State<AddFolderButton> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      ElevatedButton(
+                      ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                         child: Text('취소'),
                         onPressed: () {
                           Navigator.of(context).pop(false);
                         },
                       ),
-                      ElevatedButton(
+                      ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                         child: Text('선택 완료'),
                         onPressed: () {
                           _selectCategory(_kind);
@@ -166,8 +170,8 @@ class _AddFolderButtonState extends State<AddFolderButton> {
                                           elevation: 0,
                                           tapTargetSize:
                                               MaterialTapTargetSize.shrinkWrap,
-                                        
-                                          foregroundColor: Colors.black),
+                                        foregroundColor: Colors.white,
+                                          backgroundColor: mainColor),
                                       onPressed: () {
                                         _saveFolder();
                                         // Navigator.of(context).pop();

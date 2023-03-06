@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/repository_screen.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/helper/db_helper.dart';
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/models/story.dart';
@@ -94,14 +95,16 @@ class _FolderScreenState extends State<FolderScreen> {
                                       content: Text(
                                           'Now I am deleting ${greatFolders.folders[i].title}'),
                                       actions: <Widget>[
-                                        ElevatedButton(
+                                        ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                                           onPressed: () {
                                             return Navigator.of(context)
                                                 .pop(false);
                                           },
                                           child: const Text('CANCEL'),
                                         ),
-                                        ElevatedButton(
+                                        ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                                           onPressed: () {
                                             return Navigator.of(context)
                                                 .pop(true);

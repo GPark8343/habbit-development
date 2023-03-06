@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/widgets/calendar/calendar.dart';
@@ -20,7 +21,6 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
         Provider.of<FolderManage>(context, listen: false).folders;
     int folderListLength = folderList.length;
     void moveLeftIndex() {
-    
       if (index - 1 < 0) {
         setState(() {
           index = folderListLength - 1;
@@ -30,12 +30,11 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
           index--;
         });
       }
-     
     }
 
     void moveRightIndex() {
-print(MediaQuery.of(context).size.height);
-    print(MediaQuery.of(context).size.width);
+      print(MediaQuery.of(context).size.height);
+      print(MediaQuery.of(context).size.width);
       if (index + 1 > folderListLength - 1) {
         setState(() {
           index = 0;
@@ -45,7 +44,6 @@ print(MediaQuery.of(context).size.height);
           index++;
         });
       }
-   
     }
 
     return FutureBuilder(
@@ -63,9 +61,13 @@ print(MediaQuery.of(context).size.height);
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                                 onPressed: moveLeftIndex,
                                 child: Icon(Icons.arrow_left)),
                             ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                                 onPressed: moveRightIndex,
                                 child: Icon(Icons.arrow_right)),
                           ],

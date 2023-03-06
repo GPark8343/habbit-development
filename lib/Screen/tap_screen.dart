@@ -7,7 +7,8 @@ import 'package:habbit/Screen/insta_screen.dart';
 import 'package:habbit/Screen/fame_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:habbit/Screen/test_screen.dart';
+import 'package:habbit/Screen/profile_screen.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/widgets/buttons/add_story_button.dart';
 import 'package:habbit/widgets/buttons/signout-button.dart';
 import 'package:habbit/widgets/buttons/upload_button.dart';
@@ -37,7 +38,7 @@ class _TapScreenState extends State<TapScreen> {
       request: AdRequest(),
     )..load();
     _pages = [
-      {'page': TestScreen(), 'title': 'Profile'},
+      {'page': ProfileScreen(), 'title': 'Profile'},
       {'page': FameScreen(), 'title': 'Hall of Fame'},
       {'page': InstaScreen(), 'title': 'upload'},
       {'page': FolderScreen(), 'title': 'folder'},
@@ -52,54 +53,37 @@ class _TapScreenState extends State<TapScreen> {
     });
   }
 
-  String title(int index) {
-    if (index == 0) {
-      return 'profile';
-    }
-    if (index == 1) {
-      return 'hall of fame';
-    }
-    if (index == 2) {
-      return 'upload';
-    }
-    if (index == 3) {
-      return 'folder';
-    }
-    if (index == 4) {
-      return 'challenge';
-    }
-    return '';
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-          child: ListView(
-        children: [
-          DrawerHeader(
-            child: Text('Drawer Header'),
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-          ),
-          SignOutButton(),
-          Center(child: Text('*주의')),
-          Text('단, 앱을 삭제하면 지금까지 모은 모든 폴더와 스토리가 삭제됩니다.'),
-          Text('60일을 달성하면 해당 구글 계정에서 앱을 지워도 그 폴더의 데이터는 영구 보존됩니다.'),
-          Text('(이 경우는 앱을 삭제하고 어느 기기든 다시 설치하면 해당 폴더와 스토리 복구)'),
-        ],
-      )),
+      drawerScrimColor: mainColor,
       appBar: AppBar(
-        title: Text(title(_selectedPageIndex)),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.settings))],
+        iconTheme: IconThemeData(color: mainColor),
+        title: Row(
+          children: [
+            Image.asset('assets/logos/header_logo.png',
+                width: MediaQuery.of(context).size.width / 360 * 50,
+                height: MediaQuery.of(context).size.width / 360 * 50),
+            SizedBox(width: MediaQuery.of(context).size.width / 360 * 15),
+            Text(
+              'Habbit',
+              style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width / 360 * 25,
+                  color: mainColor,
+                  fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
       ),
       body: SafeArea(
         child: _pages[_selectedPageIndex]['page'] as Widget,
         // AdWidget(ad: banner!)
       ),
       bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: blackColor,
           onTap: _selectPage,
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: backgroundColor,
           unselectedItemColor: Colors.white,
           currentIndex: _selectedPageIndex,
           type: BottomNavigationBarType.fixed,
@@ -111,7 +95,7 @@ class _TapScreenState extends State<TapScreen> {
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.aspect_ratio_rounded),
-                label: 'Hall of Fame'),
+                label: 'Fame'),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.upload_file),

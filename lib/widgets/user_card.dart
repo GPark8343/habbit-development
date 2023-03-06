@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/widgets/avatar_widget.dart';
 
 class UserCard extends StatelessWidget {
@@ -26,8 +27,8 @@ class UserCard extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            left: 15,
-            right: 15,
+            left:MediaQuery.of(context).size.width/360* 15,
+            right: MediaQuery.of(context).size.width/360*15,
             top: 0,
             bottom: 0,
             child: Column(
@@ -54,7 +55,8 @@ class UserCard extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                ElevatedButton(onPressed: () {}, child: const Text('Follow'))
+                ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),onPressed: () {}, child: const Text('Follow'))
               ],
             ),
           ),

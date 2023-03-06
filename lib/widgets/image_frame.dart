@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ImageFrame extends StatelessWidget {
   String icon;
   final double? width;
@@ -14,7 +13,7 @@ class ImageFrame extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset(
       icon,
-      width: width! /MediaQuery.of(context).devicePixelRatio,
+      width: width! / MediaQuery.of(context).devicePixelRatio,
     );
   }
 }

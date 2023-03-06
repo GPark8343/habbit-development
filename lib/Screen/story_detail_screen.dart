@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/models/i_user.dart';
 import 'package:habbit/models/post.dart';
@@ -61,8 +62,10 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
         builder: (context, snapshot) {
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              title: Text(selectedStory.title),
+            appBar: AppBar( iconTheme: IconThemeData(
+              color: mainColor, //색변경
+            ),
+              title: Text(selectedStory.title,style: TextStyle(color: mainColor),),
             ),
             body: snapshot.connectionState == ConnectionState.waiting
                 ? Center(
@@ -123,13 +126,15 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                 return AlertDialog(
                                   content: Text('스토리 를 내릴까요?'),
                                   actions: <Widget>[
-                                    ElevatedButton(
+                                    ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                                       child: Text('아니오.'),
                                       onPressed: () {
                                         Navigator.of(context).pop(false);
                                       },
                                     ),
-                                    ElevatedButton(
+                                    ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                                       child: Text('네. 삭제합니다.'),
                                       onPressed: () {
                                         isUploaded == 0
@@ -148,9 +153,10 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                         },
                         child: Text('delete story'),
                         style:
-                            TextButton.styleFrom(foregroundColor: Colors.white),
+                            TextButton.styleFrom(foregroundColor: Colors.white,backgroundColor: mainColor),
                       ),
-                      ElevatedButton(
+                      ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                           onPressed: () async {
                             Navigator.of(context).pop();
                             // firebase upload function

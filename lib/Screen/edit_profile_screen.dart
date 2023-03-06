@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:habbit/colors.dart';
 import 'package:habbit/providers/upload.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as syspaths;
@@ -42,7 +43,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('edit profile')),
+      appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: mainColor, //색변경
+          ),
+          title: Text('edit profile',style: TextStyle(color: mainColor),)),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('users')
@@ -62,7 +67,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     backgroundImage: NetworkImage(
                       docData!['thumbnail'],
                     ),
-                    backgroundColor: Colors.white,
+                    backgroundColor: mainColor,
                     radius: 100,
                   ),
                   TextButton(onPressed: _takeGallery, child: Text('사진 수정'))

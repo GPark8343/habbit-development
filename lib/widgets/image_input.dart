@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habbit/colors.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as syspaths;
@@ -88,8 +89,8 @@ class _ImageInputState extends State<ImageInput> {
               icon: Icon(Icons.camera),
               label: Text('Take Picture'),
               style: TextButton.styleFrom(
-                  foregroundColor: Theme.of(context).primaryColor,
-                  backgroundColor: Colors.white),
+                  foregroundColor: Colors.white,
+                  backgroundColor: mainColor),
             ),
           ),
           Container(
@@ -100,8 +101,8 @@ class _ImageInputState extends State<ImageInput> {
               icon: Icon(Icons.browse_gallery),
               label: Text('Take Gallery'),
               style: TextButton.styleFrom(
-                  foregroundColor: Theme.of(context).primaryColor,
-                  backgroundColor: Colors.white),
+                  foregroundColor: Colors.white,
+                  backgroundColor: mainColor),
             ),
           )
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/models/story.dart';
 import 'package:habbit/providers/marker_manage.dart';
@@ -89,7 +90,7 @@ class _CalendarState extends State<Calendar> {
                 headerStyle: HeaderStyle(
                     formatButtonVisible: false,
                     titleTextStyle: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width/360*20,
+                        fontSize: MediaQuery.of(context).size.width / 360 * 20,
                         color: Colors.deepPurple,
                         fontWeight: FontWeight.w800)),
                 calendarStyle: CalendarStyle(
@@ -97,8 +98,8 @@ class _CalendarState extends State<Calendar> {
                     markerDecoration: BoxDecoration(
                         color: Colors.red, shape: BoxShape.circle),
                     todayTextStyle: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width/360*20,
-                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width / 360 * 20,
+                        color: textColor,
                         fontWeight: FontWeight.bold)),
                 eventLoader: _getEventsForDay,
               ),

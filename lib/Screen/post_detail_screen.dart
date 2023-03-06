@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/models/i_user.dart';
 import 'package:habbit/models/post.dart';
@@ -47,8 +48,10 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         builder: (context, snapshot) {
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar(
-              title: Text(selectedStory.title),
+            appBar: AppBar( iconTheme: IconThemeData(
+              color: mainColor, //색변경
+            ),
+              title: Text(selectedStory.title,style: TextStyle(color: mainColor),),
             ),
             body: snapshot.connectionState == ConnectionState.waiting
                 ? Center(
@@ -59,7 +62,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         child: Column(
                           children: [
                             Text('스토리가 남아 있지 않습니다.'),
-                            ElevatedButton(
+                            ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                               child: Text('네. 삭제합니다.'),
                               onPressed: () {
                                 deletePost(storyId);
@@ -133,13 +137,15 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                     return AlertDialog(
                                       content: Text('포스트 를 내릴까요?'),
                                       actions: <Widget>[
-                                        ElevatedButton(
+                                        ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                                           child: Text('아니오.'),
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
                                           },
                                         ),
-                                        ElevatedButton(
+                                        ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
                                           child: Text('네. 삭제합니다.'),
                                           onPressed: () {
                                             deletePost(storyId);
@@ -157,7 +163,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                             },
                             child: Text('delete post'),
                             style: TextButton.styleFrom(
-                                foregroundColor: Colors.white),
+                                foregroundColor: mainColor),
                           ),
                         ],
                       ),

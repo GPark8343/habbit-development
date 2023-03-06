@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/widgets/avatar_widget.dart';
 import 'dart:io';
 import 'package:timeago/timeago.dart' as timeago;
@@ -115,12 +116,17 @@ class FameDetailScreen extends StatelessWidget {
     }
 
     return Scaffold(
-        appBar: AppBar(title: Text('명예의 전당 스토리')),
+        appBar: AppBar( iconTheme: IconThemeData(
+              color: mainColor, //색변경
+            ),
+            title: Text(
+          '명예의 전당 스토리',
+          style: TextStyle(color: mainColor),
+        )),
         body: Container(
           margin: EdgeInsets.only(
               top: MediaQuery.of(context).size.width / 360 * 20),
           child: SingleChildScrollView(
-        
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

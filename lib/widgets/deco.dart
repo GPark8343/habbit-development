@@ -35,8 +35,11 @@ class Deco extends StatelessWidget {
       print(attendanceList);
     }
 
-    Widget Reward() {
-      return StreamBuilder(
+    
+    return FutureBuilder(  key: key,
+        future: first(),
+        builder: (context, snapshot) {
+          return StreamBuilder(
         
           stream: FirebaseFirestore.instance
               .collection('users')
@@ -61,13 +64,7 @@ class Deco extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Icon(Icons.abc);
                 });
-          });
-    }
-
-    return FutureBuilder(  key: key,
-        future: first(),
-        builder: (context, snapshot) {
-          return Reward();
+          });;
         });
   }
 }

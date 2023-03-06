@@ -22,7 +22,7 @@ import 'package:habbit/providers/upload.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/date_symbol_data_local.dart';//이거 필수 await initializeDateFormatting(); 때문에
+import 'package:intl/date_symbol_data_local.dart'; //이거 필수 await initializeDateFormatting(); 때문에
 
 void main() async {
   await initializeDateFormatting();
@@ -57,7 +57,6 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(
             value: MarkerManage(),
           ),
-         
           ChangeNotifierProvider.value(
             value: DecoManage(),
           ),
@@ -68,10 +67,11 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'FlutterChat',
-          theme: ThemeData.dark().copyWith(
-            scaffoldBackgroundColor: backgroundColor,
+          theme: ThemeData(
+            scaffoldBackgroundColor: Colors.white,
+           
             appBarTheme: const AppBarTheme(
-              color: appBarColor,
+              color: Colors.white,
             ),
           ),
           home: StreamBuilder(

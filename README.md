@@ -99,4 +99,16 @@ MediaQuery.of(context).size.width=360px
 
 fame screen에 보여줄 예시 데이터 베이스에 꼭 띄우기
 
+
 await Future.delayed(Duration(seconds: 3)); 이거 좀 고쳐야 함
+
+Text('Habbit', style: TextStyle(color: mainColor)),//여기에 로고 올꺼임
+
+
+
+https://docs.flutter.dev/cookbook/animation/page-route-animation
+ㅊ마고
+
+ users 정보 파이어베이스에 계속 업로드 됨 number of 어쩌구 떔인듯
+
+ 이름이 너무 길면 짤림

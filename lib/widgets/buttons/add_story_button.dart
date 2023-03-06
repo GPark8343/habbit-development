@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
@@ -57,7 +58,8 @@ class _AddStoryButtonState extends State<AddStoryButton> {
       super.dispose();
     }
 
-    return ElevatedButton(
+    return ElevatedButton(style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
         child: Text('add your story'),
         onPressed: () {
           showDialog(
@@ -126,7 +128,8 @@ class _AddStoryButtonState extends State<AddStoryButton> {
                       style: ElevatedButton.styleFrom(
                           elevation: 0,
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          foregroundColor: Colors.black),
+                               foregroundColor: Colors.white,
+                                          backgroundColor: mainColor),
                       onPressed: () {
                         _saveStory();
                         // Navigator.of(context).pop();

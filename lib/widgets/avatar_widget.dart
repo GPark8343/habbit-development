@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:habbit/colors.dart';
 
 enum AvatarType { TYPE1, TYPE2, TYPE3 }
 
@@ -28,7 +29,7 @@ class AvatarWidget extends StatelessWidget {
       padding:  EdgeInsets.all(MediaQuery.of(context).size.width/360*2),
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white,
+    
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(size!),
