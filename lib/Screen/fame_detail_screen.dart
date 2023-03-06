@@ -40,19 +40,21 @@ class FameDetailScreen extends StatelessWidget {
             return Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width / 360 * 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AvatarWidget(
-                      type: AvatarType.TYPE3,
-                      nickname: docData!['nickname'],
-                      size: MediaQuery.of(context).size.width / 360 * 40,
-                      thumbPath: docData['thumbnail']),
-                  Text(
-                    ' 카테고리 ${category ?? ''}',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
+              child: SingleChildScrollView(scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AvatarWidget(
+                        type: AvatarType.TYPE3,
+                        nickname: docData!['nickname'],
+                        size: MediaQuery.of(context).size.width / 360 * 40,
+                        thumbPath: docData['thumbnail']),
+                    Text(
+                      ' 카테고리 ${category ?? ''}',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
             );
           });
@@ -120,9 +122,12 @@ class FameDetailScreen extends StatelessWidget {
               color: mainColor, //색변경
             ),
             title: Text(
-          '명예의 전당 스토리',
-          style: TextStyle(color: mainColor),
-        )),
+              '명예의 전당 스토리',
+              style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width / 360 * 25,
+                  color: mainColor,
+                  fontWeight: FontWeight.bold),
+            )),
         body: Container(
           margin: EdgeInsets.only(
               top: MediaQuery.of(context).size.width / 360 * 20),

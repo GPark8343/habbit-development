@@ -13,12 +13,17 @@ class FameRepositoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final folderId =
         (ModalRoute.of(context)?.settings.arguments as Map)['folder_id'];
-         final userId =
+    final userId =
         (ModalRoute.of(context)?.settings.arguments as Map)['userId'];
     return Scaffold(
-      appBar: AppBar( iconTheme: IconThemeData(
-              color: mainColor, //색변경
-            ),title: Text('명예의 전당 스토리',style: TextStyle(color: mainColor),)),
+      appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: mainColor, //색변경
+          ),
+          title: Text(
+            '명예의 전당 스토리',
+            style: TextStyle(color: mainColor),
+          )),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('fame_repository')
@@ -44,15 +49,36 @@ class FameRepositoryScreen extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(FameDetailScreen.routeName, arguments: {
-                      'userId': userId,
-                      'created_at': data[index]['created_at'],
-                      'title': data[index]['title'],
-                      'description': data[index]['description'],
-                      'category': data[index]['category'],
-                      'image': data[index]['image']
-                    });
+                    Route _createRoute() {
+                      return PageRouteBuilder(
+                        settings: RouteSettings(arguments: {
+                          'userId': userId,
+                          'created_at': data[index]['created_at'],
+                          'title': data[index]['title'],
+                          'description': data[index]['description'],
+                          'category': data[index]['category'],
+                          'image': data[index]['image']
+                        }),
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            FameDetailScreen(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          const begin = Offset(0.0, 1.0);
+                          const end = Offset.zero;
+                          const curve = Curves.ease;
+
+                          var tween = Tween(begin: begin, end: end)
+                              .chain(CurveTween(curve: curve));
+
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                      );
+                    }
+
+                    Navigator.of(context).push(_createRoute());
                   },
                   child: Image.network(
                     data[index]['image'],

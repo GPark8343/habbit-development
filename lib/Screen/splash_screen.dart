@@ -1,8 +1,19 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-class SplashScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:habbit/Screen/tap_screen.dart';
+
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
   static const routeName = '/splash';
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,7 +22,7 @@ class SplashScreen extends StatelessWidget {
           child: TextButton(
         child: Text('Loading...'),
         onPressed: () {
-          Navigator.of(context).pop();
+         
         },
       )),
     );

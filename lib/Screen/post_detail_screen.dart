@@ -51,7 +51,10 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             appBar: AppBar( iconTheme: IconThemeData(
               color: mainColor, //색변경
             ),
-              title: Text(selectedStory.title,style: TextStyle(color: mainColor),),
+              title: Text(selectedStory.title,style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width / 360 * 25,
+                  color: mainColor,
+                  fontWeight: FontWeight.bold),),
             ),
             body: snapshot.connectionState == ConnectionState.waiting
                 ? Center(

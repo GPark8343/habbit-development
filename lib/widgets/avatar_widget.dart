@@ -68,17 +68,18 @@ class AvatarWidget extends StatelessWidget {
 
   Widget type3Widget() {
     return Row(
-      children: [
-        type1Widget(),
-        Text(
-          nickname ?? '',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize:MediaQuery.of(context).size.width/360* 16,
+        children: [
+          type1Widget(),
+          Text( overflow: TextOverflow.ellipsis,
+            nickname ?? '',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+         
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    
   }
 
     switch (type) {

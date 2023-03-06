@@ -28,9 +28,12 @@ class InstaScreen extends StatelessWidget {
               reverse: true,
               itemCount: docs?.length,
               itemBuilder: (context, index) {
-                return PostWidget(
-                  post: Post.fromJson(docs![index]['uid'], docs[index].data()),
-                );
+                return docs?.length == 0
+                    ? Container()
+                    : PostWidget(
+                        post: Post.fromJson(
+                            docs![index]['uid'], docs[index].data()),
+                      );
               });
 
           // SingleChildScrollView(

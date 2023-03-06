@@ -27,29 +27,35 @@ class PostWidget extends StatelessWidget {
           return Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: MediaQuery.of(context).size.width / 360 * 15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AvatarWidget(
-                    type: AvatarType.TYPE3,
-                    nickname: docData!['nickname'],
-                    size: MediaQuery.of(context).size.width / 360 * 40,
-                    thumbPath: docData['thumbnail']),
-                Text(
-                  ' 카테고리 ${post.category ?? ''}',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                // GestureDetector(
-                //   onTap: () {},
-                //   child: Padding(
-                //     padding: const EdgeInsets.all(8.0),
-                //     child: ImageFrame(
-                //       IconsPath.postMoreIcon,
-                //       width: 30,
-                //     ),
-                //   ),
-                // )
-              ],
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AvatarWidget(
+                      type: AvatarType.TYPE3,
+                      nickname: docData!['nickname'],
+                      size: MediaQuery.of(context).size.width / 360 * 40,
+                      thumbPath: docData['thumbnail']),
+
+                  Text(
+                    overflow: TextOverflow.ellipsis,
+                    '${post.category ?? ''}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+
+                  // GestureDetector(
+                  //   onTap: () {},
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: ImageFrame(
+                  //       IconsPath.postMoreIcon,
+                  //       width: 30,
+                  //     ),
+                  //   ),
+                  // )
+                ],
+              ),
             ),
           );
         });

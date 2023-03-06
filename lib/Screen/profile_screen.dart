@@ -130,8 +130,28 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
                 child: TextButton(
                   onPressed: () async {
-                    Navigator.of(context)
-                        .pushNamed(EditProfileScreen.routeName);
+                    Route _createRoute1() {
+                      return PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            EditProfileScreen(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          const begin = Offset(0.0, 1.0);
+                          const end = Offset.zero;
+                          const curve = Curves.ease;
+
+                          var tween = Tween(begin: begin, end: end)
+                              .chain(CurveTween(curve: curve));
+
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                      );
+                    }
+
+                    Navigator.of(context).push(_createRoute1());
                   },
                   child: Text(
                     'Edit profile',
@@ -160,8 +180,6 @@ class _ProfileScreenState extends State<ProfileScreen>
       ),
     );
   }
-
-
 
   // Widget _tabMenu() {
   //   return TabBar(
@@ -209,10 +227,31 @@ class _ProfileScreenState extends State<ProfileScreen>
                 onTap: () async {
                   await Provider.of<StoryManage>(context, listen: false)
                       .fetchAndSetStories(); // update db information
-                  await Navigator.of(context)
-                      .pushNamed(PostDetailScreen.routeName, arguments: {
-                    'story_id': docs[index]['uid'],
-                  });
+                  Route _createRoute2() {
+                    return PageRouteBuilder(
+                      settings: RouteSettings(arguments: {
+                        'story_id': docs[index]['uid'],
+                      }),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          PostDetailScreen(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        const begin = Offset(0.0, 1.0);
+                        const end = Offset.zero;
+                        const curve = Curves.ease;
+
+                        var tween = Tween(begin: begin, end: end)
+                            .chain(CurveTween(curve: curve));
+
+                        return SlideTransition(
+                          position: animation.drive(tween),
+                          child: child,
+                        );
+                      },
+                    );
+                  }
+
+                  await Navigator.of(context).push(_createRoute2());
                 },
                 child: CachedNetworkImage(
                   fit: BoxFit.cover,
@@ -231,7 +270,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     return SingleChildScrollView(
       child: Column(
         children: [
-           SizedBox(height: MediaQuery.of(context).size.width / 360 * 10),
+          SizedBox(height: MediaQuery.of(context).size.width / 360 * 10),
           _information(),
           _menu(),
           // _discoverPeople(),

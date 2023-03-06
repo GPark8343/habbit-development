@@ -75,13 +75,34 @@ class _FameScreenState extends State<FameScreen> {
                               subtitle: Text((docs1?[i]['folder']
                                   ['description']) as String),
                               onTap: () {
-                                Navigator.of(context).pushNamed(
-                                    FameRepositoryScreen.routeName,
-                                    arguments: {
+                                Route _createRoute() {
+                                  return PageRouteBuilder(
+                                    settings: RouteSettings(arguments: {
                                       'folder_id': docs1?[i]
                                           ['folderId'],
                                       'userId': docs1?[i]['userId'],
-                                    });
+                                    }),
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        FameRepositoryScreen(),
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      const begin = Offset(0.0, 1.0);
+                                      const end = Offset.zero;
+                                      const curve = Curves.ease;
+
+                                      var tween = Tween(begin: begin, end: end)
+                                          .chain(CurveTween(curve: curve));
+
+                                      return SlideTransition(
+                                        position: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
+                                  );
+                                }
+
+                                Navigator.of(context).push(_createRoute());
                               },
                               trailing: Text(
                                   '${timeago.format(docs1?[i]['created_at'].toDate())}'),

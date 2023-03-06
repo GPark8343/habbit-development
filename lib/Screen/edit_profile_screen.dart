@@ -47,7 +47,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           iconTheme: IconThemeData(
             color: mainColor, //색변경
           ),
-          title: Text('edit profile',style: TextStyle(color: mainColor),)),
+          title:  Text(
+              'edit profile',
+              style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width / 360 * 25,
+                  color: mainColor,
+                  fontWeight: FontWeight.bold),
+            )),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('users')

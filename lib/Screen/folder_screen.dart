@@ -95,16 +95,18 @@ class _FolderScreenState extends State<FolderScreen> {
                                       content: Text(
                                           'Now I am deleting ${greatFolders.folders[i].title}'),
                                       actions: <Widget>[
-                                        ElevatedButton(style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: mainColor),
                                           onPressed: () {
                                             return Navigator.of(context)
                                                 .pop(false);
                                           },
                                           child: const Text('CANCEL'),
                                         ),
-                                        ElevatedButton(style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: mainColor),
                                           onPressed: () {
                                             return Navigator.of(context)
                                                 .pop(true);
@@ -124,23 +126,44 @@ class _FolderScreenState extends State<FolderScreen> {
                               subtitle: Text((greatFolders
                                   .folders[i].description) as String),
                               onTap: () {
-                                Provider.of<TimeManage>(context, listen: false)
-                                    .howManyDaysPassed(greatFolders.folders[i]);
-                                Navigator.of(context).pushNamed(
-                                    RepositoryScreen.routeName,
-                                    arguments: {
+                                Route _createRoute() {
+                                  return PageRouteBuilder(
+                                    settings: RouteSettings(arguments: {
                                       'folder_id': greatFolders.folders[i].id,
                                       'category':
                                           greatFolders.folders[i].category
-                                    });
+                                    }),
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        RepositoryScreen(),
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      const begin = Offset(0.0, 1.0);
+                                      const end = Offset.zero;
+                                      const curve = Curves.ease;
+
+                                      var tween = Tween(begin: begin, end: end)
+                                          .chain(CurveTween(curve: curve));
+
+                                      return SlideTransition(
+                                        position: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
+                                  );
+                                }
+
+                                Provider.of<TimeManage>(context, listen: false)
+                                    .howManyDaysPassed(greatFolders.folders[i]);
+                                Navigator.of(context).push(
+                                  _createRoute(),
+                                );
                               },
                               trailing: Text(
                                   "category ${greatFolders.folders[i].category} day ${greatFolders.folders[i].days}"),
                             ),
                           ),
                         ),
-
-                       
                       ],
                     )),
     );

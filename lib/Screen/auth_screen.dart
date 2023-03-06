@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:habbit/Screen/splash_screen.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/providers/upload.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +33,17 @@ class AuthScreen extends StatelessWidget {
           await FirebaseAuth.instance.signInWithCredential(credential);
       final user = authResult.user;
       final upload = Provider.of<Upload>(context, listen: false);
-      upload.registerUser();
+
+      var data = await FirebaseFirestore.instance
+          .collection('users')
+          .where('uid', isEqualTo: user!.uid)
+          .get();
+      print(data.docs.length);
+      if (data.docs.length == 0) {
+        upload.registerUser();
+      }
+
+      // 오류남-> splash screen으로 가려야 함
     } catch (error) {
       print(error);
     }
@@ -42,17 +55,26 @@ class AuthScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
         child: Container(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).size.width/360*110),
+            padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.width / 360 * 110),
             child: Center(
               child: Card(
                 child: Padding(
-                  padding:  EdgeInsets.all(MediaQuery.of(context).size.width/360*8.0),
+                  padding: EdgeInsets.all(
+                      MediaQuery.of(context).size.width / 360 * 8.0),
                   child: GestureDetector(
                     onTap: () {
                       signInWithGoogle(context);
                     },
                     child: Container(
-                      child: Text('구글 로그인'),
+                      child: Text(
+                        'google login',
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width / 360 * 25,
+                            color: mainColor,
+                            fontWeight: FontWeight.bold),
+                      ),
                       width: MediaQuery.of(context).size.width / 360 * 200,
                       height: MediaQuery.of(context).size.width / 360 * 50,
                       // decoration: BoxDecoration(

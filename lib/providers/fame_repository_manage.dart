@@ -77,7 +77,7 @@ class FameRepositoryManage extends ChangeNotifier {
         fameData2
             .add((fameData1[i] as Story).toMapImageUrl(docs[i]['image_url']));
       }
-
+print('${fameData2}4번임');
       FirebaseFirestore.instance.collection('fame_repository').add({
         'userId': FirebaseAuth.instance.currentUser!.uid,
         'fameData': fameData2,

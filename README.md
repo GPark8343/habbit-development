@@ -112,3 +112,11 @@ https://docs.flutter.dev/cookbook/animation/page-route-animation
  users 정보 파이어베이스에 계속 업로드 됨 number of 어쩌구 떔인듯
 
  이름이 너무 길면 짤림
+
+ 바텀네비게이션 디자인 좀 수정하자
+
+ splashscreen 만들자
+
+ famedata가 0임
+
+ 디자인 더 수정하고 닉네임 넣을 수 있게 하자

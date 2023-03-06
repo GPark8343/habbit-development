@@ -62,10 +62,17 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
         builder: (context, snapshot) {
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar( iconTheme: IconThemeData(
-              color: mainColor, //색변경
-            ),
-              title: Text(selectedStory.title,style: TextStyle(color: mainColor),),
+            appBar: AppBar(
+              iconTheme: IconThemeData(
+                color: mainColor, //색변경
+              ),
+              title: Text(
+                selectedStory.title,
+                style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 360 * 25,
+                    color: mainColor,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
             body: snapshot.connectionState == ConnectionState.waiting
                 ? Center(
@@ -126,15 +133,17 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                 return AlertDialog(
                                   content: Text('스토리 를 내릴까요?'),
                                   actions: <Widget>[
-                                    ElevatedButton(style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: mainColor),
                                       child: Text('아니오.'),
                                       onPressed: () {
                                         Navigator.of(context).pop(false);
                                       },
                                     ),
-                                    ElevatedButton(style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: mainColor),
                                       child: Text('네. 삭제합니다.'),
                                       onPressed: () {
                                         isUploaded == 0
@@ -152,28 +161,30 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                           // 여기에 화면 다시 업데이트하는 함수 만들기
                         },
                         child: Text('delete story'),
-                        style:
-                            TextButton.styleFrom(foregroundColor: Colors.white,backgroundColor: mainColor),
+                        style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: mainColor),
                       ),
-                      ElevatedButton(style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: mainColor),
                           onPressed: () async {
                             Navigator.of(context).pop();
                             // firebase upload function
                             IUser? userInfo = await upload.loadUserByUid(
                                 FirebaseAuth.instance.currentUser!.uid);
                             upload.uploadPost(
-                                Post(
-                                    title: selectedStory.title,
-                                    userId:
-                                        FirebaseAuth.instance.currentUser!.uid,
-                                    userInfo: userInfo,
-                                    description: selectedStory.description,
-                                    uid: selectedStory.id,
-                                    createdAt: DateTime.now(),
-                                    category: selectedStory.category),
-                                selectedStory.image,
-                              );
+                              Post(
+                                  title: selectedStory.title,
+                                  userId:
+                                      FirebaseAuth.instance.currentUser!.uid,
+                                  userInfo: userInfo,
+                                  description: selectedStory.description,
+                                  uid: selectedStory.id,
+                                  createdAt: DateTime.now(),
+                                  category: selectedStory.category),
+                              selectedStory.image,
+                            );
                             Provider.of<StoryManage>(context, listen: false)
                                 .changeIsUploaded(selectedStory);
                             // upload.uploadFile(selectedStory.image, '/${selectedStory.id}/${Uuid().v4()}.jpg');

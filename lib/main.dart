@@ -69,7 +69,6 @@ class MyApp extends StatelessWidget {
           title: 'FlutterChat',
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
-           
             appBarTheme: const AppBarTheme(
               color: Colors.white,
             ),
@@ -96,6 +95,7 @@ class MyApp extends StatelessWidget {
             RepositoryScreen.routeName: (ctx) => RepositoryScreen(),
             FameRepositoryScreen.routeName: (ctx) => FameRepositoryScreen(),
             FameDetailScreen.routeName: (ctx) => FameDetailScreen(),
+            TapScreen.routeName: (ctx) => TapScreen(),
           },
         ));
   }

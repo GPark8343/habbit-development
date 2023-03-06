@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -15,14 +16,14 @@ import 'package:habbit/widgets/buttons/upload_button.dart';
 
 class TapScreen extends StatefulWidget {
   const TapScreen({super.key});
-
+  static const routeName = '/tap';
   @override
   State<TapScreen> createState() => _TapScreenState();
 }
 
 class _TapScreenState extends State<TapScreen> {
   late List<Map<String, Object>> _pages; //
-  int _selectedPageIndex = 0;
+  int _selectedPageIndex = 2;
   late String admobBannerId;
   BannerAd? banner;
   @override
@@ -58,7 +59,8 @@ class _TapScreenState extends State<TapScreen> {
     return Scaffold(
       drawerScrimColor: mainColor,
       appBar: AppBar(
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.settings))],
+        actions: [SignOutButton()],
+        // actions: [IconButton(onPressed: () {}, icon: Icon(Icons.settings))],
         iconTheme: IconThemeData(color: mainColor),
         title: Row(
           children: [
@@ -81,10 +83,10 @@ class _TapScreenState extends State<TapScreen> {
         // AdWidget(ad: banner!)
       ),
       bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: blackColor,
+          selectedItemColor: mainColor,
           onTap: _selectPage,
-          backgroundColor: backgroundColor,
-          unselectedItemColor: Colors.white,
+          backgroundColor: Colors.white,
+          unselectedItemColor: blackColor,
           currentIndex: _selectedPageIndex,
           type: BottomNavigationBarType.fixed,
           items: [
