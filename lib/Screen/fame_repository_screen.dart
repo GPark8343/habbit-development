@@ -52,8 +52,8 @@ class FameRepositoryScreen extends StatelessWidget {
                       'image': data[index]['image']
                     });
                   },
-                  child: Image.file(
-                    File(data[index]['image']),
+                  child: Image.network(
+                    data[index]['image'],
                     width: double.infinity,
                     fit: BoxFit.cover,
                   ),

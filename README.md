@@ -96,3 +96,7 @@ MediaQuery.of(context).size.width=360px
 로컬 db에 있는 정보 다 날라가고 구글 계정에 올라간 포스트만 남음 이게 문제네
 
 60일 채우면 firebase에 전부 업로드 자동 저장+ 훈장 기능
+
+fame screen에 보여줄 예시 데이터 베이스에 꼭 띄우기
+
+await Future.delayed(Duration(seconds: 3)); 이거 좀 고쳐야 함

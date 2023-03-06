@@ -55,5 +55,16 @@ class Story {
       'is_uploaded': isUploaded
     };
   }
-  
+  Map<String, dynamic> toMapImageUrl(String imageUrl) {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'image': imageUrl,
+      'created_at': createdAt,
+      'category': category,
+      'folder_id': folderId,
+      'is_uploaded': isUploaded
+    };
+  }
 }

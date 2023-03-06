@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
@@ -86,6 +87,7 @@ class RepositoryScreen extends StatelessWidget {
                       .where((element) => element.folderId == folderId)
                       .toList();
                   Widget isSameDate() {
+               
                     return storiesOfFoler
                                 .where((element) {
                                   DateTime now = DateTime.now();

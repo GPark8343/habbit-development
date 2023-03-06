@@ -9,27 +9,82 @@ import 'package:habbit/models/post.dart';
 import 'package:habbit/models/story.dart';
 
 class FameRepositoryManage extends ChangeNotifier {
+  UploadTask _uploadFameFile(File file, String filename) {
+    var ref = FirebaseStorage.instance.ref().child('fame').child(filename);
+    final metadata = SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': file.path});
+    return ref.putFile(file, metadata);
+  }
 
+  Future _uploadFame(List<Story> fameData1) async {
+    print('${fameData1.length}wqfqfqfwe');
+    for (int i = 0; i < fameData1.length; i++) {
+      {
+        var filename =
+            '${FirebaseAuth.instance.currentUser?.uid ?? 'noUser'}/${fameData1[i].id}.jpg';
+        var task = _uploadFameFile((fameData1[i] as Story).image, filename);
+        if (task != null) {
+          task.snapshotEvents.listen((event) async {
+            if (event.bytesTransferred == event.totalBytes &&
+                event.state == TaskState.success) {
+              //   var downloadUrl = await event.ref.getDownloadURL();
+              // var updatedPost = post.copyWith(
+              //   thumbnail: downloadUrl,
+              // );
+              // await FirebaseFirestore.instance
+              //     .collection('posts')
+              //     .add(updatedPost.toMap());
+              print('object');
+              var url = await event.ref.getDownloadURL();
 
+              await FirebaseFirestore.instance
+                  .collection('fame_image')
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .collection('images')
+                  .add({
+                'userId': FirebaseAuth.instance.currentUser!.uid,
+                'image_url': url,
+                'story_id': fameData1[i].id
+              });
+
+              notifyListeners();
+            }
+          });
+        }
+      }
+    }
+  }
 
   registerFameStories(Folder folder, List<Story> stories) async {
-    
-      List<Map> fameData = stories
-          .where((element) => element.folderId == folder.id)
-          .toList()
-          .map((story) => story.toMap())
-          .toList();
+    List<Story> fameData1 =
+        stories.where((element) => element.folderId == folder.id).toList();
+    List fameData2 = [];
+    print('${fameData2}3번임');
+
+    await _uploadFame(fameData1);
+
+    await Future.delayed(Duration(seconds: 3));
+
+    await FirebaseFirestore.instance
+        .collection('fame_image')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('images')
+        .get()
+        .then((value) {
+      var docs = value.docs;
+      for (int i = 0; i < fameData1.length; i++) {
+        fameData2
+            .add((fameData1[i] as Story).toMapImageUrl(docs[i]['image_url']));
+      }
 
       FirebaseFirestore.instance.collection('fame_repository').add({
         'userId': FirebaseAuth.instance.currentUser!.uid,
-        'fameData': fameData,
+        'fameData': fameData2,
         'folder': folder.toMap(),
-        'folderId':folder.id,
+        'folderId': folder.id,
         'created_at': DateTime.now()
       });
-    
-
+    });
   }
-
-  
 }

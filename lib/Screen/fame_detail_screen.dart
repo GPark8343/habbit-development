@@ -58,8 +58,8 @@ class FameDetailScreen extends StatelessWidget {
     }
 
     Widget _image() {
-      return Image.file(
-        File(image),
+      return Image.network(
+        image,
         width: double.infinity,
         fit: BoxFit.cover,
       );

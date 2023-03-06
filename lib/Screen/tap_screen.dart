@@ -52,6 +52,25 @@ class _TapScreenState extends State<TapScreen> {
     });
   }
 
+  String title(int index) {
+    if (index == 0) {
+      return 'profile';
+    }
+    if (index == 1) {
+      return 'hall of fame';
+    }
+    if (index == 2) {
+      return 'upload';
+    }
+    if (index == 3) {
+      return 'folder';
+    }
+    if (index == 4) {
+      return 'challenge';
+    }
+    return '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +91,7 @@ class _TapScreenState extends State<TapScreen> {
         ],
       )),
       appBar: AppBar(
-        title: Text("Habbit"),
+        title: Text(title(_selectedPageIndex)),
       ),
       body: SafeArea(
         child: _pages[_selectedPageIndex]['page'] as Widget,
