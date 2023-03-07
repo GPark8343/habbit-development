@@ -42,7 +42,34 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         Provider.of<Upload>(context, listen: false).deletePost(selectedStoryId);
       }
     }
-
+Widget CategoryIcon(String selectedCategory) {
+      if (selectedCategory == 'Kind.Reading') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/reading.png'));
+      } else if (selectedCategory == 'Kind.Exercise') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/exercise.png'));
+      } else if (selectedCategory == 'Kind.Language') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/language.png'));
+      } else if (selectedCategory == 'Kind.Study') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/study.png'));
+      } else {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/etc.png'));
+      }
+    }
     return FutureBuilder(
         future: fetchAndSetStories(),
         builder: (context, snapshot) {
@@ -80,8 +107,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     : Column(
                         children: [
                           Container(
-                            height:
-                                MediaQuery.of(context).size.width / 360 * 250,
+                                 height: MediaQuery.of(context).size.width / 360 * 450,
                             width: double.infinity,
                             child: Image.file(
                               selectedStory.image,
@@ -119,15 +145,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                             height:
                                 MediaQuery.of(context).size.width / 360 * 10,
                           ),
-                          Text(
-                            selectedStory.category as String,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: MediaQuery.of(context).size.width /
-                                    360 *
-                                    20,
-                                color: Colors.grey),
-                          ),
+                           CategoryIcon(selectedStory.category),
                           SizedBox(
                             height:
                                 MediaQuery.of(context).size.width / 360 * 10,

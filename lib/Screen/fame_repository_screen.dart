@@ -37,7 +37,6 @@ class FameRepositoryScreen extends StatelessWidget {
             }
             final data = snapshot.data?.docs.first.data()['fameData'];
             return GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: data?.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

@@ -34,7 +34,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
         (ModalRoute.of(context)?.settings.arguments as Map)['folder_id'];
     final category =
         (ModalRoute.of(context)?.settings.arguments as Map)['category'];
-    final stories = Provider.of<StoryManage>(context, listen: false).items;
+    var stories = Provider.of<StoryManage>(context, listen: false).items;
     Future first() async {
       await Provider.of<StoryManage>(context, listen: false)
           .fetchAndSetStories();
@@ -42,18 +42,24 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           .fetchAndSetFolders();
       folder = await Provider.of<FolderManage>(context, listen: false)
           .findById(folderId);
+          stories = Provider.of<StoryManage>(context, listen: false).items;
       int numberOfStories = stories
-          .where((element) => element.folderId == folder?.id)
+          .where((element) => element.folderId == folderId)
           .toList()
           .length;
+
       isFame = numberOfStories >= 60;
       await FirebaseFirestore.instance
           .collection('fame_repository')
           .where('folderId', isEqualTo: folderId)
           .get()
           .then((value) => isRegistered = value.docs.isNotEmpty);
-      print(isFame);
-      print(isRegistered);
+      print(folderId);
+      print(stories);
+
+      print('${isFame}isFame');
+      print('${numberOfStories}numberOfStories');
+      print('${isRegistered}isRegistered');
     }
 
     final _priceFocusNode = FocusNode();
@@ -178,7 +184,6 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           icon: Icon(Icons.highlight_off),
           onPressed: () {
 //경고문 주자 '오늘 스토리를 업로드하였습니다.'
-
           });
     }
 
@@ -216,7 +221,9 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                     .registerFameStories(folder!, stories)
                 : print('');
           },
-          icon: (isRegistered ?? true) ?Icon(Icons.highlight_off):Icon(Icons.app_registration));
+          icon: (isRegistered ?? true)
+              ? Icon(Icons.highlight_off)
+              : Icon(Icons.app_registration));
     }
 
     return FutureBuilder(
@@ -235,7 +242,11 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                 color: mainColor,
                 fontWeight: FontWeight.bold),
           ),
-          actions: [ActionButton1(), ActionButton2()],
+          actions: [
+            AddStoryButton() //
+            ,
+            ActionButton2()
+          ],
         ),
         body: snapshot.connectionState == ConnectionState.waiting
             ? Center(
@@ -272,61 +283,49 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
 
                   return storiesOfFoler.length <= 0
                       ? ch!
-                      : SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              isSameDate(),
-                              ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: storiesOfFoler.length,
-                                itemBuilder: (ctx, i) => Card(
-                                  child: ListTile(
-                                    leading: CircleAvatar(
-                                      backgroundImage:
-                                          FileImage(storiesOfFoler[i].image),
-                                    ),
-                                    title: Text(storiesOfFoler[i].title),
-                                    subtitle: Text((storiesOfFoler[i]
-                                        .description) as String),
-                                    onTap: () {
-                                      Route _createRoute() {
-                                        return PageRouteBuilder(
-                                          settings: RouteSettings(arguments: {
-                                            'story_id': storiesOfFoler[i].id,
-                                          }),
-                                          pageBuilder: (context, animation,
-                                                  secondaryAnimation) =>
-                                              StoryDetailScreen(),
-                                          transitionsBuilder: (context,
-                                              animation,
-                                              secondaryAnimation,
-                                              child) {
-                                            const begin = Offset(0.0, 1.0);
-                                            const end = Offset.zero;
-                                            const curve = Curves.ease;
-
-                                            var tween = Tween(
-                                                    begin: begin, end: end)
-                                                .chain(
-                                                    CurveTween(curve: curve));
-
-                                            return SlideTransition(
-                                              position: animation.drive(tween),
-                                              child: child,
-                                            );
-                                          },
-                                        );
-                                      }
-
-                                      Navigator.of(context)
-                                          .push(_createRoute());
-                                    },
-                                    trailing: Text(
-                                        '${storiesOfFoler[i].category} 업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}'),
-                                  ),
-                                ),
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: storiesOfFoler.length,
+                          itemBuilder: (ctx, i) => Card(
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage:
+                                    FileImage(storiesOfFoler[i].image),
                               ),
-                            ],
+                              title: Text(storiesOfFoler[i].title),
+                              subtitle: Text(
+                                  (storiesOfFoler[i].description) as String),
+                              onTap: () {
+                                Route _createRoute() {
+                                  return PageRouteBuilder(
+                                    settings: RouteSettings(arguments: {
+                                      'story_id': storiesOfFoler[i].id,
+                                    }),
+                                    pageBuilder: (context, animation,
+                                            secondaryAnimation) =>
+                                        StoryDetailScreen(),
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      const begin = Offset(0.0, 1.0);
+                                      const end = Offset.zero;
+                                      const curve = Curves.ease;
+
+                                      var tween = Tween(begin: begin, end: end)
+                                          .chain(CurveTween(curve: curve));
+
+                                      return SlideTransition(
+                                        position: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
+                                  );
+                                }
+
+                                Navigator.of(context).push(_createRoute());
+                              },
+                              trailing: Text(
+                                  '${storiesOfFoler[i].category} 업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}'),
+                            ),
                           ),
                         );
                 }),

@@ -59,12 +59,13 @@ class FameRepositoryManage extends ChangeNotifier {
   registerFameStories(Folder folder, List<Story> stories) async {
     List<Story> fameData1 =
         stories.where((element) => element.folderId == folder.id).toList();
+    print('${fameData1.length}3번임');
     List fameData2 = [];
     print('${fameData2}3번임');
 
     await _uploadFame(fameData1);
 
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 60)); // 사진 업로드하는 시간
 
     await FirebaseFirestore.instance
         .collection('fame_image')
@@ -77,7 +78,7 @@ class FameRepositoryManage extends ChangeNotifier {
         fameData2
             .add((fameData1[i] as Story).toMapImageUrl(docs[i]['image_url']));
       }
-print('${fameData2}4번임');
+      print('${fameData2}4번임');
       FirebaseFirestore.instance.collection('fame_repository').add({
         'userId': FirebaseAuth.instance.currentUser!.uid,
         'fameData': fameData2,

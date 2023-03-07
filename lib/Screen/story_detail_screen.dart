@@ -26,9 +26,16 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
     final upload = Provider.of<Upload>(context, listen: false);
     final selectedStory =
         Provider.of<StoryManage>(context, listen: false).findById(storyId);
-    final isUploaded = selectedStory.isUploaded;
+    var isUploaded = selectedStory.isUploaded;
+
+    DateTime now = DateTime.now();
+    DateTime dateTime = DateTime.parse(selectedStory.createdAt);
+    var isToday = DateTime.utc(dateTime.year, dateTime.month, dateTime.day) ==
+        DateTime.utc(now.year, now.month, now.day);
 
     fetchAndSetStories() {
+      print(isToday);
+      print(isToday);
       Provider.of<StoryManage>(context, listen: false).fetchAndSetStories();
     }
 
@@ -56,6 +63,35 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
       //     .minusOneDay(findedFolder);
     }
 
+    Widget CategoryIcon(String selectedCategory) {
+      if (selectedCategory == 'Kind.Reading') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/reading.png'));
+      } else if (selectedCategory == 'Kind.Exercise') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/exercise.png'));
+      } else if (selectedCategory == 'Kind.Language') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/language.png'));
+      } else if (selectedCategory == 'Kind.Study') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/study.png'));
+      } else {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/etc.png'));
+      }
+    }
+
     final GlobalKey<ScaffoldState>? _scaffoldKey = GlobalKey<ScaffoldState>();
     return FutureBuilder(
         future: fetchAndSetStories(),
@@ -81,7 +117,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                 : Column(
                     children: [
                       Container(
-                        height: MediaQuery.of(context).size.width / 360 * 250,
+                        height: MediaQuery.of(context).size.width / 360 * 450,
                         width: double.infinity,
                         child: Image.file(
                           selectedStory.image,
@@ -114,83 +150,80 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                       SizedBox(
                         height: MediaQuery.of(context).size.width / 360 * 10,
                       ),
-                      Text(
-                        selectedStory.category as String,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 360 * 20,
-                            color: Colors.grey),
-                      ),
+                      CategoryIcon(selectedStory.category),
                       SizedBox(
                         height: MediaQuery.of(context).size.width / 360 * 10,
                       ),
-                      TextButton(
-                        onPressed: () {
-                          showDialog<bool>(
-                              context: _scaffoldKey!.currentContext!,
-                              builder: (context) {
-                                return AlertDialog(
-                                  content: Text('스토리 를 내릴까요?'),
-                                  actions: <Widget>[
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: mainColor),
-                                      child: Text('아니오.'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop(false);
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: mainColor),
-                                      child: Text('네. 삭제합니다.'),
-                                      onPressed: () {
-                                        isUploaded == 0
-                                            ? deleteStory(storyId)
-                                            : deleteStoryAndPost(storyId);
-                                        Navigator.of(context).pop();
-                                        Navigator.of(context).pop();
-                                        // 화면 업데이트 추가
-                                      },
-                                    ),
-                                  ],
-                                );
-                              });
+                      isToday
+                          ? TextButton(
+                              onPressed: () {
+                                showDialog<bool>(
+                                    context: _scaffoldKey!.currentContext!,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        content: Text('스토리 를 내릴까요?'),
+                                        actions: <Widget>[
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: mainColor),
+                                            child: Text('아니오.'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop(false);
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: mainColor),
+                                            child: Text('네. 삭제합니다.'),
+                                            onPressed: () {
+                                              isUploaded == 0
+                                                  ? deleteStory(storyId)
+                                                  : deleteStoryAndPost(storyId);
+                                              Navigator.of(context).pop();
+                                              Navigator.of(context).pop();
+                                              // 화면 업데이트 추가
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    });
 
-                          // 여기에 화면 다시 업데이트하는 함수 만들기
-                        },
-                        child: Text('delete story'),
-                        style: TextButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: mainColor),
-                      ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: mainColor),
-                          onPressed: () async {
-                            Navigator.of(context).pop();
-                            // firebase upload function
-                            IUser? userInfo = await upload.loadUserByUid(
-                                FirebaseAuth.instance.currentUser!.uid);
-                            upload.uploadPost(
-                              Post(
-                                  title: selectedStory.title,
-                                  userId:
-                                      FirebaseAuth.instance.currentUser!.uid,
-                                  userInfo: userInfo,
-                                  description: selectedStory.description,
-                                  uid: selectedStory.id,
-                                  createdAt: DateTime.now(),
-                                  category: selectedStory.category),
-                              selectedStory.image,
-                            );
-                            Provider.of<StoryManage>(context, listen: false)
-                                .changeIsUploaded(selectedStory);
-                            // upload.uploadFile(selectedStory.image, '/${selectedStory.id}/${Uuid().v4()}.jpg');
-                            // upload.updatePost(Post(id: 'post', userInfo: userInfo,description:selectedStory.description ,thumbnail:selectedStory.image. ,uid: id ));
-                          },
-                          child: Text('upload story'))
+                                // 여기에 화면 다시 업데이트하는 함수 만들기
+                              },
+                              child: Text('delete story'),
+                              style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: mainColor),
+                            )
+                          : Container(),
+                      isUploaded == 0
+                          ? ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: mainColor),
+                              onPressed: () async {
+                                Navigator.of(context).pop();
+                                // firebase upload function
+                                IUser? userInfo = await upload.loadUserByUid(
+                                    FirebaseAuth.instance.currentUser!.uid);
+                                upload.uploadPost(
+                                  Post(
+                                      title: selectedStory.title,
+                                      userId: FirebaseAuth
+                                          .instance.currentUser!.uid,
+                                      userInfo: userInfo,
+                                      description: selectedStory.description,
+                                      uid: selectedStory.id,
+                                      createdAt: DateTime.now(),
+                                      category: selectedStory.category),
+                                  selectedStory.image,
+                                );
+                                Provider.of<StoryManage>(context, listen: false)
+                                    .changeIsUploaded(selectedStory);
+                                // upload.uploadFile(selectedStory.image, '/${selectedStory.id}/${Uuid().v4()}.jpg');
+                                // upload.updatePost(Post(id: 'post', userInfo: userInfo,description:selectedStory.description ,thumbnail:selectedStory.image. ,uid: id ));
+                              },
+                              child: Text('upload story'))
+                          : Container()
                     ],
                   ),
           );
