@@ -16,6 +16,8 @@ class SignOutButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: TextButton(
+          style: TextButton.styleFrom(
+              backgroundColor: Colors.white, foregroundColor: mainColor),
           onPressed: () {
             showDialog<bool>(
                 context: context,
@@ -23,19 +25,23 @@ class SignOutButton extends StatelessWidget {
                   return AlertDialog(
                     content: Text('앱을 종료할까요?'),
                     actions: <Widget>[
-                      ElevatedButton(style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: mainColor),
                         child: Text('아니오.'),
                         onPressed: () {
                           Navigator.of(context).pop(false);
                         },
                       ),
-                      ElevatedButton(style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: mainColor),
                         child: Text('네. 종료합니다.'),
                         onPressed: () {
                           Navigator.of(context).pop(true);
+                          Navigator.of(context).pop(true);
                           _signOut();
+                          
                           // 화면 업데이트 추가
                         },
                       ),

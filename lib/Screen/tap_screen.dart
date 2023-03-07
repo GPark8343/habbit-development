@@ -59,14 +59,25 @@ class _TapScreenState extends State<TapScreen> {
     return Scaffold(
       drawerScrimColor: mainColor,
       appBar: AppBar(
-        actions: [SignOutButton()],
-        // actions: [IconButton(onPressed: () {}, icon: Icon(Icons.settings))],
+        // actions: [SignOutButton()],
+        actions: [
+          _selectedPageIndex == 0
+              ? PopupMenuButton(
+                  itemBuilder: (_) => [
+                    PopupMenuItem(
+                      child: SignOutButton(),
+                    ),
+                  ],
+                  icon: Icon(Icons.settings),
+                )
+              : Container()
+        ],
         iconTheme: IconThemeData(color: mainColor),
         title: Row(
           children: [
             Image.asset('assets/logos/header_logo.png',
-                width: MediaQuery.of(context).size.width / 360 * 50,
-                height: MediaQuery.of(context).size.width / 360 * 50),
+                width: MediaQuery.of(context).size.width / 360 * 45,
+                height: MediaQuery.of(context).size.width / 360 * 45),
             SizedBox(width: MediaQuery.of(context).size.width / 360 * 15),
             Text(
               'Habbit',
@@ -92,7 +103,7 @@ class _TapScreenState extends State<TapScreen> {
           items: [
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
-                icon: Icon(Icons.aspect_ratio_rounded),
+                icon: Icon(Icons.person),
                 label: 'Profile'),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
@@ -104,11 +115,11 @@ class _TapScreenState extends State<TapScreen> {
                 label: 'upload'),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
-                icon: Icon(Icons.category),
+                icon: Icon(Icons.folder),
                 label: 'folder'),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
-                icon: Icon(Icons.fit_screen_outlined),
+                icon: Icon(Icons.calendar_today),
                 label: 'challenge'),
           ]),
     );

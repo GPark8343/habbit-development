@@ -42,11 +42,11 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           .fetchAndSetFolders();
       folder = await Provider.of<FolderManage>(context, listen: false)
           .findById(folderId);
-      isFame = stories
-              .where((element) => element.folderId == folder?.id)
-              .toList()
-              .length >=
-          0;
+      int numberOfStories = stories
+          .where((element) => element.folderId == folder?.id)
+          .toList()
+          .length;
+      isFame = numberOfStories >= 60;
       await FirebaseFirestore.instance
           .collection('fame_repository')
           .where('folderId', isEqualTo: folderId)
@@ -58,7 +58,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
 
     final _priceFocusNode = FocusNode();
     final _descriptionFocusNode = FocusNode();
-    final _titleController = TextEditingController();
+
     final _descriptionController = TextEditingController();
 
     File? _pickedImage;
@@ -70,14 +70,20 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
     }
 
     void _saveStory() async {
-      if (_titleController.text.isEmpty ||
-          _pickedImage == null ||
-          _descriptionController.text.isEmpty) {
+      if (_pickedImage == null || _descriptionController.text.isEmpty) {
         Navigator.of(context).pop(); // 빈 스토리는 작성 못하게 해야 함
         return;
       }
+      await Provider.of<StoryManage>(context, listen: false)
+          .fetchAndSetStories();
+      await Provider.of<FolderManage>(context, listen: false)
+          .fetchAndSetFolders();
+      int numberOfStories = stories
+          .where((element) => element.folderId == folder?.id)
+          .toList()
+          .length;
       await Provider.of<StoryManage>(context, listen: false).addStories(
-          _titleController.text,
+          '${numberOfStories + 1}일차',
           _pickedImage!,
           _descriptionController.text,
           category,
@@ -116,27 +122,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                               child: Column(
                                 children: [
                                   Text('write your story'),
-                                  TextFormField(
-                                    controller: _titleController,
-                                    decoration:
-                                        InputDecoration(labelText: 'Title'),
-                                    textInputAction: TextInputAction.next,
-                                    onFieldSubmitted: (_) {
-                                      FocusScope.of(context)
-                                          .requestFocus(_priceFocusNode);
-                                    },
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please provide a value.';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.width /
-                                        360 *
-                                        10,
-                                  ),
+                                 
                                   ImageInput(_selectImage),
                                   SizedBox(
                                     height: MediaQuery.of(context).size.width /
@@ -257,57 +243,59 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
 
                   return storiesOfFoler.length <= 0
                       ? ch!
-                      : Column(
-                          children: [
-                            isSameDate(),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: storiesOfFoler.length,
-                              itemBuilder: (ctx, i) => Card(
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundImage:
-                                        FileImage(storiesOfFoler[i].image),
+                      : SingleChildScrollView(
+                        child: Column(
+                            children: [
+                              isSameDate(),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: storiesOfFoler.length,
+                                itemBuilder: (ctx, i) => Card(
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundImage:
+                                          FileImage(storiesOfFoler[i].image),
+                                    ),
+                                    title: Text(storiesOfFoler[i].title),
+                                    subtitle: Text((storiesOfFoler[i].description)
+                                        as String),
+                                    onTap: () {
+                                      Route _createRoute() {
+                                        return PageRouteBuilder(
+                                          settings: RouteSettings(arguments: {
+                                            'story_id': storiesOfFoler[i].id,
+                                          }),
+                                          pageBuilder: (context, animation,
+                                                  secondaryAnimation) =>
+                                              StoryDetailScreen(),
+                                          transitionsBuilder: (context, animation,
+                                              secondaryAnimation, child) {
+                                            const begin = Offset(0.0, 1.0);
+                                            const end = Offset.zero;
+                                            const curve = Curves.ease;
+                      
+                                            var tween = Tween(
+                                                    begin: begin, end: end)
+                                                .chain(CurveTween(curve: curve));
+                      
+                                            return SlideTransition(
+                                              position: animation.drive(tween),
+                                              child: child,
+                                            );
+                                          },
+                                        );
+                                      }
+                      
+                                      Navigator.of(context).push(_createRoute());
+                                    },
+                                    trailing: Text(
+                                        '${storiesOfFoler[i].category} 업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}'),
                                   ),
-                                  title: Text(greatStories.items[i].title),
-                                  subtitle: Text((storiesOfFoler[i].description)
-                                      as String),
-                                  onTap: () {
-                                    Route _createRoute() {
-                                      return PageRouteBuilder(
-                                        settings: RouteSettings(arguments: {
-                                          'story_id': storiesOfFoler[i].id,
-                                        }),
-                                        pageBuilder: (context, animation,
-                                                secondaryAnimation) =>
-                                            StoryDetailScreen(),
-                                        transitionsBuilder: (context, animation,
-                                            secondaryAnimation, child) {
-                                          const begin = Offset(0.0, 1.0);
-                                          const end = Offset.zero;
-                                          const curve = Curves.ease;
-
-                                          var tween = Tween(
-                                                  begin: begin, end: end)
-                                              .chain(CurveTween(curve: curve));
-
-                                          return SlideTransition(
-                                            position: animation.drive(tween),
-                                            child: child,
-                                          );
-                                        },
-                                      );
-                                    }
-
-                                    Navigator.of(context).push(_createRoute());
-                                  },
-                                  trailing: Text(
-                                      '${storiesOfFoler[i].category} 업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}'),
                                 ),
                               ),
-                            ),
-                          ],
-                        );
+                            ],
+                          ),
+                      );
                 }),
       ),
     );

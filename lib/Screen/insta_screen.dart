@@ -14,7 +14,7 @@ class InstaScreen extends StatelessWidget {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('posts')
-            .orderBy('created_at', descending: true)
+            .orderBy('created_at', descending: false)
             .snapshots(),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -25,7 +25,7 @@ class InstaScreen extends StatelessWidget {
           final docs = snapshot.data?.docs;
           return ListView.builder(
               shrinkWrap: true,
-              reverse: true,
+              
               itemCount: docs?.length,
               itemBuilder: (context, index) {
                 return docs?.length == 0

@@ -114,9 +114,31 @@ https://docs.flutter.dev/cookbook/animation/page-route-animation
  이름이 너무 길면 짤림
 
  바텀네비게이션 디자인 좀 수정하자
-
- splashscreen 만들자
-
  famedata가 0임
 
+
+
+
+
+ 
+
+
  디자인 더 수정하고 닉네임 넣을 수 있게 하자
+
+60개 한꺼번에 올릴 수 있는지 실험// 60개 넘으면 어카냐
+
+{splashscreen 만들자
+
+ splash screen 생성시 : flutter pub run flutter_native_splash:create --path=./flutter_native_splash.yaml
+
+수정하는 경우 remove를 해주고 create해줘야 합니다  
+
+flutter pub run flutter_native_splash:remove}
+
+
+category 디자인 로고 가져오기
+authscreen 꾸미자
+ 디자인 더 수정(category 디자인 로고 가져오기)
+닉네임 넣을 수 있게 하자
+레벨이랑 팔로워 누르면 아직 기능 더 추가해야 함 넣기
+60개 한꺼번에 올릴 수 있는지 실험// 60개 넘으면 어카냐
