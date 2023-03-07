@@ -118,7 +118,7 @@ class _TapScreenState extends State<TapScreen> {
           items: [
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
-                icon: Icon(Icons.person),
+                icon: Icon(Icons.person_2_outlined),
                 label: 'Profile'),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
@@ -130,7 +130,7 @@ class _TapScreenState extends State<TapScreen> {
                 label: 'upload'),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
-                icon: Icon(Icons.folder),
+                icon: Icon(Icons.folder_open_rounded),
                 label: 'folder'),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,

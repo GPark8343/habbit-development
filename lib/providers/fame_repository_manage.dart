@@ -65,7 +65,7 @@ class FameRepositoryManage extends ChangeNotifier {
 
     await _uploadFame(fameData1);
 
-    await Future.delayed(Duration(seconds: 60)); // 사진 업로드하는 시간
+    await Future.delayed(Duration(seconds: 3)); // 사진 업로드하는 시간
 
     await FirebaseFirestore.instance
         .collection('fame_image')

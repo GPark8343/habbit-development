@@ -129,7 +129,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                         height: MediaQuery.of(context).size.width / 360 * 10,
                       ),
                       Text(
-                        selectedStory.createdAt as String,
+                    '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize:
@@ -159,7 +159,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                               onPressed: () {
                                 showDialog<bool>(
                                     context: _scaffoldKey!.currentContext!,
-                                    builder: (context) {
+                                    builder: (ctx) {
                                       return AlertDialog(
                                         content: Text('스토리 를 내릴까요?'),
                                         actions: <Widget>[

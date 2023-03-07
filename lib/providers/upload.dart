@@ -26,12 +26,12 @@ class Upload with ChangeNotifier {
   Future<bool> registerUser() async {
     try {
       IUser user = IUser(
-          uid: FirebaseAuth.instance.currentUser!.uid,
-          nickname: FirebaseAuth.instance.currentUser!.displayName,
-          thumbnail: FirebaseAuth.instance.currentUser!.photoURL,
-          description: FirebaseAuth.instance.currentUser!.email, // 이 부분은 수정 필요
-          numberOfReward: [],
-          );
+        uid: FirebaseAuth.instance.currentUser!.uid,
+        nickname: FirebaseAuth.instance.currentUser!.displayName,
+        thumbnail: FirebaseAuth.instance.currentUser!.photoURL,
+        description: FirebaseAuth.instance.currentUser!.email, // 이 부분은 수정 필요
+        numberOfReward: [],
+      );
       await FirebaseFirestore.instance.collection('users').add(user.toMap());
       return true;
     } catch (e) {
@@ -95,8 +95,6 @@ class Upload with ChangeNotifier {
     }
   }
 
-
-
   _deleteFile(String id) async {
 // Create a reference to the file to delete
     final ref = FirebaseStorage.instance.ref().child("posts/${id}.jpg");
@@ -147,5 +145,16 @@ class Upload with ChangeNotifier {
         },
       );
     }
+  }
+
+  void uploadNickname(String nickname) async {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .where('uid', isEqualTo: uid)
+        .get()
+        .then((value) =>
+            value.docs.first.reference.update({'nickname': nickname}));
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:habbit/colors.dart';
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/providers/folder_manage.dart';
+import 'package:habbit/providers/marker_manage.dart';
+import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/widgets/calendar/calendar.dart';
 import 'package:provider/provider.dart';
 
@@ -46,35 +48,42 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
       }
     }
 
+    Future? first() async {
+      await Provider.of<FolderManage>(context, listen: false)
+          .fetchAndSetFolders();
+      await Provider.of<StoryManage>(context, listen: false)
+          .fetchAndSetStories();
+
+      await Provider.of<MarkerManage>(context, listen: false).addMarker();
+    }
+
     return FutureBuilder(
-        future: Provider.of<FolderManage>(context, listen: false)
-            .fetchAndSetFolders(),
+        future: first(),
         builder: (context, snapshot) {
-          return Center(
-            child: SingleChildScrollView(
-              child: folderListLength == 0
-                  ? Text('folder를 먼저 추가해주세요')
-                  : Column(
-                      children: [
-                        Calendar(folderList[index]),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
-                                onPressed: moveLeftIndex,
-                                child: Icon(Icons.arrow_left)),
-                            ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
-                                onPressed: moveRightIndex,
-                                child: Icon(Icons.arrow_right)),
-                          ],
-                        ),
-                      ],
-                    ),
-            ),
+          return SingleChildScrollView(
+            child: folderListLength == 0
+                ? Center(child: Text('folder를 먼저 추가해주세요'))
+                : Column(
+                    children: [
+                      Calendar(folderList[index]),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: mainColor),
+                            onPressed: moveLeftIndex,
+                            child: Icon(Icons.arrow_left),
+                          ),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: mainColor),
+                              onPressed: moveRightIndex,
+                              child: Icon(Icons.arrow_right)),
+                        ],
+                      ),
+                    ],
+                  ),
           );
         });
   }

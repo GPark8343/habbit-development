@@ -24,7 +24,7 @@ class _AddFolderButtonState extends State<AddFolderButton> {
       onPressed: () {
         showDialog<bool>(
             context: context,
-            builder: (context) {
+            builder: (ctx) {
               return CategoryList();
             });
       },

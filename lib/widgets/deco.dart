@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 
 class Deco extends StatelessWidget {
   const Deco({super.key});
- 
 
   @override
   Widget build(BuildContext context) {
@@ -35,36 +34,43 @@ class Deco extends StatelessWidget {
       print(attendanceList);
     }
 
-    
-    return FutureBuilder(  key: key,
+    return FutureBuilder(
+        key: key,
         future: first(),
         builder: (context, snapshot) {
           return StreamBuilder(
-        
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: const CircularProgressIndicator(),
-              );
-            }
-            final List rewardList =
-                snapshot.data?.docs.first.data()['number_of_reward'] ?? [];
-            int rewardStandard =
-                rewardList.where((number) => number >= 60).toList().length;
-            if (rewardStandard == 0) {
-              return Text('아직 훈장이 없습니다.(60일 달성 시 지급)');
-            }
-            return ListView.builder(
-                shrinkWrap: true,
-                itemCount: rewardStandard,
-                itemBuilder: (context, index) {
-                  return Icon(Icons.abc);
-                });
-          });;
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .where('uid',
+                      isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: Container(
+                      color: Colors.white,
+                    ),
+                  );
+                }
+                final List rewardList =
+                    snapshot.data?.docs.first.data()['number_of_reward'] ?? [];
+                int rewardStandard =
+                    rewardList.where((number) => number >= 60).toList().length;
+                if (rewardStandard == 0) {
+                  return Text('아직 훈장이 없습니다.(60일 달성 시 지급)');
+                }
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: rewardStandard,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width / 360 * 30,
+                        height: MediaQuery.of(context).size.width / 360 * 30,
+                        child: Image.asset('assets/icons/trophy.png'),
+                      );
+                    });
+              });
+          ;
         });
   }
 }

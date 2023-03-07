@@ -19,8 +19,8 @@ class InstaScreen extends StatelessWidget {
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: const CircularProgressIndicator(),
-            );
+                child: Container(color: Colors.white,),
+              );
           }
           final docs = snapshot.data?.docs;
           return ListView.builder(

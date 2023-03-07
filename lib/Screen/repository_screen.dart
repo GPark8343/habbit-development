@@ -42,7 +42,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           .fetchAndSetFolders();
       folder = await Provider.of<FolderManage>(context, listen: false)
           .findById(folderId);
-          stories = Provider.of<StoryManage>(context, listen: false).items;
+      stories = Provider.of<StoryManage>(context, listen: false).items;
       int numberOfStories = stories
           .where((element) => element.folderId == folderId)
           .toList()
@@ -167,7 +167,17 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                             backgroundColor: mainColor),
                         onPressed: () {
                           _saveStory();
-                          // Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                          showDialog(
+                              context: context,
+                              builder: (_) {
+                                return AlertDialog(
+                                  content: SingleChildScrollView(
+                                    child: Column(
+                                        children: [Text('스토리 업로드가 완료되었습니다.')]),
+                                  ),
+                                );
+                              });
                         },
                         icon: Icon(Icons.add),
                         label: Text('Add Story'),
@@ -183,7 +193,15 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           style: IconButton.styleFrom(backgroundColor: Colors.grey),
           icon: Icon(Icons.highlight_off),
           onPressed: () {
-//경고문 주자 '오늘 스토리를 업로드하였습니다.'
+            showDialog(
+                context: context,
+                builder: (_) {
+                  return AlertDialog(
+                    content: SingleChildScrollView(
+                      child: Column(children: [Text('오늘 스토리를 업로드하였습니다.')]),
+                    ),
+                  );
+                });
           });
     }
 
@@ -215,15 +233,29 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                   ? mainColor
                   : Colors.grey),
           onPressed: () {
-            Navigator.of(context).pop();
+            showDialog(
+                context: context,
+                builder: (_) {
+                  return AlertDialog(
+                    content: SingleChildScrollView(
+                      child: Column(children: [
+                        !(isFame ?? false)
+                            ? Text('명예의 전당에 올리려면 60일을 채워야 합니다.')
+                            : (!(isRegistered ?? true)
+                                ? Text('등록하는데 1분이 걸립니다. 앱을 종료하지 마세요')
+                                : Text('이미 등록되었습니다.'))
+                      ]),
+                    ),
+                  );
+                });
             !(isRegistered ?? true) && (isFame ?? false)
                 ? Provider.of<FameRepositoryManage>(context, listen: false)
                     .registerFameStories(folder!, stories)
                 : print('');
           },
-          icon: (isRegistered ?? true)
-              ? Icon(Icons.highlight_off)
-              : Icon(Icons.app_registration));
+          icon: !(isRegistered ?? true)
+              ? Icon(Icons.app_registration)
+              : Icon(Icons.highlight_off));
     }
 
     return FutureBuilder(
@@ -243,14 +275,16 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                 fontWeight: FontWeight.bold),
           ),
           actions: [
-            AddStoryButton() //
+            ActionButton1() //
             ,
             ActionButton2()
           ],
         ),
         body: snapshot.connectionState == ConnectionState.waiting
             ? Center(
-                child: CircularProgressIndicator(),
+                child: Container(
+                  color: Colors.white,
+                ),
               )
             : Consumer<StoryManage>(
                 child: Center(
@@ -292,9 +326,24 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                 backgroundImage:
                                     FileImage(storiesOfFoler[i].image),
                               ),
-                              title: Text(storiesOfFoler[i].title),
+                              title: Text(
+                                storiesOfFoler[i].title,
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width /
+                                            360 *
+                                            15,
+                                    fontWeight: FontWeight.bold),
+                              ),
                               subtitle: Text(
-                                  (storiesOfFoler[i].description) as String),
+                                (storiesOfFoler[i].description) as String,
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width /
+                                            360 *
+                                            12,
+                                    fontWeight: FontWeight.bold),
+                              ),
                               onTap: () {
                                 Route _createRoute() {
                                   return PageRouteBuilder(

@@ -63,8 +63,8 @@ class _ProfileScreenState extends State<ProfileScreen>
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: const CircularProgressIndicator(),
-            );
+                child: Container(color: Colors.white,),
+              );
           }
           final docs = snapshot.data?.docs;
 
@@ -208,8 +208,8 @@ class _ProfileScreenState extends State<ProfileScreen>
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: const CircularProgressIndicator(),
-            );
+                child: Container(color: Colors.white,),
+              );
           }
           final docs = snapshot.data?.docs;
           return GridView.builder(
@@ -257,7 +257,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                   fit: BoxFit.cover,
                   imageUrl: docs![index]['thumbnail'],
                   placeholder: (context, url) =>
-                      new CircularProgressIndicator(),
+                      Center(
+                child: Container(color: Colors.white,),
+              ),
                 ),
               );
             },
@@ -274,7 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           _information(),
           _menu(),
           // _discoverPeople(),
-          SizedBox(height: MediaQuery.of(context).size.width / 360 * 20),
+    
           Deco(),
           // _tabMenu(),
           SizedBox(height: MediaQuery.of(context).size.width / 360 * 20),

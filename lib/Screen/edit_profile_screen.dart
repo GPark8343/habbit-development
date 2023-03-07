@@ -40,6 +40,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _pickedImage = savedImage;
   }
 
+  Future<void> _changeName(String selectedName) async {
+    final upload = Provider.of<Upload>(context, listen: false);
+    upload.uploadNickname(selectedName);
+  }
+
+  final _priceFocusNode = FocusNode();
+  final _titleController = TextEditingController();
+  @override
+  void dispose() {
+    _priceFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,13 +60,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           iconTheme: IconThemeData(
             color: mainColor, //색변경
           ),
-          title:  Text(
-              'edit profile',
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width / 360 * 25,
-                  color: mainColor,
-                  fontWeight: FontWeight.bold),
-            )),
+          title: Text(
+            'edit profile',
+            style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width / 360 * 25,
+                color: mainColor,
+                fontWeight: FontWeight.bold),
+          )),
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('users')
@@ -76,7 +89,108 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     backgroundColor: mainColor,
                     radius: 100,
                   ),
-                  TextButton(onPressed: _takeGallery, child: Text('사진 수정'))
+                  TextButton(
+                      onPressed: _takeGallery,
+                      child: Text(
+                        '사진 수정',
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width / 360 * 15,
+                            color: mainColor,
+                            fontWeight: FontWeight.bold),
+                      )),
+                  Center(
+                    child: Container(
+                      width: double.infinity,
+                      child: Card(
+                        child: Padding(
+                          padding: EdgeInsets.all(
+                              MediaQuery.of(context).size.width / 360 * 15),
+                          child: Center(
+                            child: Text(
+                              docData['nickname'],
+                              style: TextStyle(
+                                  fontSize: MediaQuery.of(context).size.width /
+                                      360 *
+                                      30,
+                                  color: textColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(25.0))),
+                            context: context,
+                            builder: (ctx) {
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                            .viewInsets
+                                            .bottom +
+                                        MediaQuery.of(context).size.width /
+                                            360 *
+                                            30),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: MediaQuery.of(context).size.width /
+                                      360 *
+                                      400,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.width /
+                                                360 *
+                                                10,
+                                      ),
+                                      TextFormField(
+                                        controller: _titleController,
+                                        decoration: InputDecoration(
+                                            labelText: 'Nickname'),
+                                        textInputAction: TextInputAction.next,
+                                        onFieldSubmitted: (_) {
+                                          FocusScope.of(context)
+                                              .requestFocus(_priceFocusNode);
+                                        },
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please provide a value.';
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                      TextButton(
+                                          onPressed: () {
+                                            if (_titleController.text.isEmpty) {
+                                              Navigator.of(context)
+                                                  .pop(); // 빈 스토리는 작성 못하게 해야 함
+                                              return;
+                                            }
+                                            _changeName(_titleController.text);
+                                          },
+                                          child: Text('변경 완료'))
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                      child: Text(
+                        '이름 변경',
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width / 360 * 15,
+                            color: mainColor,
+                            fontWeight: FontWeight.bold),
+                      )),
                 ],
               ),
             );

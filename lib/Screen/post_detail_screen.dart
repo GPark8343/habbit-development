@@ -42,7 +42,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         Provider.of<Upload>(context, listen: false).deletePost(selectedStoryId);
       }
     }
-Widget CategoryIcon(String selectedCategory) {
+
+    Widget CategoryIcon(String selectedCategory) {
       if (selectedCategory == 'Kind.Reading') {
         return Container(
             width: MediaQuery.of(context).size.width / 360 * 20,
@@ -70,18 +71,24 @@ Widget CategoryIcon(String selectedCategory) {
             child: Image.asset('assets/icons/etc.png'));
       }
     }
+
     return FutureBuilder(
         future: fetchAndSetStories(),
         builder: (context, snapshot) {
+          DateTime dateTime = DateTime.parse(selectedStory.createdAt);
           return Scaffold(
             key: _scaffoldKey,
-            appBar: AppBar( iconTheme: IconThemeData(
-              color: mainColor, //색변경
-            ),
-              title: Text(selectedStory.title,style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width / 360 * 25,
-                  color: mainColor,
-                  fontWeight: FontWeight.bold),),
+            appBar: AppBar(
+              iconTheme: IconThemeData(
+                color: mainColor, //색변경
+              ),
+              title: Text(
+                selectedStory.title,
+                style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 360 * 25,
+                    color: mainColor,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
             body: snapshot.connectionState == ConnectionState.waiting
                 ? Center(
@@ -92,8 +99,9 @@ Widget CategoryIcon(String selectedCategory) {
                         child: Column(
                           children: [
                             Text('스토리가 남아 있지 않습니다.'),
-                            ElevatedButton(style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: mainColor),
                               child: Text('네. 삭제합니다.'),
                               onPressed: () {
                                 deletePost(storyId);
@@ -107,7 +115,8 @@ Widget CategoryIcon(String selectedCategory) {
                     : Column(
                         children: [
                           Container(
-                                 height: MediaQuery.of(context).size.width / 360 * 450,
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 450,
                             width: double.infinity,
                             child: Image.file(
                               selectedStory.image,
@@ -120,7 +129,7 @@ Widget CategoryIcon(String selectedCategory) {
                                 MediaQuery.of(context).size.width / 360 * 10,
                           ),
                           Text(
-                            selectedStory.createdAt as String,
+                            '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: MediaQuery.of(context).size.width /
@@ -145,7 +154,7 @@ Widget CategoryIcon(String selectedCategory) {
                             height:
                                 MediaQuery.of(context).size.width / 360 * 10,
                           ),
-                           CategoryIcon(selectedStory.category),
+                          CategoryIcon(selectedStory.category),
                           SizedBox(
                             height:
                                 MediaQuery.of(context).size.width / 360 * 10,
@@ -154,19 +163,21 @@ Widget CategoryIcon(String selectedCategory) {
                             onPressed: () {
                               showDialog<bool>(
                                   context: _scaffoldKey!.currentContext!,
-                                  builder: (context) {
+                                  builder: (ctx) {
                                     return AlertDialog(
                                       content: Text('포스트 를 내릴까요?'),
                                       actions: <Widget>[
-                                        ElevatedButton(style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: mainColor),
                                           child: Text('아니오.'),
                                           onPressed: () {
                                             Navigator.of(context).pop(false);
                                           },
                                         ),
-                                        ElevatedButton(style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: mainColor),
                                           child: Text('네. 삭제합니다.'),
                                           onPressed: () {
                                             deletePost(storyId);

@@ -51,7 +51,7 @@ class PostWidget extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: const CircularProgressIndicator(),
+                child: Container(color: Colors.white,),
               );
             }
             final docData = snapshot.data?.docs.first.data();
@@ -84,7 +84,9 @@ class PostWidget extends StatelessWidget {
     Widget _image() {
       return CachedNetworkImage(
         imageUrl: post.thumbnail!,
-        placeholder: (context, url) => new CircularProgressIndicator(),
+        placeholder: (context, url) => Center(
+                child: Container(color: Colors.white,),
+              ),
       );
     }
 
@@ -130,7 +132,7 @@ class PostWidget extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: const CircularProgressIndicator(),
+                child: Container(color: Colors.white,),
               );
             }
             final docData = snapshot.data?.docs.first.data();

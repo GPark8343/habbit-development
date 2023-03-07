@@ -68,7 +68,6 @@ class _CalendarState extends State<Calendar> {
           .fetchAndSetStories();
       await _getAttendanceDate();
       await Provider.of<MarkerManage>(context, listen: false).addMarker();
-      return null;
     }
 
     return FutureBuilder(
@@ -76,32 +75,87 @@ class _CalendarState extends State<Calendar> {
         builder: (context, snapshot) {
           return Column(
             children: [
-              Text('${attendanceProgress}/${widget.folder.days}'),
-              Text(
-                  '${widget.folder.title} 폴더의 days: ${widget.folder.days.toString()}'),
-              SizedBox(
-                height: MediaQuery.of(context).size.width / 360 * 30,
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.width / 360 * 120,
+                child: Card(
+                  color: mainColor,
+                  child: SingleChildScrollView(scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 360 * 15),
+                          child: Text(
+                            '${widget.folder.title} 폴더',
+                            style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.width / 360 * 25,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 360 * 25,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              overflow: TextOverflow.ellipsis,
+                              '스토리 수:  ',
+                              style: TextStyle(
+                                  fontSize: MediaQuery.of(context).size.width /
+                                      360 *
+                                      15,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              '${attendanceProgress}',
+                              style: TextStyle(
+                                  fontSize: MediaQuery.of(context).size.width /
+                                      360 *
+                                      30,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              TableCalendar(
-                locale: 'ko_KR', // 추가
-                firstDay: DateTime.utc(2021, 10, 16),
-                lastDay: DateTime.utc(2030, 3, 14),
-                focusedDay: DateTime.now(),
-                headerStyle: HeaderStyle(
-                    formatButtonVisible: false,
-                    titleTextStyle: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width / 360 * 20,
-                        color: Colors.deepPurple,
-                        fontWeight: FontWeight.w800)),
-                calendarStyle: CalendarStyle(
-                    markerSize: 10.0,
-                    markerDecoration: BoxDecoration(
-                        color: Colors.red, shape: BoxShape.circle),
-                    todayTextStyle: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width / 360 * 20,
-                        color: textColor,
-                        fontWeight: FontWeight.bold)),
-                eventLoader: _getEventsForDay,
+              SizedBox(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.width / 360 * 420,
+                child: TableCalendar(
+                  locale: 'ko_KR', // 추가
+                  firstDay: DateTime.utc(2021, 10, 16),
+                  lastDay: DateTime.utc(2030, 3, 14),
+                  focusedDay: DateTime.now(),
+                  headerStyle: HeaderStyle(
+                      formatButtonVisible: false,
+                      titleTextStyle: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.width / 360 * 20,
+                          color: mainColor,
+                          fontWeight: FontWeight.w800)),
+                  calendarStyle: CalendarStyle(
+                      markerSize:
+                          MediaQuery.of(context).size.width / 360 * 13.0,
+                      markerDecoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('assets/icons/check.png')),
+                          color: Colors.yellow,
+                          shape: BoxShape.circle),
+                      todayTextStyle: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.width / 360 * 20,
+                          color: textColor,
+                          fontWeight: FontWeight.bold)),
+                  eventLoader: _getEventsForDay,
+                ),
               ),
             ],
           );

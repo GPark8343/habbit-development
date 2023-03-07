@@ -149,11 +149,25 @@ but 앱 종료 시 안 올라감(핸드폰을 끄지 말라고 하기) 60개 한
 
 
 오늘 올린 건 오늘만 삭제 가능(옛날꺼 못 지움) 내일 실험해보자(지워서 일차 안 엉키기만 하면 됨)
- 디자인 더 수정(category 디자인 로고 가져오기(complete), post 인스타 스크린에 로딩되는 디자인 수정, 리스트 타일 디자인 수정, 디테일 스크린 좀 더 예쁘게)
-닉네임 넣을 수 있게 하자
+
+
+
+ 디자인 더 수정(famescreen에 내꺼만 볼 수 있게 하는 거 디자인 좀(약간 complete),
+  category 디자인 로고 가져오기(complete), 
+  post 인스타 스크린에 로딩되는 디자인 수정(complete)
+  ,리스트 타일 디자인 수정,(complete) 
+  디테일 스크린 좀 더 예쁘게(약간 complete),)
+닉네임 넣을 수 있게 하자(complete)
+
+
+challenge screen 좀 더 꾸미고 탭뷰 넣기(그냥 안 넣고 쫌 꾸밈)
 repository screen 경고문 추가
-icon이나 test 크기 mediaquery로 바꾸기
-파이어베이스 이거 코드 따로 빼자
+icon이나 test 크기 mediaquery로 바꾸기(complete)
+
+
+
+
+파이어베이스 이거 코드 따로 빼자(나중에)
 
 
 

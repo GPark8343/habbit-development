@@ -19,12 +19,22 @@ class CategoryList extends StatefulWidget {
     Kind? _kind = Kind.Reading;
 class _CategoryListState extends State<CategoryList> {
   Kind? _kind = Kind.Reading;
-  @override
-  Widget build(BuildContext context) {
-    final _priceFocusNode = FocusNode();
+   final _priceFocusNode = FocusNode();
     final _descriptionFocusNode = FocusNode();
     final _titleController = TextEditingController();
     final _descriptionController = TextEditingController();
+    
+     @override
+    void dispose() {
+      _priceFocusNode.dispose();
+      _descriptionFocusNode.dispose();
+      super.dispose();
+    }
+
+
+  @override
+  Widget build(BuildContext context) {
+   
 
     String? _pickedCategory;
 
@@ -48,14 +58,7 @@ class _CategoryListState extends State<CategoryList> {
       Provider.of<FolderManage>(context, listen: false).fetchAndSetFolders();
     }
 
-    @override
-    void dispose() {
-      _priceFocusNode.dispose();
-      _descriptionFocusNode.dispose();
-      super.dispose();
-    }
-
-
+   
 
     return AlertDialog(
       content: Text('카테고리를 선택하세요'),
@@ -182,7 +185,7 @@ class _CategoryListState extends State<CategoryList> {
                 _selectCategory(_kind!);
                 showDialog(
                     context: context,
-                    builder: (context) {
+                    builder: (ctx) {
                       return AlertDialog(
                         content: SingleChildScrollView(
                           child: Column(
