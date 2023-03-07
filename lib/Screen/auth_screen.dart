@@ -52,42 +52,66 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: mainColor,
       body: SafeArea(
         child: Container(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.width / 360 * 110),
+            padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.width / 360 * 130),
             child: Center(
               child: Card(
                 child: Padding(
-                  padding: EdgeInsets.all(
-                      MediaQuery.of(context).size.width / 360 * 8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      signInWithGoogle(context);
-                    },
-                    child: Container(
-                      child: Text(
-                        'google login',
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 360 * 25,
-                            color: mainColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      width: MediaQuery.of(context).size.width / 360 * 200,
-                      height: MediaQuery.of(context).size.width / 360 * 50,
-                      // decoration: BoxDecoration(
-                      //     image: DecorationImage(
-                      //         image: AssetImage(
-                      //             'assets/images/google_sign_in_button.png'),
-                      //         fit: BoxFit.cover)),
-                    ),
-                  ),
-                ),
+                    padding: EdgeInsets.all(
+                        MediaQuery.of(context).size.width / 360 * 8.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Image.asset(
+                            'assets/logos/logo.png',
+                            width:
+                                MediaQuery.of(context).size.width / 360 * 300,
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 300,
+                          ),
+                        ),
+                        GestureDetector(
+                          child: Image.asset(
+                            'assets/logos/btn_google_signin_light_normal_web.png',
+                            width:
+                                MediaQuery.of(context).size.width / 360 * 200,
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 50,
+                          ),
+                          onTap: () {
+                            signInWithGoogle(context);
+                          },
+                        ),
+                      ],
+                    )),
               ),
             )),
       ),
     );
   }
 }
+// GestureDetector(
+//                     onTap: () {
+//                       signInWithGoogle(context);
+//                     },
+//                     child: Container(
+//                       child: Text(
+//                         'google login',
+//                         style: TextStyle(
+//                             fontSize:
+//                                 MediaQuery.of(context).size.width / 360 * 25,
+//                             color: mainColor,
+//                             fontWeight: FontWeight.bold),
+//                       ),
+//                       width: MediaQuery.of(context).size.width / 360 * 200,
+//                       height: MediaQuery.of(context).size.width / 360 * 50,
+//                       // decoration: BoxDecoration(
+//                       //     image: DecorationImage(
+//                       //         image: AssetImage(
+//                       //             'assets/images/google_sign_in_button.png'),
+//                       //         fit: BoxFit.cover)),
+//                     ),
+//                   ),

@@ -10,6 +10,7 @@ import 'package:habbit/Screen/repository_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/profile_screen.dart';
 import 'package:habbit/colors.dart';
+import 'package:habbit/widgets/buttons/add_folder_button.dart';
 import 'package:habbit/widgets/buttons/add_story_button.dart';
 import 'package:habbit/widgets/buttons/signout-button.dart';
 import 'package:habbit/widgets/buttons/upload_button.dart';
@@ -54,24 +55,38 @@ class _TapScreenState extends State<TapScreen> {
     });
   }
 
+  List actionWidget(int chosenPageIndex) {
+    if (chosenPageIndex == 0) {
+      return [
+        PopupMenuButton(
+          itemBuilder: (_) => [
+            PopupMenuItem(
+              child: SignOutButton(),
+            ),
+          ],
+          icon: Icon(Icons.settings),
+        )
+      ];
+    } else if (chosenPageIndex == 1) {
+      return [];
+    } else if (chosenPageIndex == 2) {
+      return [];
+    } else if (chosenPageIndex == 3) {
+      return [AddFolderButton()];
+    } else if (chosenPageIndex == 4) {
+      return [];
+    } else {
+      return [];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawerScrimColor: mainColor,
       appBar: AppBar(
         // actions: [SignOutButton()],
-        actions: [
-          _selectedPageIndex == 0
-              ? PopupMenuButton(
-                  itemBuilder: (_) => [
-                    PopupMenuItem(
-                      child: SignOutButton(),
-                    ),
-                  ],
-                  icon: Icon(Icons.settings),
-                )
-              : Container()
-        ],
+        actions: [...actionWidget(_selectedPageIndex)],
         iconTheme: IconThemeData(color: mainColor),
         title: Row(
           children: [

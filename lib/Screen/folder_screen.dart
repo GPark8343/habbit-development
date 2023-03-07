@@ -57,115 +57,109 @@ class _FolderScreenState extends State<FolderScreen> {
     }
 
     return FutureBuilder(
-      //  FutureBuilder는 서버에서 데이터를 모두 받아오기전 화면을 그려줄수 있게 되는 장점을 가진다.
-      future: first(),
-      builder: (ctx, snapshot) => snapshot.connectionState ==
-              ConnectionState.waiting
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Consumer<FolderManage>(
-              child: Center(
-                  child: Column(
-                children: [
-                  AddFolderButton(),
-                  const Text('Got no folders yet, start adding some!'),
-                ],
-              )),
-              builder: (ctx, greatFolders, ch) => greatFolders.folders.length <=
-                      0
-                  ? ch!
-                  : Column(
-                      children: [
-                        AddFolderButton(),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: greatFolders.folders.length,
-                          itemBuilder: (ctx, i) => Dismissible(
-                            key: UniqueKey(),
-                            onDismissed: (direction) =>
-                                _deleteFolderStoryAndPost(
-                                    greatFolders.folders[i].id),
-                            confirmDismiss: (direction) {
-                              return showDialog(
-                                  context: context,
-                                  builder: (ctx) {
-                                    return AlertDialog(
-                                      title: const Text('Are you sure?'),
-                                      content: Text(
-                                          'Now I am deleting ${greatFolders.folders[i].title}'),
-                                      actions: <Widget>[
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor: mainColor),
-                                          onPressed: () {
-                                            return Navigator.of(context)
-                                                .pop(false);
-                                          },
-                                          child: const Text('CANCEL'),
-                                        ),
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor: mainColor),
-                                          onPressed: () {
-                                            return Navigator.of(context)
-                                                .pop(true);
-                                          },
-                                          child: const Text('DELETE'),
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            },
-                            child: ListTile(
-                              // leading: CircleAvatar(
-                              //   backgroundImage:
-                              //       FileImage(greatFolders.folders[i].image),
-                              // ),
-                              title: Text(greatFolders.folders[i].title),
-                              subtitle: Text((greatFolders
-                                  .folders[i].description) as String),
-                              onTap: () {
-                                Route _createRoute() {
-                                  return PageRouteBuilder(
-                                    settings: RouteSettings(arguments: {
-                                      'folder_id': greatFolders.folders[i].id,
-                                      'category':
-                                          greatFolders.folders[i].category
-                                    }),
-                                    pageBuilder: (context, animation,
-                                            secondaryAnimation) =>
-                                        RepositoryScreen(),
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
-                                      const begin = Offset(0.0, 1.0);
-                                      const end = Offset.zero;
-                                      const curve = Curves.ease;
-
-                                      var tween = Tween(begin: begin, end: end)
-                                          .chain(CurveTween(curve: curve));
-
-                                      return SlideTransition(
-                                        position: animation.drive(tween),
-                                        child: child,
-                                      );
-                                    },
+        //  FutureBuilder는 서버에서 데이터를 모두 받아오기전 화면을 그려줄수 있게 되는 장점을 가진다.
+        future: first(),
+        builder: (ctx, snapshot) => snapshot.connectionState ==
+                ConnectionState.waiting
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Consumer<FolderManage>(
+                child: Center(
+                    child: Column(
+                  children: [
+                    const Text('Got no folders yet, start adding some!'),
+                  ],
+                )),
+                builder: (ctx, greatFolders, ch) => greatFolders
+                            .folders.length <=
+                        0
+                    ? ch!
+                    : ListView.builder(
+                        reverse: true,
+                        shrinkWrap: true,
+                        itemCount: greatFolders.folders.length,
+                        itemBuilder: (ctx, i) => Dismissible(
+                          key: UniqueKey(),
+                          onDismissed: (direction) => _deleteFolderStoryAndPost(
+                              greatFolders.folders[i].id),
+                          confirmDismiss: (direction) {
+                            return showDialog(
+                                context: context,
+                                builder: (ctx) {
+                                  return AlertDialog(
+                                    title: const Text('Are you sure?'),
+                                    content: Text(
+                                        'Now I am deleting ${greatFolders.folders[i].title}'),
+                                    actions: <Widget>[
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: mainColor),
+                                        onPressed: () {
+                                          return Navigator.of(context)
+                                              .pop(false);
+                                        },
+                                        child: const Text('CANCEL'),
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: mainColor),
+                                        onPressed: () {
+                                          return Navigator.of(context)
+                                              .pop(true);
+                                        },
+                                        child: const Text('DELETE'),
+                                      ),
+                                    ],
                                   );
-                                }
+                                });
+                          },
+                          child: ListTile(
+                            // leading: CircleAvatar(
+                            //   backgroundImage:
+                            //       FileImage(greatFolders.folders[i].image),
+                            // ),
+                            title: Text(greatFolders.folders[i].title),
+                            subtitle: Text((greatFolders.folders[i].description)
+                                as String),
+                            onTap: () {
+                              Route _createRoute() {
+                                return PageRouteBuilder(
+                                  settings: RouteSettings(arguments: {
+                                    'folder_id': greatFolders.folders[i].id,
+                                    'category': greatFolders.folders[i].category
+                                  }),
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      RepositoryScreen(),
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
+                                    const begin = Offset(0.0, 1.0);
+                                    const end = Offset.zero;
+                                    const curve = Curves.ease;
 
-                                Provider.of<TimeManage>(context, listen: false)
-                                    .howManyDaysPassed(greatFolders.folders[i]);
-                                Navigator.of(context).push(
-                                  _createRoute(),
+                                    var tween = Tween(begin: begin, end: end)
+                                        .chain(CurveTween(curve: curve));
+
+                                    return SlideTransition(
+                                      position: animation.drive(tween),
+                                      child: child,
+                                    );
+                                  },
                                 );
-                              },
-                              trailing: Text(
-                                  "category ${greatFolders.folders[i].category} day ${greatFolders.folders[i].days}"),
-                            ),
+                              }
+
+                              Provider.of<TimeManage>(context, listen: false)
+                                  .howManyDaysPassed(greatFolders.folders[i]);
+                              Navigator.of(context).push(
+                                _createRoute(),
+                              );
+                            },
+                            trailing: Text(
+                                "category ${greatFolders.folders[i].category} day ${greatFolders.folders[i].days}"),
                           ),
                         ),
-                      ],
-                    )),
-    );
+                      ),
+              ));
   }
 }

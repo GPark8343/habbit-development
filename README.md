@@ -135,10 +135,21 @@ https://docs.flutter.dev/cookbook/animation/page-route-animation
 
 flutter pub run flutter_native_splash:remove}
 
-
+category list error
 category 디자인 로고 가져오기
-authscreen 꾸미자
- 디자인 더 수정(category 디자인 로고 가져오기)
+화면 끌면 다시 빌드하기
+addfolderbutton을 action으로 빼자
+authscreen 꾸미자 -> complete
+ 디자인 더 수정(category 디자인 로고 가져오기, post 인스타 스크린에 로딩되는 디자인 수정, 리스트 타일 디자인 수정)
 닉네임 넣을 수 있게 하자
-레벨이랑 팔로워 누르면 아직 기능 더 추가해야 함 넣기
+repository screen 경고문 추가
+icon이나 test 크기 mediaquery로 바꾸기
 60개 한꺼번에 올릴 수 있는지 실험// 60개 넘으면 어카냐
+파이어베이스 이거 코드 따로 빼자
+
+//
+레벨이랑 팔로워 누르면 아직 기능 더 추가해야 함 넣기
+fame 저장하고 다시 폴더 스크린에 불러오기 기능 만들기
+
+캐시 플로우: 구글 광고(이거 제외 더 생각하자)
+마케팅: 60일 챌린지 선착순 100명에게 베라 파인트 지급(80만원)

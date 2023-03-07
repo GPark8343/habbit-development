@@ -101,9 +101,9 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
     }
 
     Widget AddStoryButton() {
-      return ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: mainColor),
-          child: Text('add your story'),
+      return IconButton(
+          style: IconButton.styleFrom(backgroundColor: mainColor),
+          icon: Icon(Icons.edit),
           onPressed: () {
             showDialog(
                 context: scaffoldKey!.currentContext!,
@@ -122,7 +122,6 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                               child: Column(
                                 children: [
                                   Text('write your story'),
-                                 
                                   ImageInput(_selectImage),
                                   SizedBox(
                                     height: MediaQuery.of(context).size.width /
@@ -173,6 +172,53 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           });
     }
 
+    Widget NotAbleButton() {
+      return IconButton(
+          style: IconButton.styleFrom(backgroundColor: Colors.grey),
+          icon: Icon(Icons.highlight_off),
+          onPressed: () {
+//경고문 주자 '오늘 스토리를 업로드하였습니다.'
+
+          });
+    }
+
+    Widget ActionButton1() {
+      List<Story> storiesOfFoler =
+          Provider.of<StoryManage>(context, listen: false)
+              .items
+              .where((element) => element.folderId == folderId)
+              .toList();
+      return storiesOfFoler
+                  .where((element) {
+                    DateTime now = DateTime.now();
+                    DateTime dateTime = DateTime.parse(element.createdAt);
+                    return DateTime.utc(
+                            dateTime.year, dateTime.month, dateTime.day) ==
+                        DateTime.utc(now.year, now.month, now.day);
+                  })
+                  .toList()
+                  .length ==
+              0
+          ? AddStoryButton()
+          : NotAbleButton();
+    }
+
+    Widget ActionButton2() {
+      return IconButton(
+          style: IconButton.styleFrom(
+              backgroundColor: !(isRegistered ?? true) && (isFame ?? false)
+                  ? mainColor
+                  : Colors.grey),
+          onPressed: () {
+            Navigator.of(context).pop();
+            !(isRegistered ?? true) && (isFame ?? false)
+                ? Provider.of<FameRepositoryManage>(context, listen: false)
+                    .registerFameStories(folder!, stories)
+                : print('');
+          },
+          icon: (isRegistered ?? true) ?Icon(Icons.highlight_off):Icon(Icons.app_registration));
+    }
+
     return FutureBuilder(
       //  FutureBuilder는 서버에서 데이터를 모두 받아오기전 화면을 그려줄수 있게 되는 장점을 가진다.
       future: first(),
@@ -189,23 +235,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                 color: mainColor,
                 fontWeight: FontWeight.bold),
           ),
-          actions: [
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        !(isRegistered ?? true) && (isFame ?? false)
-                            ? mainColor
-                            : Colors.grey),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  !(isRegistered ?? true) && (isFame ?? false)
-                      ? Provider.of<FameRepositoryManage>(context,
-                              listen: false)
-                          .registerFameStories(folder!, stories)
-                      : print('');
-                },
-                child: Text((isRegistered ?? true) ? '이미 등록됨' : '명예의 전당 등록'))
-          ],
+          actions: [ActionButton1(), ActionButton2()],
         ),
         body: snapshot.connectionState == ConnectionState.waiting
             ? Center(
@@ -215,7 +245,6 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                 child: Center(
                     child: Column(
                   children: [
-                    AddStoryButton(),
                     const Text('Got no stories yet, start adding some!'),
                   ],
                 )),
@@ -237,14 +266,14 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                 .toList()
                                 .length ==
                             0
-                        ? AddStoryButton()
+                        ? Container()
                         : Text('오늘 스토리를 업로드하였습니다.');
                   }
 
                   return storiesOfFoler.length <= 0
                       ? ch!
                       : SingleChildScrollView(
-                        child: Column(
+                          child: Column(
                             children: [
                               isSameDate(),
                               ListView.builder(
@@ -257,8 +286,8 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                           FileImage(storiesOfFoler[i].image),
                                     ),
                                     title: Text(storiesOfFoler[i].title),
-                                    subtitle: Text((storiesOfFoler[i].description)
-                                        as String),
+                                    subtitle: Text((storiesOfFoler[i]
+                                        .description) as String),
                                     onTap: () {
                                       Route _createRoute() {
                                         return PageRouteBuilder(
@@ -268,16 +297,19 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                           pageBuilder: (context, animation,
                                                   secondaryAnimation) =>
                                               StoryDetailScreen(),
-                                          transitionsBuilder: (context, animation,
-                                              secondaryAnimation, child) {
+                                          transitionsBuilder: (context,
+                                              animation,
+                                              secondaryAnimation,
+                                              child) {
                                             const begin = Offset(0.0, 1.0);
                                             const end = Offset.zero;
                                             const curve = Curves.ease;
-                      
+
                                             var tween = Tween(
                                                     begin: begin, end: end)
-                                                .chain(CurveTween(curve: curve));
-                      
+                                                .chain(
+                                                    CurveTween(curve: curve));
+
                                             return SlideTransition(
                                               position: animation.drive(tween),
                                               child: child,
@@ -285,8 +317,9 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                           },
                                         );
                                       }
-                      
-                                      Navigator.of(context).push(_createRoute());
+
+                                      Navigator.of(context)
+                                          .push(_createRoute());
                                     },
                                     trailing: Text(
                                         '${storiesOfFoler[i].category} 업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}'),
@@ -295,7 +328,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                               ),
                             ],
                           ),
-                      );
+                        );
                 }),
       ),
     );
