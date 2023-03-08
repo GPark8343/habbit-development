@@ -7,55 +7,23 @@ import 'package:habbit/colors.dart';
 class SignOutButton extends StatelessWidget {
   const SignOutButton({super.key});
 
-  void _signOut() {
-    FirebaseAuth.instance.signOut();
-    GoogleSignIn().signOut();
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: TextButton(
-        style: TextButton.styleFrom(
-            backgroundColor: Colors.white, foregroundColor: mainColor),
-        onPressed: () {
-          showDialog<bool>(
-              context: context,
-              builder: (ctx) {
-                return AlertDialog(
-                  content: Text('앱을 종료할까요?'),
-                  actions: <Widget>[
-                    ElevatedButton(
-                      style:
-                          ElevatedButton.styleFrom(backgroundColor: mainColor),
-                      child: Text('아니오.'),
-                      onPressed: () {
-                        Navigator.of(context).pop(false);
-                      },
-                    ),
-                    ElevatedButton(
-                      style:
-                          ElevatedButton.styleFrom(backgroundColor: mainColor),
-                      child: Text('네. 종료합니다.'),
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                        Navigator.of(context).pop(true);
-                        _signOut();
+      child: Container(
+        color: Colors.white,
 
-                        // 화면 업데이트 추가
-                      },
-                    ),
-                  ],
-                );
-              });
-        },
-        child: Text(
-          '로그아웃',
-          style: TextStyle(
-              fontSize: MediaQuery.of(context).size.width / 360 * 15,
-              color: mainColor,
-              fontWeight: FontWeight.bold),
-        ),
+          
+          child: Text(
+            '로그아웃',
+            style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width / 360 * 15,
+                color: mainColor,
+                fontWeight: FontWeight.bold),
+          ),
+      
       ),
     );
   }

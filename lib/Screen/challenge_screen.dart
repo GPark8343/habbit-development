@@ -60,31 +60,43 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     return FutureBuilder(
         future: first(),
         builder: (context, snapshot) {
-          return SingleChildScrollView(
-            child: folderListLength == 0
-                ? Center(child: Text('폴더를 먼저 추가해주세요'))
-                : Column(
-                    children: [
-                      Calendar(folderList[index]),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
+          return folderListLength == 0
+              ? Center(
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '폴더를 먼저 추가해주세요',
+                      style: TextStyle(
+                          fontSize:
+                              MediaQuery.of(context).size.width / 360 * 15,
+                          color: mainColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ))
+              : SingleChildScrollView(
+                  child: Column(
+                  children: [
+                    Calendar(folderList[index]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: mainColor),
+                          onPressed: moveLeftIndex,
+                          child: Icon(Icons.arrow_left),
+                        ),
+                        ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: mainColor),
-                            onPressed: moveLeftIndex,
-                            child: Icon(Icons.arrow_left),
-                          ),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: mainColor),
-                              onPressed: moveRightIndex,
-                              child: Icon(Icons.arrow_right)),
-                        ],
-                      ),
-                    ],
-                  ),
-          );
+                            onPressed: moveRightIndex,
+                            child: Icon(Icons.arrow_right)),
+                      ],
+                    ),
+                  ],
+                ));
         });
   }
 }

@@ -14,6 +14,7 @@ import 'package:habbit/Screen/story_detail_screen.dart';
 import 'package:habbit/Screen/tap_screen.dart';
 import 'package:habbit/Screen/term_screen.dart';
 import 'package:habbit/colors.dart';
+import 'package:habbit/providers/category_manage.dart';
 import 'package:habbit/providers/deco_manage.dart';
 import 'package:habbit/providers/fame_repository_manage.dart';
 import 'package:habbit/providers/folder_manage.dart';
@@ -68,7 +69,10 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider.value(
             value: ReportManage(),
-          ),
+          ), 
+          //  ChangeNotifierProvider.value(
+          //   value: CategoryManage(),
+          // ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
