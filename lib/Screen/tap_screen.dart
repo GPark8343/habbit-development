@@ -6,9 +6,11 @@ import 'package:habbit/Screen/challenge_screen.dart';
 import 'package:habbit/Screen/folder_screen.dart';
 import 'package:habbit/Screen/insta_screen.dart';
 import 'package:habbit/Screen/fame_screen.dart';
+import 'package:habbit/Screen/qna_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/profile_screen.dart';
+import 'package:habbit/Screen/term_screen.dart';
 import 'package:habbit/colors.dart';
 import 'package:habbit/widgets/buttons/add_folder_button.dart';
 import 'package:habbit/widgets/buttons/add_story_button.dart';
@@ -70,7 +72,49 @@ class _TapScreenState extends State<TapScreen> {
     } else if (chosenPageIndex == 1) {
       return [];
     } else if (chosenPageIndex == 2) {
-      return [];
+      return [
+        PopupMenuButton(
+          itemBuilder: (_) => [
+            PopupMenuItem(
+                child: Center(
+              child: TextButton(
+                child: Text(
+                  '자주 묻는 질문',
+                  style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width / 360 * 15,
+                      color: mainColor,
+                      fontWeight: FontWeight.bold),
+                ),
+                style: TextButton.styleFrom(
+                    backgroundColor: Colors.white, foregroundColor: mainColor),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed(QnaScreen.routeName);
+                },
+              ),
+            )),
+            PopupMenuItem(
+                child: Center(
+              child: TextButton(
+                child: Text(
+                  '용어 설명',
+                  style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width / 360 * 15,
+                      color: mainColor,
+                      fontWeight: FontWeight.bold),
+                ),
+                style: TextButton.styleFrom(
+                    backgroundColor: Colors.white, foregroundColor: mainColor),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed(TermScreen.routeName);
+                },
+              ),
+            )),
+          ],
+          icon: Icon(Icons.more_vert),
+        )
+      ];
     } else if (chosenPageIndex == 3) {
       return [AddFolderButton()];
     } else if (chosenPageIndex == 4) {

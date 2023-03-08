@@ -7,15 +7,18 @@ import 'package:habbit/Screen/edit_profile_screen.dart';
 import 'package:habbit/Screen/fame_detail_screen.dart';
 import 'package:habbit/Screen/fame_repository_screen.dart';
 import 'package:habbit/Screen/post_detail_screen.dart';
+import 'package:habbit/Screen/qna_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
 import 'package:habbit/Screen/splash_screen.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
 import 'package:habbit/Screen/tap_screen.dart';
+import 'package:habbit/Screen/term_screen.dart';
 import 'package:habbit/colors.dart';
 import 'package:habbit/providers/deco_manage.dart';
 import 'package:habbit/providers/fame_repository_manage.dart';
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/marker_manage.dart';
+import 'package:habbit/providers/report_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/providers/time_manage.dart';
 import 'package:habbit/providers/upload.dart';
@@ -63,6 +66,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(
             value: FameRepositoryManage(),
           ),
+          ChangeNotifierProvider.value(
+            value: ReportManage(),
+          ),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -96,6 +102,8 @@ class MyApp extends StatelessWidget {
             FameRepositoryScreen.routeName: (ctx) => FameRepositoryScreen(),
             FameDetailScreen.routeName: (ctx) => FameDetailScreen(),
             TapScreen.routeName: (ctx) => TapScreen(),
+            QnaScreen.routeName: (ctx) => QnaScreen(),
+            TermScreen.routeName: (ctx) => TermScreen(),
           },
         ));
   }

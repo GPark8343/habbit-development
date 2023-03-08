@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable_text/expandable_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/models/post.dart';
+import 'package:habbit/providers/report_manage.dart';
 import 'package:habbit/widgets/avatar_widget.dart';
 import 'package:habbit/widgets/image_frame.dart';
+import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostWidget extends StatelessWidget {
@@ -51,7 +55,9 @@ class PostWidget extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: Container(color: Colors.white,),
+                child: Container(
+                  color: Colors.white,
+                ),
               );
             }
             final docData = snapshot.data?.docs.first.data();
@@ -85,8 +91,10 @@ class PostWidget extends StatelessWidget {
       return CachedNetworkImage(
         imageUrl: post.thumbnail!,
         placeholder: (context, url) => Center(
-                child: Container(color: Colors.white,),
-              ),
+          child: Container(
+            color: Colors.white,
+          ),
+        ),
       );
     }
 
@@ -132,7 +140,9 @@ class PostWidget extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: Container(color: Colors.white,),
+                child: Container(
+                  color: Colors.white,
+                ),
               );
             }
             final docData = snapshot.data?.docs.first.data();
@@ -189,6 +199,48 @@ class PostWidget extends StatelessWidget {
       );
     }
 
+    Widget ReportIcon(Post post) {
+      return Container(
+          width: MediaQuery.of(context).size.width / 360 * 20,
+          height: MediaQuery.of(context).size.width / 360 * 20,
+          child: GestureDetector(
+              onTap: () async {
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                        content: Text('이 포스트를 신고할까요?'),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: mainColor),
+                            child: Text('아니오.'),
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: mainColor),
+                            child: Text('네. 신고합니다.'),
+                            onPressed: () async {
+                              await Provider.of<ReportManage>(context,
+                                      listen: false)
+                                  .reportPost(
+                                      post,
+                                      FirebaseAuth
+                                          .instance.currentUser!.email!);
+                              Navigator.of(context).pop();
+                              // 화면 업데이트 추가
+                            },
+                          ),
+                        ],
+                      );
+                    });
+              },
+              child: Image.asset('assets/icons/siren.png')));
+    }
+
     return Container(
       margin:
           EdgeInsets.only(top: MediaQuery.of(context).size.width / 360 * 20),
@@ -199,10 +251,19 @@ class PostWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _header(),
-              Padding(
-                padding: EdgeInsets.only(
-                    right: MediaQuery.of(context).size.width / 360 * 20),
-                child: CategoryIcon(post.category!),
+              Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        right: MediaQuery.of(context).size.width / 360 * 25),
+                    child: ReportIcon(post),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        right: MediaQuery.of(context).size.width / 360 * 20),
+                    child: CategoryIcon(post.category!),
+                  ),
+                ],
               ),
             ],
           ),

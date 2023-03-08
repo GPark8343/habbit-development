@@ -14,7 +14,7 @@ class InstaScreen extends StatelessWidget {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('posts')
-            .orderBy('created_at', descending: false)
+            .orderBy('created_at', descending: true)
             .snapshots(),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

@@ -164,8 +164,10 @@ challenge screen 좀 더 꾸미고 탭뷰 넣기(그냥 안 넣고 쫌 꾸밈)
 repository screen 경고문 추가
 icon이나 test 크기 mediaquery로 바꾸기(complete)
 
+post에 userinfo 제거할지 말지
 
 
+이거 용어 설명이랑 qna 꾸미자
 
 파이어베이스 이거 코드 따로 빼자(나중에)
 

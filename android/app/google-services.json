@@ -7,72 +7,36 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:549537613641:android:97b8583258c89532783c98",
+        "mobilesdk_app_id": "1:549537613641:android:8bac761199a99bfb783c98",
         "android_client_info": {
-          "package_name": "com.example.habbit"
+          "package_name": "ifc.habbit"
         }
       },
       "oauth_client": [
         {
-          "client_id": "549537613641-03e2iidc636e0opbkk1ici3nvm04dpbh.apps.googleusercontent.com",
+          "client_id": "549537613641-9jiktdh186id91g26j9dgetaad7pe4qa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.habbit",
-            "certificate_hash": "b45b6e2f57dc7fab55f9bb2481d3986508d3010d"
-          }
-        },
-        {
-          "client_id": "549537613641-5hjsl5seig75unlivq41cchm5v08lnsi.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.habbit",
+            "package_name": "ifc.habbit",
             "certificate_hash": "ec0ccfc58c2b00c6f541e79cdaaa1ee1fe162dc0"
           }
         },
         {
-          "client_id": "549537613641-q3vg2pueftukk31qha0lcmvhvc348l56.apps.googleusercontent.com",
+          "client_id": "549537613641-hj8tvthtsll0cq48ka5p1ptkhthd2kpt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.habbit",
+            "package_name": "ifc.habbit",
             "certificate_hash": "5b5b6e5fec16b4ed2b9be2659f8be2ce4e1659c9"
           }
         },
         {
-          "client_id": "549537613641-de476bljqer3p1diudfc9jdur2q7q17i.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDXxifosLt1tp1XnQzJQoW9NTvuzrrg6B8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "549537613641-5beb6k43atslnbn2nocfbdhof11qc9i2.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "549537613641-7f4ljodr8gjs5ltl00gvsfdhf6jasc9k.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.habbit"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:549537613641:android:57fdd578db0fc744783c98",
-        "android_client_info": {
-          "package_name": "geniusPark.habbit"
-        }
-      },
-      "oauth_client": [
+          "client_id": "549537613641-jndn000lncdg42m8ou7jgd7voefqlbl6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ifc.habbit",
+            "certificate_hash": "b45b6e2f57dc7fab55f9bb2481d3986508d3010d"
+          }
+        },
         {
           "client_id": "549537613641-de476bljqer3p1diudfc9jdur2q7q17i.apps.googleusercontent.com",
           "client_type": 3

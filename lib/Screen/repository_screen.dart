@@ -373,7 +373,11 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                 Navigator.of(context).push(_createRoute());
                               },
                               trailing: Text(
-                                  '${storiesOfFoler[i].category} 업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}'),
+                                '업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}',
+                                style: TextStyle(
+                                    
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         );
