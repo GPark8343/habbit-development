@@ -127,7 +127,20 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                       10.0),
                               child: Column(
                                 children: [
-                                  Text('write your story'),
+                                  Text('스토리를 작성하세요',
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              15,
+                                          color: mainColor,
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.width /
+                                        360 *
+                                        10,
+                                  ),
                                   ImageInput(_selectImage),
                                   SizedBox(
                                     height: MediaQuery.of(context).size.width /
@@ -136,8 +149,8 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                   ),
                                   TextFormField(
                                     controller: _descriptionController,
-                                    decoration: InputDecoration(
-                                        labelText: 'Description'),
+                                    decoration:
+                                        InputDecoration(labelText: '설명'),
                                     maxLines: 3,
                                     keyboardType: TextInputType.multiline,
                                     focusNode: _descriptionFocusNode,
@@ -180,7 +193,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                               });
                         },
                         icon: Icon(Icons.add),
-                        label: Text('Add Story'),
+                        label: Text('스토리 추가하기 '),
                       )
                     ],
                   );
@@ -281,107 +294,117 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           ],
         ),
         body: snapshot.connectionState == ConnectionState.waiting
-            ? Center(
-                child: Container(
-                  color: Colors.white,
+            ? SafeArea(
+              child: Center(
+                  child: Container(
+                    color: Colors.white,
+                  ),
                 ),
-              )
-            : Consumer<StoryManage>(
-                child: Center(
-                    child: Column(
-                  children: [
-                    const Text('Got no stories yet, start adding some!'),
-                  ],
-                )),
-                builder: (ctx, greatStories, ch) {
-                  List<Story> storiesOfFoler = greatStories.items
-                      .where((element) => element.folderId == folderId)
-                      .toList();
-                  Widget isSameDate() {
-                    return storiesOfFoler
-                                .where((element) {
-                                  DateTime now = DateTime.now();
-                                  DateTime dateTime =
-                                      DateTime.parse(element.createdAt);
-                                  return DateTime.utc(dateTime.year,
-                                          dateTime.month, dateTime.day) ==
-                                      DateTime.utc(
-                                          now.year, now.month, now.day);
-                                })
-                                .toList()
-                                .length ==
-                            0
-                        ? Container()
-                        : Text('오늘 스토리를 업로드하였습니다.');
-                  }
-
-                  return storiesOfFoler.length <= 0
-                      ? ch!
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: storiesOfFoler.length,
-                          itemBuilder: (ctx, i) => Card(
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage:
-                                    FileImage(storiesOfFoler[i].image),
-                              ),
-                              title: Text(
-                                storiesOfFoler[i].title,
-                                style: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).size.width /
-                                            360 *
-                                            15,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(
-                                (storiesOfFoler[i].description) as String,
-                                style: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).size.width /
-                                            360 *
-                                            12,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              onTap: () {
-                                Route _createRoute() {
-                                  return PageRouteBuilder(
-                                    settings: RouteSettings(arguments: {
-                                      'story_id': storiesOfFoler[i].id,
-                                    }),
-                                    pageBuilder: (context, animation,
-                                            secondaryAnimation) =>
-                                        StoryDetailScreen(),
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
-                                      const begin = Offset(0.0, 1.0);
-                                      const end = Offset.zero;
-                                      const curve = Curves.ease;
-
-                                      var tween = Tween(begin: begin, end: end)
-                                          .chain(CurveTween(curve: curve));
-
-                                      return SlideTransition(
-                                        position: animation.drive(tween),
-                                        child: child,
-                                      );
-                                    },
-                                  );
-                                }
-
-                                Navigator.of(context).push(_createRoute());
-                              },
-                              trailing: Text(
-                                '업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}',
-                                style: TextStyle(
-                                    
-                                    fontWeight: FontWeight.bold),
+            )
+            : SafeArea(
+              child: Consumer<StoryManage>(
+                  child: Center(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '아직 스토리가 없습니다. 지금 만들어보세요',
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width / 360 * 15,
+                            color: mainColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  )),
+                  builder: (ctx, greatStories, ch) {
+                    List<Story> storiesOfFoler = greatStories.items
+                        .where((element) => element.folderId == folderId)
+                        .toList();
+                    Widget isSameDate() {
+                      return storiesOfFoler
+                                  .where((element) {
+                                    DateTime now = DateTime.now();
+                                    DateTime dateTime =
+                                        DateTime.parse(element.createdAt);
+                                    return DateTime.utc(dateTime.year,
+                                            dateTime.month, dateTime.day) ==
+                                        DateTime.utc(
+                                            now.year, now.month, now.day);
+                                  })
+                                  .toList()
+                                  .length ==
+                              0
+                          ? Container()
+                          : Text('오늘 스토리를 업로드하였습니다.');
+                    }
+            
+                    return storiesOfFoler.length <= 0
+                        ? ch!
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: storiesOfFoler.length,
+                            itemBuilder: (ctx, i) => Card(
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage:
+                                      FileImage(storiesOfFoler[i].image),
+                                ),
+                                title: Text(
+                                  storiesOfFoler[i].title,
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              360 *
+                                              15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(
+                                  (storiesOfFoler[i].description) as String,
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              360 *
+                                              12,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onTap: () {
+                                  Route _createRoute() {
+                                    return PageRouteBuilder(
+                                      settings: RouteSettings(arguments: {
+                                        'story_id': storiesOfFoler[i].id,
+                                      }),
+                                      pageBuilder: (context, animation,
+                                              secondaryAnimation) =>
+                                          StoryDetailScreen(),
+                                      transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        const begin = Offset(0.0, 1.0);
+                                        const end = Offset.zero;
+                                        const curve = Curves.ease;
+            
+                                        var tween = Tween(begin: begin, end: end)
+                                            .chain(CurveTween(curve: curve));
+            
+                                        return SlideTransition(
+                                          position: animation.drive(tween),
+                                          child: child,
+                                        );
+                                      },
+                                    );
+                                  }
+            
+                                  Navigator.of(context).push(_createRoute());
+                                },
+                                trailing: Text(
+                                  '업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                }),
+                          );
+                  }),
+            ),
       ),
     );
   }

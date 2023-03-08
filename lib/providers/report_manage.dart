@@ -6,6 +6,7 @@ class ReportManage extends ChangeNotifier {
   reportPost(Post reportedPost, String reportingUserEmail) async {
     await FirebaseFirestore.instance
         .collection('reports')
-        .add({...reportedPost.toMap(), 'reporting_user': reportingUserEmail});
+        .doc('${reportedPost.uid}${reportingUserEmail}')
+        .set({...reportedPost.toMap(), 'reporting_user': reportingUserEmail});
   }
 }

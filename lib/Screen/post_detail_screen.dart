@@ -91,27 +91,31 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               ),
             ),
             body: snapshot.connectionState == ConnectionState.waiting
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? SafeArea(
+                  child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                )
                 : selectedStory.id == 'no_found'
-                    ? Center(
-                        child: Column(
-                          children: [
-                            Text('스토리가 남아 있지 않습니다.'),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: mainColor),
-                              child: Text('네. 삭제합니다.'),
-                              onPressed: () {
-                                deletePost(storyId);
-                                Navigator.of(context).pop();
-                                // 화면 업데이트 추가
-                              },
-                            ),
-                          ],
+                    ? SafeArea(
+                      child: Center(
+                          child: Column(
+                            children: [
+                              Text('스토리가 남아 있지 않습니다.'),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
+                                child: Text('네. 삭제합니다.'),
+                                onPressed: () {
+                                  deletePost(storyId);
+                                  Navigator.of(context).pop();
+                                  // 화면 업데이트 추가
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      )
+                    )
                     : Column(
                         children: [
                           Container(
@@ -165,7 +169,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                   context: _scaffoldKey!.currentContext!,
                                   builder: (ctx) {
                                     return AlertDialog(
-                                      content: Text('포스트 를 내릴까요?'),
+                                      content: Text('포스트를 내릴까요?'),
                                       actions: <Widget>[
                                         ElevatedButton(
                                           style: ElevatedButton.styleFrom(
@@ -193,7 +197,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
                               // 여기에 화면 다시 업데이트하는 함수 만들기
                             },
-                            child: Text('delete post'),
+                            child: Text('포스트 삭제하기'),
                             style: TextButton.styleFrom(
                                 foregroundColor: mainColor),
                           ),

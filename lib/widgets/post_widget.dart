@@ -231,6 +231,18 @@ class PostWidget extends StatelessWidget {
                                       FirebaseAuth
                                           .instance.currentUser!.email!);
                               Navigator.of(context).pop();
+
+                              showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return AlertDialog(
+                                      content: SingleChildScrollView(
+                                        child: Column(children: [
+                                          Text('신고가 완료되었습니다.')
+                                        ]),
+                                      ),
+                                    );
+                                  });
                               // 화면 업데이트 추가
                             },
                           ),

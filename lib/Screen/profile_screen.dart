@@ -154,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     Navigator.of(context).push(_createRoute1());
                   },
                   child: Text(
-                    'Edit profile',
+                    '프로필 설정',
                     style: TextStyle(
                       color: textColor,
                       fontSize: MediaQuery.of(context).size.width / 360 * 14,
@@ -291,7 +291,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               ),
             ),
             child: Text(
-              'your posts',
+              '내 포스트',
               style: TextStyle(
                 color: textColor,
                 fontSize: MediaQuery.of(context).size.width / 360 * 14,

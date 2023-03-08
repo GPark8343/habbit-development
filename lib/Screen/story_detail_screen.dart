@@ -111,121 +111,125 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
               ),
             ),
             body: snapshot.connectionState == ConnectionState.waiting
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Column(
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.width / 360 * 450,
-                        width: double.infinity,
-                        child: Image.file(
-                          selectedStory.image,
-                          fit: BoxFit.cover,
+                ? SafeArea(
+                  child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                )
+                : SafeArea(
+                  child: Column(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.width / 360 * 450,
                           width: double.infinity,
+                          child: Image.file(
+                            selectedStory.image,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.width / 360 * 10,
-                      ),
-                      Text(
-                    '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 360 * 20,
-                            color: Colors.grey),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.width / 360 * 10,
-                      ),
-                      Text(
-                        selectedStory.description as String,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 360 * 20,
-                            color: Colors.grey),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.width / 360 * 10,
-                      ),
-                      CategoryIcon(selectedStory.category),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.width / 360 * 10,
-                      ),
-                      isToday
-                          ? TextButton(
-                              onPressed: () {
-                                showDialog<bool>(
-                                    context: _scaffoldKey!.currentContext!,
-                                    builder: (ctx) {
-                                      return AlertDialog(
-                                        content: Text('스토리 를 내릴까요?'),
-                                        actions: <Widget>[
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: mainColor),
-                                            child: Text('아니오.'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop(false);
-                                            },
-                                          ),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: mainColor),
-                                            child: Text('네. 삭제합니다.'),
-                                            onPressed: () {
-                                              isUploaded == 0
-                                                  ? deleteStory(storyId)
-                                                  : deleteStoryAndPost(storyId);
-                                              Navigator.of(context).pop();
-                                              Navigator.of(context).pop();
-                                              // 화면 업데이트 추가
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    });
-
-                                // 여기에 화면 다시 업데이트하는 함수 만들기
-                              },
-                              child: Text('delete story'),
-                              style: TextButton.styleFrom(
-                                  foregroundColor: Colors.white,
-                                  backgroundColor: mainColor),
-                            )
-                          : Container(),
-                      isUploaded == 0
-                          ? ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: mainColor),
-                              onPressed: () async {
-                                Navigator.of(context).pop();
-                                // firebase upload function
-                                IUser? userInfo = await upload.loadUserByUid(
-                                    FirebaseAuth.instance.currentUser!.uid);
-                                upload.uploadPost(
-                                  Post(
-                                      title: selectedStory.title,
-                                      userId: FirebaseAuth
-                                          .instance.currentUser!.uid,
-                                      userInfo: userInfo,
-                                      description: selectedStory.description,
-                                      uid: selectedStory.id,
-                                      createdAt: DateTime.now(),
-                                      category: selectedStory.category),
-                                  selectedStory.image,
-                                );
-                                Provider.of<StoryManage>(context, listen: false)
-                                    .changeIsUploaded(selectedStory);
-                                // upload.uploadFile(selectedStory.image, '/${selectedStory.id}/${Uuid().v4()}.jpg');
-                                // upload.updatePost(Post(id: 'post', userInfo: userInfo,description:selectedStory.description ,thumbnail:selectedStory.image. ,uid: id ));
-                              },
-                              child: Text('upload story'))
-                          : Container()
-                    ],
-                  ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.width / 360 * 10,
+                        ),
+                        Text(
+                      '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width / 360 * 20,
+                              color: Colors.grey),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.width / 360 * 10,
+                        ),
+                        Text(
+                          selectedStory.description as String,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width / 360 * 20,
+                              color: Colors.grey),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.width / 360 * 10,
+                        ),
+                        CategoryIcon(selectedStory.category),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.width / 360 * 10,
+                        ),
+                        isToday
+                            ? TextButton(
+                                onPressed: () {
+                                  showDialog<bool>(
+                                      context: _scaffoldKey!.currentContext!,
+                                      builder: (ctx) {
+                                        return AlertDialog(
+                                          content: Text('스토리 를 내릴까요?'),
+                                          actions: <Widget>[
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor: mainColor),
+                                              child: Text('아니오.'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop(false);
+                                              },
+                                            ),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor: mainColor),
+                                              child: Text('네. 삭제합니다.'),
+                                              onPressed: () {
+                                                isUploaded == 0
+                                                    ? deleteStory(storyId)
+                                                    : deleteStoryAndPost(storyId);
+                                                Navigator.of(context).pop();
+                                                Navigator.of(context).pop();
+                                                // 화면 업데이트 추가
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      });
+                
+                                  // 여기에 화면 다시 업데이트하는 함수 만들기
+                                },
+                                child: Text('스토리 삭제하기'),
+                                style: TextButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: mainColor),
+                              )
+                            : Container(),
+                        isUploaded == 0
+                            ? ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
+                                onPressed: () async {
+                                  Navigator.of(context).pop();
+                                  // firebase upload function
+                                  IUser? userInfo = await upload.loadUserByUid(
+                                      FirebaseAuth.instance.currentUser!.uid);
+                                  upload.uploadPost(
+                                    Post(
+                                        title: selectedStory.title,
+                                        userId: FirebaseAuth
+                                            .instance.currentUser!.uid,
+                                        userInfo: userInfo,
+                                        description: selectedStory.description,
+                                        uid: selectedStory.id,
+                                        createdAt: DateTime.now(),
+                                        category: selectedStory.category),
+                                    selectedStory.image,
+                                  );
+                                  Provider.of<StoryManage>(context, listen: false)
+                                      .changeIsUploaded(selectedStory);
+                                  // upload.uploadFile(selectedStory.image, '/${selectedStory.id}/${Uuid().v4()}.jpg');
+                                  // upload.updatePost(Post(id: 'post', userInfo: userInfo,description:selectedStory.description ,thumbnail:selectedStory.image. ,uid: id ));
+                                },
+                                child: Text('포스트 올리기'))
+                            : Container()
+                      ],
+                    ),
+                ),
           );
         });
   }

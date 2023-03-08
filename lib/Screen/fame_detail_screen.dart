@@ -23,6 +23,34 @@ class FameDetailScreen extends StatelessWidget {
         (ModalRoute.of(context)?.settings.arguments as Map)['category'];
     final image = ((ModalRoute.of(context)?.settings.arguments as Map)['image']
         as String);
+    Widget CategoryIcon(String selectedCategory) {
+      if (selectedCategory == 'Kind.Reading') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/reading.png'));
+      } else if (selectedCategory == 'Kind.Exercise') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/exercise.png'));
+      } else if (selectedCategory == 'Kind.Language') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/language.png'));
+      } else if (selectedCategory == 'Kind.Study') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/study.png'));
+      } else {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 20,
+            height: MediaQuery.of(context).size.width / 360 * 20,
+            child: Image.asset('assets/icons/etc.png'));
+      }
+    }
 
     Widget _header() {
       return StreamBuilder(
@@ -40,7 +68,8 @@ class FameDetailScreen extends StatelessWidget {
             return Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width / 360 * 15.0),
-              child: SingleChildScrollView(scrollDirection: Axis.horizontal,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -49,10 +78,7 @@ class FameDetailScreen extends StatelessWidget {
                         nickname: docData!['nickname'],
                         size: MediaQuery.of(context).size.width / 360 * 40,
                         thumbPath: docData['thumbnail']),
-                    Text(
-                      ' 카테고리 ${category ?? ''}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    CategoryIcon(category)
                   ],
                 ),
               ),
@@ -118,7 +144,8 @@ class FameDetailScreen extends StatelessWidget {
     }
 
     return Scaffold(
-        appBar: AppBar( iconTheme: IconThemeData(
+        appBar: AppBar(
+            iconTheme: IconThemeData(
               color: mainColor, //색변경
             ),
             title: Text(
@@ -128,21 +155,25 @@ class FameDetailScreen extends StatelessWidget {
                   color: mainColor,
                   fontWeight: FontWeight.bold),
             )),
-        body: Container(
-          margin: EdgeInsets.only(
-              top: MediaQuery.of(context).size.width / 360 * 20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _header(),
-                SizedBox(height: MediaQuery.of(context).size.width / 360 * 15),
-                _image(),
-                SizedBox(height: MediaQuery.of(context).size.width / 360 * 15),
-                _infoDescription(),
-                SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
-                _dateAgo(MediaQuery.of(context).size.width / 360),
-              ],
+        body: SafeArea(
+          child: Container(
+            margin: EdgeInsets.only(
+                top: MediaQuery.of(context).size.width / 360 * 20),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _header(),
+                  SizedBox(
+                      height: MediaQuery.of(context).size.width / 360 * 15),
+                  _image(),
+                  SizedBox(
+                      height: MediaQuery.of(context).size.width / 360 * 15),
+                  _infoDescription(),
+                  SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
+                  _dateAgo(MediaQuery.of(context).size.width / 360),
+                ],
+              ),
             ),
           ),
         ));

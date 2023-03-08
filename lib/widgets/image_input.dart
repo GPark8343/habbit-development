@@ -69,7 +69,7 @@ class _ImageInputState extends State<ImageInput> {
                 width: double.infinity,
               )
             : Text(
-                'No Image Taken',
+                '이미지를 선택해주세요',style: TextStyle(fontSize: MediaQuery.of(context).size.width / 360*15 ),
                 textAlign: TextAlign.center,
               ),
         alignment: Alignment.center,
@@ -87,10 +87,9 @@ class _ImageInputState extends State<ImageInput> {
             child: TextButton.icon(
               onPressed: _takePicture,
               icon: Icon(Icons.camera),
-              label: Text('Take Picture'),
+              label: Text('카메라'),
               style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: mainColor),
+                  foregroundColor: Colors.white, backgroundColor: mainColor),
             ),
           ),
           Container(
@@ -99,10 +98,9 @@ class _ImageInputState extends State<ImageInput> {
             child: TextButton.icon(
               onPressed: _takeGallery,
               icon: Icon(Icons.browse_gallery),
-              label: Text('Take Gallery'),
+              label: Text('갤러리'),
               style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: mainColor),
+                  foregroundColor: Colors.white, backgroundColor: mainColor),
             ),
           )
         ],

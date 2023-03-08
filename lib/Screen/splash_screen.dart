@@ -17,14 +17,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: Center(
-          child: TextButton(
-        child: Text('Loading...'),
-        onPressed: () {
-         
-        },
-      )),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Center(
+            child: TextButton(
+          child: Text('Loading...'),
+          onPressed: () {
+           
+          },
+        )),
+      ),
     );
   }
 }

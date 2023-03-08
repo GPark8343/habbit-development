@@ -96,8 +96,15 @@ class _FolderScreenState extends State<FolderScreen> {
           : Consumer<FolderManage>(
               child: Center(
                   child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Got no folders yet, start adding some!'),
+                  Text(
+                    '아직 폴더가 없습니다. 지금 만들어보세요',
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 360 * 15,
+                        color: mainColor,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ],
               )),
               builder: (ctx, greatFolders, ch) => greatFolders.folders.length <=
@@ -116,9 +123,9 @@ class _FolderScreenState extends State<FolderScreen> {
                                 context: context,
                                 builder: (ctx) {
                                   return AlertDialog(
-                                    title: const Text('Are you sure?'),
+                                    title: const Text('진짜로 지우시겠습니까?'),
                                     content: Text(
-                                        'Now I am deleting ${greatFolders.folders[i].title}'),
+                                        '지금 지우려는 폴더는 ${greatFolders.folders[i].title}입니다.'),
                                     actions: <Widget>[
                                       ElevatedButton(
                                         style: ElevatedButton.styleFrom(
@@ -127,7 +134,7 @@ class _FolderScreenState extends State<FolderScreen> {
                                           return Navigator.of(context)
                                               .pop(false);
                                         },
-                                        child: const Text('CANCEL'),
+                                        child: const Text('취소하기'),
                                       ),
                                       ElevatedButton(
                                         style: ElevatedButton.styleFrom(
@@ -136,7 +143,7 @@ class _FolderScreenState extends State<FolderScreen> {
                                           return Navigator.of(context)
                                               .pop(true);
                                         },
-                                        child: const Text('DELETE'),
+                                        child: const Text('삭제하기'),
                                       ),
                                     ],
                                   );

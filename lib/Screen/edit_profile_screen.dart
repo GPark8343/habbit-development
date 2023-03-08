@@ -67,134 +67,136 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 color: mainColor,
                 fontWeight: FontWeight.bold),
           )),
-      body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+      body: SafeArea(
+        child: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: const CircularProgressIndicator(),
+                );
+              }
+              final docData = snapshot.data?.docs.first.data();
               return Center(
-                child: const CircularProgressIndicator(),
-              );
-            }
-            final docData = snapshot.data?.docs.first.data();
-            return Center(
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      docData!['thumbnail'],
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        docData!['thumbnail'],
+                      ),
+                      backgroundColor: mainColor,
+                      radius: 100,
                     ),
-                    backgroundColor: mainColor,
-                    radius: 100,
-                  ),
-                  TextButton(
-                      onPressed: _takeGallery,
-                      child: Text(
-                        '사진 수정',
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 360 * 15,
-                            color: mainColor,
-                            fontWeight: FontWeight.bold),
-                      )),
-                  Center(
-                    child: Container(
-                      width: double.infinity,
-                      child: Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(
-                              MediaQuery.of(context).size.width / 360 * 15),
-                          child: Center(
-                            child: Text(
-                              docData['nickname'],
-                              style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width /
-                                      360 *
-                                      30,
-                                  color: textColor,
-                                  fontWeight: FontWeight.bold),
+                    TextButton(
+                        onPressed: _takeGallery,
+                        child: Text(
+                          '사진 수정',
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width / 360 * 15,
+                              color: mainColor,
+                              fontWeight: FontWeight.bold),
+                        )),
+                    Center(
+                      child: Container(
+                        width: double.infinity,
+                        child: Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(
+                                MediaQuery.of(context).size.width / 360 * 15),
+                            child: Center(
+                              child: Text(
+                                docData['nickname'],
+                                style: TextStyle(
+                                    fontSize: MediaQuery.of(context).size.width /
+                                        360 *
+                                        30,
+                                    color: textColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                            isScrollControlled: true,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(25.0))),
-                            context: context,
-                            builder: (ctx) {
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                            .viewInsets
-                                            .bottom +
-                                        MediaQuery.of(context).size.width /
-                                            360 *
-                                            30),
-                                child: Container(
-                                  width: double.infinity,
-                                  height: MediaQuery.of(context).size.width /
-                                      360 *
-                                      400,
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.width /
-                                                360 *
-                                                10,
-                                      ),
-                                      TextFormField(
-                                        controller: _titleController,
-                                        decoration: InputDecoration(
-                                            labelText: 'Nickname'),
-                                        textInputAction: TextInputAction.next,
-                                        onFieldSubmitted: (_) {
-                                          FocusScope.of(context)
-                                              .requestFocus(_priceFocusNode);
-                                        },
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Please provide a value.';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                      TextButton(
-                                          onPressed: () {
-                                            if (_titleController.text.isEmpty) {
-                                              Navigator.of(context)
-                                                  .pop(); // 빈 스토리는 작성 못하게 해야 함
-                                              return;
-                                            }
-                                            _changeName(_titleController.text);
+                    TextButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(25.0))),
+                              context: context,
+                              builder: (ctx) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context)
+                                              .viewInsets
+                                              .bottom +
+                                          MediaQuery.of(context).size.width /
+                                              360 *
+                                              30),
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: MediaQuery.of(context).size.width /
+                                        360 *
+                                        400,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height:
+                                              MediaQuery.of(context).size.width /
+                                                  360 *
+                                                  10,
+                                        ),
+                                        TextFormField(
+                                          controller: _titleController,
+                                          decoration: InputDecoration(
+                                              labelText: 'Nickname'),
+                                          textInputAction: TextInputAction.next,
+                                          onFieldSubmitted: (_) {
+                                            FocusScope.of(context)
+                                                .requestFocus(_priceFocusNode);
                                           },
-                                          child: Text('변경 완료'))
-                                    ],
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please provide a value.';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        TextButton(
+                                            onPressed: () {
+                                              if (_titleController.text.isEmpty) {
+                                                Navigator.of(context)
+                                                    .pop(); // 빈 스토리는 작성 못하게 해야 함
+                                                return;
+                                              }
+                                              _changeName(_titleController.text);
+                                            },
+                                            child: Text('변경 완료'))
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            });
-                      },
-                      child: Text(
-                        '이름 변경',
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 360 * 15,
-                            color: mainColor,
-                            fontWeight: FontWeight.bold),
-                      )),
-                ],
-              ),
-            );
-          }),
+                                );
+                              });
+                        },
+                        child: Text(
+                          '이름 변경',
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width / 360 * 15,
+                              color: mainColor,
+                              fontWeight: FontWeight.bold),
+                        )),
+                  ],
+                ),
+              );
+            }),
+      ),
     );
   }
 }

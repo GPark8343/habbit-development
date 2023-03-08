@@ -4,11 +4,9 @@ import 'package:habbit/widgets/buttons/add_folder_button.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
-
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/widgets/category/category_list.dart';
-
 
 enum Kind { Reading, Exercise, Language, Study, Etc }
 
@@ -16,28 +14,26 @@ class CategoryList extends StatefulWidget {
   @override
   State<CategoryList> createState() => _CategoryListState();
 }
-    Kind? _kind = Kind.Reading;
+
+Kind? _kind = Kind.Reading;
+
 class _CategoryListState extends State<CategoryList> {
   Kind? _kind = Kind.Reading;
-   final _priceFocusNode = FocusNode();
-    final _descriptionFocusNode = FocusNode();
-    final _titleController = TextEditingController();
-    final _descriptionController = TextEditingController();
-    
-     @override
-    void dispose() {
-      _priceFocusNode.dispose();
-      _descriptionFocusNode.dispose();
-      super.dispose();
-    }
+  final _priceFocusNode = FocusNode();
+  final _descriptionFocusNode = FocusNode();
+  final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
 
+  @override
+  void dispose() {
+    _priceFocusNode.dispose();
+    _descriptionFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-   
-
     String? _pickedCategory;
-
 
     void _selectCategory(Kind pickedCategory) {
       _pickedCategory = pickedCategory.toString();
@@ -58,8 +54,6 @@ class _CategoryListState extends State<CategoryList> {
       Provider.of<FolderManage>(context, listen: false).fetchAndSetFolders();
     }
 
-   
-
     return AlertDialog(
       content: Text('카테고리를 선택하세요'),
       actions: <Widget>[
@@ -69,7 +63,7 @@ class _CategoryListState extends State<CategoryList> {
               activeColor: mainColor,
               //ListTile - title에는 내용,
               //leading or trailing에 체크박스나 더보기와 같은 아이콘을 넣는다.
-              title: Text('Reading',
+              title: Text('독서',
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width / 360 * 17,
                       color: mainColor,
@@ -85,7 +79,7 @@ class _CategoryListState extends State<CategoryList> {
             ),
             RadioListTile(
               activeColor: mainColor,
-              title: Text('Exercise',
+              title: Text('운동',
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width / 360 * 17,
                       color: mainColor,
@@ -100,7 +94,7 @@ class _CategoryListState extends State<CategoryList> {
             ),
             RadioListTile(
               activeColor: mainColor,
-              title: Text('Language',
+              title: Text('언어',
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width / 360 * 17,
                       color: mainColor,
@@ -115,7 +109,7 @@ class _CategoryListState extends State<CategoryList> {
             ),
             RadioListTile(
               activeColor: mainColor,
-              title: Text('Study',
+              title: Text('공부',
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width / 360 * 17,
                       color: mainColor,
@@ -130,7 +124,7 @@ class _CategoryListState extends State<CategoryList> {
             ),
             RadioListTile(
               activeColor: mainColor,
-              title: Text('Etc',
+              title: Text('기타',
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).size.width / 360 * 17,
                       color: mainColor,
@@ -199,11 +193,11 @@ class _CategoryListState extends State<CategoryList> {
                                           10.0),
                                   child: Column(
                                     children: [
-                                      Text('write your file information'),
+                                      Text('폴더 정보를 입력하세요'),
                                       TextFormField(
                                         controller: _titleController,
                                         decoration:
-                                            InputDecoration(labelText: 'Title'),
+                                            InputDecoration(labelText: '제목'),
                                         textInputAction: TextInputAction.next,
                                         onFieldSubmitted: (_) {
                                           FocusScope.of(context)
@@ -224,8 +218,8 @@ class _CategoryListState extends State<CategoryList> {
                                       ),
                                       TextFormField(
                                         controller: _descriptionController,
-                                        decoration: InputDecoration(
-                                            labelText: 'Description'),
+                                        decoration:
+                                            InputDecoration(labelText: '설명'),
                                         maxLines: 3,
                                         keyboardType: TextInputType.multiline,
                                         focusNode: _descriptionFocusNode,
@@ -258,7 +252,7 @@ class _CategoryListState extends State<CategoryList> {
                               // Navigator.of(context).pop();
                             },
                             icon: Icon(Icons.add),
-                            label: Text('Add Folder'),
+                            label: Text('폴더 추가하기'),
                           )
                         ],
                       );

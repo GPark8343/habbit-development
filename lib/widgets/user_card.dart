@@ -14,7 +14,8 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/360*3),
+      margin: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 360 * 3),
       width: MediaQuery.of(context).size.width / 360 * 150,
       height: MediaQuery.of(context).size.width / 360 * 220,
       decoration: BoxDecoration(
@@ -27,47 +28,49 @@ class UserCard extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            left:MediaQuery.of(context).size.width/360* 15,
-            right: MediaQuery.of(context).size.width/360*15,
+            left: MediaQuery.of(context).size.width / 360 * 15,
+            right: MediaQuery.of(context).size.width / 360 * 15,
             top: 0,
             bottom: 0,
             child: Column(
               children: [
-                 SizedBox(height: MediaQuery.of(context).size.width/360*10),
+                SizedBox(height: MediaQuery.of(context).size.width / 360 * 10),
                 AvatarWidget(
                   type: AvatarType.TYPE2,
                   thumbPath:
                       'https://thumbs.dreamstime.com/b/photo-portrait-cheerful-cool-swag-trend-trendy-guy-leaving-his-feedback-social-media-network-using-smart-phone-photo-145377495.jpg',
-                size:MediaQuery.of(context).size.width/360*80,  
+                  size: MediaQuery.of(context).size.width / 360 * 80,
                 ),
-               SizedBox(height: MediaQuery.of(context).size.width/360*10),
+                SizedBox(height: MediaQuery.of(context).size.width / 360 * 10),
                 Text(
                   userId,
-                  style:  TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: MediaQuery.of(context).size.width/360*13,
+                    fontSize: MediaQuery.of(context).size.width / 360 * 13,
                   ),
                 ),
                 Text(
                   description,
-                  style:  TextStyle(
-                    fontSize: MediaQuery.of(context).size.width/360*13,
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 360 * 13,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                ElevatedButton(style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),onPressed: () {}, child: const Text('Follow'))
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: mainColor),
+                    onPressed: () {},
+                    child: const Text('Follow'))
               ],
             ),
           ),
           Positioned(
-            right: 5,
-            top: 5,
+            right: MediaQuery.of(context).size.width / 360 * 5,
+            top: MediaQuery.of(context).size.width / 360 * 5,
             child: GestureDetector(
               onTap: () {},
-              child: const Icon(
+              child: Icon(
                 Icons.close,
-                size: 14,
+                size: MediaQuery.of(context).size.width / 360 * 14,
                 color: Colors.grey,
               ),
             ),

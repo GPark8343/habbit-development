@@ -62,7 +62,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
         builder: (context, snapshot) {
           return SingleChildScrollView(
             child: folderListLength == 0
-                ? Center(child: Text('folder를 먼저 추가해주세요'))
+                ? Center(child: Text('폴더를 먼저 추가해주세요'))
                 : Column(
                     children: [
                       Calendar(folderList[index]),
