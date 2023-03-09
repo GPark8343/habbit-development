@@ -74,12 +74,14 @@ class AuthScreen extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-                          child: Image.asset(
-                            'assets/logos/btn_google_signin_light_normal_web.png',
-                            width:
-                                MediaQuery.of(context).size.width / 360 * 200,
-                            height:
-                                MediaQuery.of(context).size.width / 360 * 50,
+                          child: Card(color: mainColor,
+                            child: Image.asset(
+                              'assets/logos/btn_google_signin_light_normal_web.png',
+                              width:
+                                  MediaQuery.of(context).size.width / 360 * 200,
+                              height:
+                                  MediaQuery.of(context).size.width / 360 * 50,fit: BoxFit.contain,
+                            ),
                           ),
                           onTap: () {
                             signInWithGoogle(context);

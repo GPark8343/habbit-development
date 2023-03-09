@@ -112,12 +112,12 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
             ),
             body: snapshot.connectionState == ConnectionState.waiting
                 ? SafeArea(
-                  child: Center(
+                    child: Center(
                       child: CircularProgressIndicator(),
                     ),
-                )
+                  )
                 : SafeArea(
-                  child: Column(
+                    child: Column(
                       children: [
                         Container(
                           height: MediaQuery.of(context).size.width / 360 * 450,
@@ -132,7 +132,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                           height: MediaQuery.of(context).size.width / 360 * 10,
                         ),
                         Text(
-                      '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일',
+                          '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize:
@@ -171,7 +171,8 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                                   backgroundColor: mainColor),
                                               child: Text('아니오.'),
                                               onPressed: () {
-                                                Navigator.of(context).pop(false);
+                                                Navigator.of(context)
+                                                    .pop(false);
                                               },
                                             ),
                                             ElevatedButton(
@@ -181,7 +182,10 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                               onPressed: () {
                                                 isUploaded == 0
                                                     ? deleteStory(storyId)
-                                                    : deleteStoryAndPost(storyId);
+                                                    : deleteStoryAndPost(
+                                                        storyId);
+                                              
+                                                Navigator.of(context).pop();
                                                 Navigator.of(context).pop();
                                                 Navigator.of(context).pop();
                                                 // 화면 업데이트 추가
@@ -190,7 +194,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                           ],
                                         );
                                       });
-                
+
                                   // 여기에 화면 다시 업데이트하는 함수 만들기
                                 },
                                 child: Text('스토리 삭제하기'),
@@ -220,7 +224,8 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                         category: selectedStory.category),
                                     selectedStory.image,
                                   );
-                                  Provider.of<StoryManage>(context, listen: false)
+                                  Provider.of<StoryManage>(context,
+                                          listen: false)
                                       .changeIsUploaded(selectedStory);
                                   // upload.uploadFile(selectedStory.image, '/${selectedStory.id}/${Uuid().v4()}.jpg');
                                   // upload.updatePost(Post(id: 'post', userInfo: userInfo,description:selectedStory.description ,thumbnail:selectedStory.image. ,uid: id ));
@@ -229,7 +234,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                             : Container()
                       ],
                     ),
-                ),
+                  ),
           );
         });
   }

@@ -63,8 +63,10 @@ class _ProfileScreenState extends State<ProfileScreen>
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-                child: Container(color: Colors.white,),
-              );
+              child: Container(
+                color: Colors.white,
+              ),
+            );
           }
           final docs = snapshot.data?.docs;
 
@@ -208,8 +210,10 @@ class _ProfileScreenState extends State<ProfileScreen>
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-                child: Container(color: Colors.white,),
-              );
+              child: Container(
+                color: Colors.white,
+              ),
+            );
           }
           final docs = snapshot.data?.docs;
           return GridView.builder(
@@ -231,6 +235,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                     return PageRouteBuilder(
                       settings: RouteSettings(arguments: {
                         'story_id': docs[index]['uid'],
+                        'created_at': docs[index]['created_at'],
+                        'title': docs[index]['title'],
+                        'image': docs[index]['thumbnail'],
+                        'description': docs[index]['description'],
+                        'category': docs[index]['category'],
                       }),
                       pageBuilder: (context, animation, secondaryAnimation) =>
                           PostDetailScreen(),
@@ -256,10 +265,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                 child: CachedNetworkImage(
                   fit: BoxFit.cover,
                   imageUrl: docs![index]['thumbnail'],
-                  placeholder: (context, url) =>
-                      Center(
-                child: Container(color: Colors.white,),
-              ),
+                  placeholder: (context, url) => Center(
+                    child: Container(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               );
             },
@@ -276,7 +286,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           _information(),
           _menu(),
           // _discoverPeople(),
-    
+
           Deco(),
           // _tabMenu(),
           SizedBox(height: MediaQuery.of(context).size.width / 360 * 20),

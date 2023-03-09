@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/colors.dart';
@@ -23,6 +24,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     final GlobalKey<ScaffoldState>? _scaffoldKey = GlobalKey<ScaffoldState>();
     final storyId =
         (ModalRoute.of(context)?.settings.arguments as Map)['story_id'];
+    final createdAt =
+        (ModalRoute.of(context)?.settings.arguments as Map)['created_at'];
+    final title = (ModalRoute.of(context)?.settings.arguments as Map)['title'];
+    final image = (ModalRoute.of(context)?.settings.arguments as Map)['image'];
+    final description =
+        (ModalRoute.of(context)?.settings.arguments as Map)['description'];
+    final category =
+        (ModalRoute.of(context)?.settings.arguments as Map)['category'];
 
     final upload = Provider.of<Upload>(context, listen: false);
     final selectedStory =
@@ -75,7 +84,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     return FutureBuilder(
         future: fetchAndSetStories(),
         builder: (context, snapshot) {
-          DateTime dateTime = DateTime.parse(selectedStory.createdAt);
+          DateTime dateTime = (createdAt as Timestamp).toDate();
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
@@ -83,7 +92,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 color: mainColor, //색변경
               ),
               title: Text(
-                selectedStory.title,
+                title,
                 style: TextStyle(
                     fontSize: MediaQuery.of(context).size.width / 360 * 25,
                     color: mainColor,
@@ -92,117 +101,92 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             ),
             body: snapshot.connectionState == ConnectionState.waiting
                 ? SafeArea(
-                  child: Center(
+                    child: Center(
                       child: CircularProgressIndicator(),
                     ),
-                )
-                : selectedStory.id == 'no_found'
-                    ? SafeArea(
-                      child: Center(
-                          child: Column(
-                            children: [
-                              Text('스토리가 남아 있지 않습니다.'),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: mainColor),
-                                child: Text('네. 삭제합니다.'),
-                                onPressed: () {
-                                  deletePost(storyId);
-                                  Navigator.of(context).pop();
-                                  // 화면 업데이트 추가
-                                },
-                              ),
-                            ],
+                  )
+                : SafeArea(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.width / 360 * 450,
+                          width: double.infinity,
+                          child: Image.network(
+                            image,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
                           ),
                         ),
-                    )
-                    : Column(
-                        children: [
-                          Container(
-                            height:
-                                MediaQuery.of(context).size.width / 360 * 450,
-                            width: double.infinity,
-                            child: Image.file(
-                              selectedStory.image,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                            ),
-                          ),
-                          SizedBox(
-                            height:
-                                MediaQuery.of(context).size.width / 360 * 10,
-                          ),
-                          Text(
-                            '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: MediaQuery.of(context).size.width /
-                                    360 *
-                                    20,
-                                color: Colors.grey),
-                          ),
-                          SizedBox(
-                            height:
-                                MediaQuery.of(context).size.width / 360 * 10,
-                          ),
-                          Text(
-                            selectedStory.description as String,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: MediaQuery.of(context).size.width /
-                                    360 *
-                                    20,
-                                color: Colors.grey),
-                          ),
-                          SizedBox(
-                            height:
-                                MediaQuery.of(context).size.width / 360 * 10,
-                          ),
-                          CategoryIcon(selectedStory.category),
-                          SizedBox(
-                            height:
-                                MediaQuery.of(context).size.width / 360 * 10,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              showDialog<bool>(
-                                  context: _scaffoldKey!.currentContext!,
-                                  builder: (ctx) {
-                                    return AlertDialog(
-                                      content: Text('포스트를 내릴까요?'),
-                                      actions: <Widget>[
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor: mainColor),
-                                          child: Text('아니오.'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop(false);
-                                          },
-                                        ),
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor: mainColor),
-                                          child: Text('네. 삭제합니다.'),
-                                          onPressed: () {
-                                            deletePost(storyId);
+                        SizedBox(
+                          height: MediaQuery.of(context).size.width / 360 * 10,
+                        ),
+                        Text(
+                          '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width / 360 * 20,
+                              color: Colors.grey),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.width / 360 * 10,
+                        ),
+                        Text(
+                          description as String,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width / 360 * 20,
+                              color: Colors.grey),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.width / 360 * 10,
+                        ),
+                        CategoryIcon(category),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.width / 360 * 10,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            showDialog<bool>(
+                                context: _scaffoldKey!.currentContext!,
+                                builder: (ctx) {
+                                  return AlertDialog(
+                                    content: Text('포스트를 내릴까요?'),
+                                    actions: <Widget>[
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: mainColor),
+                                        child: Text('아니오.'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop(false);
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: mainColor),
+                                        child: Text('네. 삭제합니다.'),
+                                        onPressed: () {
+                                          deletePost(storyId);
 
-                                            Navigator.of(context).pop();
-                                            Navigator.of(context).pop();
-                                            // 화면 업데이트 추가
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  });
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                          // 화면 업데이트 추가
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
 
-                              // 여기에 화면 다시 업데이트하는 함수 만들기
-                            },
-                            child: Text('포스트 삭제하기'),
-                            style: TextButton.styleFrom(
-                                foregroundColor: mainColor),
-                          ),
-                        ],
-                      ),
+                            // 여기에 화면 다시 업데이트하는 함수 만들기
+                          },
+                          child: Text('포스트 삭제하기'),
+                          style:
+                              TextButton.styleFrom(foregroundColor: mainColor),
+                        ),
+                      ],
+                    ),
+                  ),
           );
         });
   }
