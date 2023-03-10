@@ -27,6 +27,8 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart'; //이거 필수 await initializeDateFormatting(); 때문에
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 
 void main() async {
   await initializeDateFormatting();
@@ -36,6 +38,7 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
   MobileAds.instance.initialize();
+   InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(MyApp());

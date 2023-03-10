@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/colors.dart';
 import 'package:habbit/models/folder.dart';
@@ -16,11 +17,18 @@ class ChallengeScreen extends StatefulWidget {
 
 class _ChallengeScreenState extends State<ChallengeScreen> {
   int index = 0;
+  late List<Folder> folderList;
+  @override
+  void initState() {
+    folderList = [];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<Folder> folderList =
+    List<Folder> folderListAll =
         Provider.of<FolderManage>(context, listen: false).folders;
+
     int folderListLength = folderList.length;
     void moveLeftIndex() {
       if (index - 1 < 0) {
@@ -54,19 +62,38 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
       await Provider.of<StoryManage>(context, listen: false)
           .fetchAndSetStories();
 
+      for (int i = 0; i < folderListAll.length; i++) {
+        try{await FirebaseFirestore.instance
+            .collection('fame_folder')
+            .where('folderId', isEqualTo: folderListAll[i].id)
+            .get()
+            .then((value) {
+          print(value.docs.first.data()['folderId']);
+          folderList.add(Provider.of<FolderManage>(context, listen: false)
+              .findById(value.docs.first.data()['folderId']));
+          print('${folderList}1');
+        });}catch(err){
+          return;
+        }
+      }
+      folderListLength = folderList.length;
+      print('${folderList}2');
       await Provider.of<MarkerManage>(context, listen: false).addMarker();
     }
 
+    print('${folderList}3');
     return FutureBuilder(
         future: first(),
         builder: (context, snapshot) {
-          return folderListLength == 0
+            print('${folderList}4');
+            print('${folderListLength}5');
+          return folderList.length == 0
               ? Center(
                   child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '폴더를 먼저 추가해주세요',
+                      '첼린지 폴더를 먼저 추가해주세요',
                       style: TextStyle(
                           fontSize:
                               MediaQuery.of(context).size.width / 360 * 15,

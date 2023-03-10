@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/repository_screen.dart';
 import 'package:habbit/colors.dart';
@@ -113,104 +114,137 @@ class _FolderScreenState extends State<FolderScreen> {
                   : ListView.builder(
                       shrinkWrap: true,
                       itemCount: greatFolders.folders.length,
-                      itemBuilder: (ctx, i) => Card(
-                        child: Dismissible(
-                          key: UniqueKey(),
-                          onDismissed: (direction) => _deleteFolderStoryAndPost(
-                              greatFolders.folders[i].id),
-                          confirmDismiss: (direction) {
-                            return showDialog(
-                                context: context,
-                                builder: (ctx) {
-                                  return AlertDialog(
-                                    title: const Text('진짜로 지우시겠습니까?'),
-                                    content: Text(
-                                        '지금 지우려는 폴더는 ${greatFolders.folders[i].title}입니다.'),
-                                    actions: <Widget>[
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: mainColor),
-                                        onPressed: () {
-                                          return Navigator.of(context)
-                                              .pop(false);
-                                        },
-                                        child: const Text('취소하기'),
-                                      ),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: mainColor),
-                                        onPressed: () {
-                                          return Navigator.of(context)
-                                              .pop(true);
-                                        },
-                                        child: const Text('삭제하기'),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          },
-                          child: ListTile(
-                            // leading: CircleAvatar(
-                            //   backgroundImage:
-                            //       FileImage(greatFolders.folders[i].image),
-                            // ),
-                            title: Text(
-                              greatFolders.folders[i].title,
-                              style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width /
-                                      360 *
-                                      15,
-                                  fontWeight: FontWeight.bold),
-                            ),
-
-                            subtitle: Text(
-                              (greatFolders.folders[i].description) as String,
-                              style: TextStyle(
-                                  fontSize: MediaQuery.of(context).size.width /
-                                      360 *
-                                      12,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onTap: () {
-                              Route _createRoute() {
-                                return PageRouteBuilder(
-                                  settings: RouteSettings(arguments: {
-                                    'folder_id': greatFolders.folders[i].id,
-                                    'category': greatFolders.folders[i].category
-                                  }),
-                                  pageBuilder: (context, animation,
-                                          secondaryAnimation) =>
-                                      RepositoryScreen(),
-                                  transitionsBuilder: (context, animation,
-                                      secondaryAnimation, child) {
-                                    const begin = Offset(0.0, 1.0);
-                                    const end = Offset.zero;
-                                    const curve = Curves.ease;
-
-                                    var tween = Tween(begin: begin, end: end)
-                                        .chain(CurveTween(curve: curve));
-
-                                    return SlideTransition(
-                                      position: animation.drive(tween),
-                                      child: child,
-                                    );
+                      itemBuilder: (ctx, i) {
+                        bool isFameFolder = false;
+                        print(greatFolders.folders[i].id);
+                        return FutureBuilder(
+                            future: FirebaseFirestore.instance
+                                .collection('fame_folder')
+                                .where('folderId',
+                                    isEqualTo: greatFolders.folders[i].id)
+                                .get()
+                                .then((value) {
+                              isFameFolder = value.docs.isNotEmpty;
+                            }),
+                            builder: (context, futureSnapshot) {
+                              print(isFameFolder);
+                              return Card(
+                                child: Dismissible(
+                                  key: UniqueKey(),
+                                  onDismissed: (direction) =>
+                                      _deleteFolderStoryAndPost(
+                                          greatFolders.folders[i].id),
+                                  confirmDismiss: (direction) {
+                                    return showDialog(
+                                        context: context,
+                                        builder: (ctx) {
+                                          return AlertDialog(
+                                            title: const Text('진짜로 지우시겠습니까?'),
+                                            content: Text(
+                                                '지금 지우려는 폴더는 ${greatFolders.folders[i].title}입니다.'),
+                                            actions: <Widget>[
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor: mainColor),
+                                                onPressed: () {
+                                                  return Navigator.of(context)
+                                                      .pop(false);
+                                                },
+                                                child: const Text('취소하기'),
+                                              ),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor: mainColor),
+                                                onPressed: () {
+                                                  return Navigator.of(context)
+                                                      .pop(true);
+                                                },
+                                                child: const Text('삭제하기'),
+                                              ),
+                                            ],
+                                          );
+                                        });
                                   },
-                                );
-                              }
+                                  child: ListTile(
+                                    tileColor: isFameFolder
+                                        ? Colors.yellow
+                                        : Colors.white,
 
-                              Provider.of<TimeManage>(context, listen: false)
-                                  .howManyDaysPassed(greatFolders.folders[i]);
-                              Navigator.of(context).push(
-                                _createRoute(),
+                                    // leading: CircleAvatar(
+                                    //   backgroundImage:
+                                    //       FileImage(greatFolders.folders[i].image),
+                                    // ),
+                                    title: Text(
+                                      greatFolders.folders[i].title,
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+
+                                    subtitle: Text(
+                                      (greatFolders.folders[i].description)
+                                          as String,
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              12,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    onTap: () {
+                                      Route _createRoute() {
+                                        return PageRouteBuilder(
+                                          settings: RouteSettings(arguments: {
+                                            'folder_id':
+                                                greatFolders.folders[i].id,
+                                            'category':
+                                                greatFolders.folders[i].category
+                                          }),
+                                          pageBuilder: (context, animation,
+                                                  secondaryAnimation) =>
+                                              RepositoryScreen(),
+                                          transitionsBuilder: (context,
+                                              animation,
+                                              secondaryAnimation,
+                                              child) {
+                                            const begin = Offset(0.0, 1.0);
+                                            const end = Offset.zero;
+                                            const curve = Curves.ease;
+
+                                            var tween = Tween(
+                                                    begin: begin, end: end)
+                                                .chain(
+                                                    CurveTween(curve: curve));
+
+                                            return SlideTransition(
+                                              position: animation.drive(tween),
+                                              child: child,
+                                            );
+                                          },
+                                        );
+                                      }
+
+                                      Provider.of<TimeManage>(context,
+                                              listen: false)
+                                          .howManyDaysPassed(
+                                              greatFolders.folders[i]);
+                                      Navigator.of(context).push(
+                                        _createRoute(),
+                                      );
+                                    },
+                                    trailing: CategoryIcon(
+                                        greatFolders.folders[i].category),
+                                    // Text("day ${greatFolders.folders[i].days}"),
+                                  ),
+                                ),
                               );
-                            },
-                            trailing:
-                                CategoryIcon(greatFolders.folders[i].category),
-                            // Text("day ${greatFolders.folders[i].days}"),
-                          ),
-                        ),
-                      ),
-                    ),
+                            });
+                      }),
             ),
     );
   }

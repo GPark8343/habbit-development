@@ -1,18 +1,18 @@
 import 'dart:io';
 //addstorybutton 함부로 꺼내면 ㅈ됨 ancestor widget 어쩌구 에러남
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
+
 import 'package:habbit/colors.dart';
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/models/story.dart';
 import 'package:habbit/providers/fame_repository_manage.dart';
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
-import 'package:habbit/widgets/buttons/add_story_button.dart';
+
 import 'package:habbit/widgets/image_input.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 
 class RepositoryScreen extends StatefulWidget {
@@ -24,18 +24,64 @@ class RepositoryScreen extends StatefulWidget {
 }
 
 class _RepositoryScreenState extends State<RepositoryScreen> {
+  final InAppPurchase _inAppPurchase = InAppPurchase.instance;
+  List<ProductDetails> view = [];
+  Future fetch() async {
+    final folderId =
+        (ModalRoute.of(context)?.settings.arguments as Map)['folder_id'];
+    final bool available = await _inAppPurchase.isAvailable();
+    if (available) {
+      Set<String> ids = Set<String>.from([
+        "product1",
+      ]);
+      ProductDetailsResponse res =
+          await _inAppPurchase.queryProductDetails(ids);
+      this.view = res.productDetails;
+
+      /// 📌 소모 및 비소모 둘 다
+      _inAppPurchase.purchaseStream.listen((List<PurchaseDetails> event) {
+        PurchaseDetails e = event[0];
+        print(
+            "📌 EVENT $e ${e.status} ${e.productID} ${e.pendingCompletePurchase}");
+
+        /// 구매 여부 pendingCompletePurchase - 승인 true / 취소 false
+        if (e.pendingCompletePurchase) {
+          if (!mounted) return;
+          FirebaseFirestore.instance
+              .collection('fame_folder')
+              .add({'folderId': folderId});
+
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => ThankPage()));
+        }
+      });
+    }
+    if (!mounted) return;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    Future(this.fetch);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState>? scaffoldKey = GlobalKey<ScaffoldState>();
     Folder? folder;
     bool? isFame;
     bool? isRegistered;
+    bool? isFameFolder;
     final folderId =
         (ModalRoute.of(context)?.settings.arguments as Map)['folder_id'];
     final category =
         (ModalRoute.of(context)?.settings.arguments as Map)['category'];
     var stories = Provider.of<StoryManage>(context, listen: false).items;
     Future first() async {
+      //
+
+//
       await Provider.of<StoryManage>(context, listen: false)
           .fetchAndSetStories();
       await Provider.of<FolderManage>(context, listen: false)
@@ -54,6 +100,11 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           .where('folderId', isEqualTo: folderId)
           .get()
           .then((value) => isRegistered = value.docs.isNotEmpty);
+      await FirebaseFirestore.instance
+          .collection('fame_folder')
+          .where('folderId', isEqualTo: folderId)
+          .get()
+          .then((value) => isFameFolder = value.docs.isNotEmpty);
       print(folderId);
       print(stories);
 
@@ -240,35 +291,64 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
     }
 
     Widget ActionButton2() {
-      return IconButton(
-          style: IconButton.styleFrom(
-              backgroundColor: !(isRegistered ?? true) && (isFame ?? false)
-                  ? mainColor
-                  : Colors.grey),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (_) {
-                  return AlertDialog(
-                    content: SingleChildScrollView(
-                      child: Column(children: [
-                        !(isFame ?? false)
-                            ? Text('명예의 전당에 올리려면 60일을 채워야 합니다.')
-                            : (!(isRegistered ?? true)
-                                ? Text('등록하는데 1분이 걸립니다. 앱을 종료하지 마세요')
-                                : Text('이미 등록되었습니다.'))
-                      ]),
-                    ),
-                  );
-                });
-            !(isRegistered ?? true) && (isFame ?? false)
-                ? Provider.of<FameRepositoryManage>(context, listen: false)
-                    .registerFameStories(folder!, stories)
-                : print('');
-          },
-          icon: !(isRegistered ?? true)
-              ? Icon(Icons.app_registration)
-              : Icon(Icons.highlight_off));
+      return (isFameFolder ?? false)
+          ? IconButton(
+              style: IconButton.styleFrom(
+                  backgroundColor: !(isRegistered ?? true) && (isFame ?? false)
+                      ? mainColor
+                      : Colors.grey),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                        content: SingleChildScrollView(
+                          child: Column(children: [
+                            !(isFame ?? false)
+                                ? Text('명예의 전당에 올리려면 60일을 채워야 합니다.')
+                                : (!(isRegistered ?? true)
+                                    ? Text('등록하는데 1분이 걸립니다. 앱을 종료하지 마세요')
+                                    : Text('이미 등록되었습니다.'))
+                          ]),
+                        ),
+                      );
+                    });
+                !(isRegistered ?? true) && (isFame ?? false)
+                    ? Provider.of<FameRepositoryManage>(context, listen: false)
+                        .registerFameStories(folder!, stories)
+                    : print('');
+              },
+              icon: !(isRegistered ?? true)
+                  ? Icon(Icons.app_registration)
+                  : Icon(Icons.highlight_off))
+          : IconButton(
+              onPressed: () async {
+                final PurchaseParam purchaseParam =
+                    PurchaseParam(productDetails: this.view[0]);
+                await showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          title: Text("60일 첼린지 시작"),
+                          actions: [
+                            TextButton(
+                              child: Text("명예의 전당 등록 권한 얻기"),
+                              onPressed: () async {
+                                bool c = await _inAppPurchase.buyConsumable(
+                                    purchaseParam: purchaseParam);
+
+                                /// popup 나타나는 여부
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            TextButton(
+                              child: Text("닫기"),
+                              onPressed: () async =>
+                                  Navigator.of(context).pop(),
+                            )
+                          ],
+                        ));
+              },
+              icon: Icon(Icons.app_registration));
     }
 
     return FutureBuilder(
@@ -295,117 +375,132 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
         ),
         body: snapshot.connectionState == ConnectionState.waiting
             ? SafeArea(
-              child: Center(
+                child: Center(
                   child: Container(
                     color: Colors.white,
                   ),
                 ),
-            )
+              )
             : SafeArea(
-              child: Consumer<StoryManage>(
-                  child: Center(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '아직 스토리가 없습니다. 지금 만들어보세요',
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 360 * 15,
-                            color: mainColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  )),
-                  builder: (ctx, greatStories, ch) {
-                    List<Story> storiesOfFoler = greatStories.items
-                        .where((element) => element.folderId == folderId)
-                        .toList();
-                    Widget isSameDate() {
-                      return storiesOfFoler
-                                  .where((element) {
-                                    DateTime now = DateTime.now();
-                                    DateTime dateTime =
-                                        DateTime.parse(element.createdAt);
-                                    return DateTime.utc(dateTime.year,
-                                            dateTime.month, dateTime.day) ==
-                                        DateTime.utc(
-                                            now.year, now.month, now.day);
-                                  })
-                                  .toList()
-                                  .length ==
-                              0
-                          ? Container()
-                          : Text('오늘 스토리를 업로드하였습니다.');
-                    }
-            
-                    return storiesOfFoler.length <= 0
-                        ? ch!
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: storiesOfFoler.length,
-                            itemBuilder: (ctx, i) => Card(
-                              child: ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage:
-                                      FileImage(storiesOfFoler[i].image),
-                                ),
-                                title: Text(
-                                  storiesOfFoler[i].title,
-                                  style: TextStyle(
-                                      fontSize:
-                                          MediaQuery.of(context).size.width /
-                                              360 *
-                                              15,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(
-                                  (storiesOfFoler[i].description) as String,
-                                  style: TextStyle(
-                                      fontSize:
-                                          MediaQuery.of(context).size.width /
-                                              360 *
-                                              12,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                onTap: () {
-                                  Route _createRoute() {
-                                    return PageRouteBuilder(
-                                      settings: RouteSettings(arguments: {
-                                        'story_id': storiesOfFoler[i].id,
-                                      }),
-                                      pageBuilder: (context, animation,
-                                              secondaryAnimation) =>
-                                          StoryDetailScreen(),
-                                      transitionsBuilder: (context, animation,
-                                          secondaryAnimation, child) {
-                                        const begin = Offset(0.0, 1.0);
-                                        const end = Offset.zero;
-                                        const curve = Curves.ease;
-            
-                                        var tween = Tween(begin: begin, end: end)
-                                            .chain(CurveTween(curve: curve));
-            
-                                        return SlideTransition(
-                                          position: animation.drive(tween),
-                                          child: child,
-                                        );
-                                      },
-                                    );
-                                  }
-            
-                                  Navigator.of(context).push(_createRoute());
-                                },
-                                trailing: Text(
-                                  '업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                child: Consumer<StoryManage>(
+                    child: Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '아직 스토리가 없습니다. 지금 만들어보세요',
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.width / 360 * 15,
+                              color: mainColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    )),
+                    builder: (ctx, greatStories, ch) {
+                      List<Story> storiesOfFoler = greatStories.items
+                          .where((element) => element.folderId == folderId)
+                          .toList();
+                      Widget isSameDate() {
+                        return storiesOfFoler
+                                    .where((element) {
+                                      DateTime now = DateTime.now();
+                                      DateTime dateTime =
+                                          DateTime.parse(element.createdAt);
+                                      return DateTime.utc(dateTime.year,
+                                              dateTime.month, dateTime.day) ==
+                                          DateTime.utc(
+                                              now.year, now.month, now.day);
+                                    })
+                                    .toList()
+                                    .length ==
+                                0
+                            ? Container()
+                            : Text('오늘 스토리를 업로드하였습니다.');
+                      }
+
+                      return storiesOfFoler.length <= 0
+                          ? ch!
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: storiesOfFoler.length,
+                              itemBuilder: (ctx, i) => Card(
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundImage:
+                                        FileImage(storiesOfFoler[i].image),
+                                  ),
+                                  title: Text(
+                                    storiesOfFoler[i].title,
+                                    style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width /
+                                                360 *
+                                                15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  subtitle: Text(
+                                    (storiesOfFoler[i].description) as String,
+                                    style: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width /
+                                                360 *
+                                                12,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  onTap: () {
+                                    Route _createRoute() {
+                                      return PageRouteBuilder(
+                                        settings: RouteSettings(arguments: {
+                                          'story_id': storiesOfFoler[i].id,
+                                        }),
+                                        pageBuilder: (context, animation,
+                                                secondaryAnimation) =>
+                                            StoryDetailScreen(),
+                                        transitionsBuilder: (context, animation,
+                                            secondaryAnimation, child) {
+                                          const begin = Offset(0.0, 1.0);
+                                          const end = Offset.zero;
+                                          const curve = Curves.ease;
+
+                                          var tween = Tween(
+                                                  begin: begin, end: end)
+                                              .chain(CurveTween(curve: curve));
+
+                                          return SlideTransition(
+                                            position: animation.drive(tween),
+                                            child: child,
+                                          );
+                                        },
+                                      );
+                                    }
+
+                                    Navigator.of(context).push(_createRoute());
+                                  },
+                                  trailing: Text(
+                                    '업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                  }),
-            ),
+                            );
+                    }),
+              ),
       ),
     );
+  }
+}
+
+class ThankPage extends StatelessWidget {
+  const ThankPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: Text("감사합니다 🍭"),
+        ));
   }
 }

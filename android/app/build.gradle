@@ -60,7 +60,7 @@ android {
         minSdkVersion 19  
         multiDexEnabled true 
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 4 //업데이트 시 이거 변경
+        versionCode 12 //업데이트 시 이거 변경
         versionName flutterVersionName
     }
 
