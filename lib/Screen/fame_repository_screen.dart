@@ -16,14 +16,18 @@ class FameRepositoryScreen extends StatelessWidget {
     final userId =
         (ModalRoute.of(context)?.settings.arguments as Map)['userId'];
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(actions: [
+      ],
           iconTheme: IconThemeData(
             color: mainColor, //색변경
           ),
           title: Text(
-            '명예의 전당 스토리',
-            style: TextStyle(color: mainColor),
-          )),
+              '명예의 전당 목록',
+              style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width / 360 * 25,
+                  color: mainColor,
+                  fontWeight: FontWeight.bold),
+            )),
       body: SafeArea(
         child: StreamBuilder(
             stream: FirebaseFirestore.instance

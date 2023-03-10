@@ -8,7 +8,7 @@ import 'package:habbit/Screen/challenge_screen.dart';
 import 'package:habbit/Screen/folder_screen.dart';
 import 'package:habbit/Screen/insta_screen.dart';
 import 'package:habbit/Screen/fame_screen.dart';
-import 'package:habbit/Screen/qna_screen.dart';
+import 'package:habbit/Screen/tutorial_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/profile_screen.dart';
@@ -53,6 +53,7 @@ class _TapScreenState extends State<TapScreen> {
       {'page': FolderScreen(), 'title': 'folder'},
       {'page': ChallengeScreen(), 'title': 'challenge'},
     ];
+           
     super.initState();
   }
 
@@ -61,10 +62,10 @@ class _TapScreenState extends State<TapScreen> {
       _selectedPageIndex = index;
     });
   }
-
+@override
+ 
   @override
   Widget build(BuildContext context) {
-
     // var pickedCategory =
     //     Provider.of<CategoryManage>(context, listen: false).category;
     // changeCategory(String selectedCategory) {
@@ -105,7 +106,7 @@ class _TapScreenState extends State<TapScreen> {
                                 child: Text('네. 종료합니다.'),
                                 onPressed: () {
                                   Navigator.of(context).pop(true);
-                                 
+
                                   _signOut();
 
                                   // 화면 업데이트 추가
@@ -229,33 +230,14 @@ class _TapScreenState extends State<TapScreen> {
               PopupMenuItem(
                   onTap: () {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.of(context).pushNamed(QnaScreen.routeName);
+                      Navigator.of(context).pushNamed(TutorialScreen.routeName);
                     });
                   },
                   child: Center(
                     child: Container(
                       color: Colors.white,
                       child: Text(
-                        '자주 묻는 질문',
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 360 * 15,
-                            color: mainColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  )),
-              PopupMenuItem(
-                  onTap: () {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.of(context).pushNamed(TermScreen.routeName);
-                    });
-                  },
-                  child: Center(
-                    child: Container(
-                      color: Colors.white,
-                      child: Text(
-                        '용어 설명',
+                        '튜토리얼',
                         style: TextStyle(
                             fontSize:
                                 MediaQuery.of(context).size.width / 360 * 15,

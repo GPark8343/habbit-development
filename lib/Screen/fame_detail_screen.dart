@@ -89,7 +89,7 @@ class FameDetailScreen extends StatelessWidget {
     Widget _image() {
       return CachedNetworkImage(
         imageUrl: image,
-        placeholder: (context, url) => CircularProgressIndicator(),
+        placeholder: (context, url) =>Container(color: Colors.white,),
         width: double.infinity,
         fit: BoxFit.cover,
       );

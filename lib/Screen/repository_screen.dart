@@ -32,7 +32,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
     final bool available = await _inAppPurchase.isAvailable();
     if (available) {
       Set<String> ids = Set<String>.from([
-        "product1",
+        "challenge_registration_service",
       ]);
       ProductDetailsResponse res =
           await _inAppPurchase.queryProductDetails(ids);
@@ -319,7 +319,10 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                     : print('');
               },
               icon: !(isRegistered ?? true)
-                  ? Icon(Icons.app_registration)
+                  ? Container(
+                      width: MediaQuery.of(context).size.width / 360 * 20,
+                      height: MediaQuery.of(context).size.width / 360 * 20,
+                      child: Image.asset('assets/icons/trophy.png'))
                   : Icon(Icons.highlight_off))
           : IconButton(
               onPressed: () async {
@@ -331,7 +334,12 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                           title: Text("60일 첼린지 시작"),
                           actions: [
                             TextButton(
-                              child: Text("명예의 전당 등록 권한 얻기"),
+                              child: Text(
+                                "첼린지 폴더로 업그레이드",
+                                style: TextStyle(
+                                    color: mainColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
                               onPressed: () async {
                                 bool c = await _inAppPurchase.buyConsumable(
                                     purchaseParam: purchaseParam);
@@ -341,7 +349,12 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                               },
                             ),
                             TextButton(
-                              child: Text("닫기"),
+                              child: Text(
+                                "닫기",
+                                style: TextStyle(
+                                    color: mainColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
                               onPressed: () async =>
                                   Navigator.of(context).pop(),
                             )

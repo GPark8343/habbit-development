@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:habbit/Screen/splash_screen.dart';
+import 'package:habbit/Screen/tutorial_screen.dart';
 import 'package:habbit/colors.dart';
 import 'package:habbit/providers/upload.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +42,7 @@ class AuthScreen extends StatelessWidget {
       print(data.docs.length);
       if (data.docs.length == 0) {
         upload.registerUser();
+        Navigator.of(context).pushNamed(TutorialScreen.routeName);
       }
 
       // 오류남-> splash screen으로 가려야 함

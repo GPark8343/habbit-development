@@ -88,7 +88,10 @@ class PostWidget extends StatelessWidget {
     }
 
     Widget _image() {
+     
       return CachedNetworkImage(
+        fit: BoxFit.cover,
+        width: double.infinity,
         imageUrl: post.thumbnail!,
         placeholder: (context, url) => Center(
           child: Container(
@@ -237,9 +240,8 @@ class PostWidget extends StatelessWidget {
                                   builder: (_) {
                                     return AlertDialog(
                                       content: SingleChildScrollView(
-                                        child: Column(children: [
-                                          Text('신고가 완료되었습니다.')
-                                        ]),
+                                        child: Column(
+                                            children: [Text('신고가 완료되었습니다.')]),
                                       ),
                                     );
                                   });

@@ -167,7 +167,7 @@ class _FolderScreenState extends State<FolderScreen> {
                                   },
                                   child: ListTile(
                                     tileColor: isFameFolder
-                                        ? Colors.yellow
+                                        ? mainColor
                                         : Colors.white,
 
                                     // leading: CircleAvatar(
