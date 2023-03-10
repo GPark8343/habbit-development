@@ -381,9 +381,8 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                 fontWeight: FontWeight.bold),
           ),
           actions: [
-            ActionButton1() //
-            ,
-            ActionButton2()
+            ActionButton1(),
+            ActionButton2(),
           ],
         ),
         body: snapshot.connectionState == ConnectionState.waiting
@@ -511,9 +510,26 @@ class ThankPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text(
+            '감사합니다!',
+            style: TextStyle(
+              color: mainColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          iconTheme: IconThemeData(
+            color: mainColor, //색변경
+          ),
+        ),
         body: Center(
-          child: Text("감사합니다 🍭"),
+          child: Text(
+            "첼린지 폴더로 업그레이드 완료🍭",
+            style: TextStyle(
+              color: mainColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ));
   }
 }

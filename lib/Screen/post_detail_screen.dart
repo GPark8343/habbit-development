@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -106,85 +107,87 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     ),
                   )
                 : SafeArea(
-                    child: Column(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.width / 360 * 450,
-                          width: double.infinity,
-                          child: Image.network(
-                            image,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                        
+                            child: CachedNetworkImage(
+        imageUrl: image,
+        placeholder: (context, url) =>Container(color: Colors.white,),
+        width: double.infinity,
+        fit: BoxFit.cover,
+      ),
                           ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.width / 360 * 10,
-                        ),
-                        Text(
-                          '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width / 360 * 20,
-                              color: Colors.grey),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.width / 360 * 10,
-                        ),
-                        Text(
-                          description as String,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.width / 360 * 20,
-                              color: Colors.grey),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.width / 360 * 10,
-                        ),
-                        CategoryIcon(category),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.width / 360 * 10,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            showDialog<bool>(
-                                context: _scaffoldKey!.currentContext!,
-                                builder: (ctx) {
-                                  return AlertDialog(
-                                    content: Text('포스트를 내릴까요?'),
-                                    actions: <Widget>[
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: mainColor),
-                                        child: Text('아니오.'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop(false);
-                                        },
-                                      ),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: mainColor),
-                                        child: Text('네. 삭제합니다.'),
-                                        onPressed: () {
-                                          deletePost(storyId);
-
-                                          Navigator.of(context).pop();
-                                          Navigator.of(context).pop();
-                                          // 화면 업데이트 추가
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
-
-                            // 여기에 화면 다시 업데이트하는 함수 만들기
-                          },
-                          child: Text('포스트 삭제하기'),
-                          style:
-                              TextButton.styleFrom(foregroundColor: mainColor),
-                        ),
-                      ],
+                          SizedBox(
+                            height: MediaQuery.of(context).size.width / 360 * 10,
+                          ),
+                          Text(
+                            '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.width / 360 * 20,
+                                color: Colors.grey),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.width / 360 * 10,
+                          ),
+                          Text(
+                            description as String,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.width / 360 * 20,
+                                color: Colors.grey),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.width / 360 * 10,
+                          ),
+                          CategoryIcon(category),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.width / 360 * 10,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              showDialog<bool>(
+                                  context: _scaffoldKey!.currentContext!,
+                                  builder: (ctx) {
+                                    return AlertDialog(
+                                      content: Text('포스트를 내릴까요?'),
+                                      actions: <Widget>[
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: mainColor),
+                                          child: Text('아니오.'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false);
+                                          },
+                                        ),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: mainColor),
+                                          child: Text('네. 삭제합니다.'),
+                                          onPressed: () {
+                                            deletePost(storyId);
+                    
+                                            Navigator.of(context).pop();
+                                            Navigator.of(context).pop();
+                                            // 화면 업데이트 추가
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  });
+                    
+                              // 여기에 화면 다시 업데이트하는 함수 만들기
+                            },
+                            child: Text('포스트 삭제하기'),
+                            style:
+                                TextButton.styleFrom(foregroundColor: mainColor),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
           );
