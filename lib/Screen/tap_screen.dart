@@ -12,7 +12,6 @@ import 'package:habbit/Screen/tutorial_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/profile_screen.dart';
-import 'package:habbit/Screen/term_screen.dart';
 import 'package:habbit/colors.dart';
 import 'package:habbit/providers/category_manage.dart';
 import 'package:habbit/widgets/buttons/add_folder_button.dart';

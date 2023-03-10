@@ -67,10 +67,12 @@ class PostWidget extends StatelessWidget {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: AvatarWidget(
-                    type: AvatarType.TYPE3,
-                    nickname: docData!['nickname'],
-                    size: MediaQuery.of(context).size.width / 360 * 40,
-                    thumbPath: docData['thumbnail']),
+                  type: AvatarType.TYPE4,
+                  nickname: docData!['nickname'],
+                  size: MediaQuery.of(context).size.width / 360 * 40,
+                  thumbPath: docData['thumbnail'],
+                  uid: docData['uid'],
+                ),
 
                 // GestureDetector(
                 //   onTap: () {},
@@ -88,7 +90,6 @@ class PostWidget extends StatelessWidget {
     }
 
     Widget _image() {
-     
       return CachedNetworkImage(
         fit: BoxFit.cover,
         width: double.infinity,

@@ -6,13 +6,15 @@ import 'package:habbit/Screen/auth_screen.dart';
 import 'package:habbit/Screen/edit_profile_screen.dart';
 import 'package:habbit/Screen/fame_detail_screen.dart';
 import 'package:habbit/Screen/fame_repository_screen.dart';
+import 'package:habbit/Screen/other_post_detail_screen.dart';
 import 'package:habbit/Screen/post_detail_screen.dart';
 import 'package:habbit/Screen/tutorial_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
 import 'package:habbit/Screen/splash_screen.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
 import 'package:habbit/Screen/tap_screen.dart';
-import 'package:habbit/Screen/term_screen.dart';
+import 'package:habbit/Screen/other_profile_screen.dart';
+
 import 'package:habbit/colors.dart';
 import 'package:habbit/providers/category_manage.dart';
 import 'package:habbit/providers/deco_manage.dart';
@@ -38,7 +40,7 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
   MobileAds.instance.initialize();
-   InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
+  InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(MyApp());
@@ -72,7 +74,7 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider.value(
             value: ReportManage(),
-          ), 
+          ),
           //  ChangeNotifierProvider.value(
           //   value: CategoryManage(),
           // ),
@@ -110,6 +112,8 @@ class MyApp extends StatelessWidget {
             FameDetailScreen.routeName: (ctx) => FameDetailScreen(),
             TapScreen.routeName: (ctx) => TapScreen(),
             TutorialScreen.routeName: (ctx) => TutorialScreen(),
+            OtherProfileScreen.routeName: (ctx) => OtherProfileScreen(),
+            OtherPostDetailScreen.routeName: (ctx) => OtherPostDetailScreen(),
           },
         ));
   }
