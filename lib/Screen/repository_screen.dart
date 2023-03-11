@@ -344,6 +344,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                               Text('1. 첼린지 스크린이 활성화됩니다'),
                               Text('2. 60일을 달성할 시 명예의 전당 등록 권한을 얻게 됩니다.'),
                               Text('3. 60일 첼린지 커뮤니티 입성 자격 휙득(4월 1일부터 활성화됩니다.)'),
+                              Text('4. 커뮤니티에 60일 첼린지 입증 시 100% 환급'),
                             ],
                           )),
                           actions: [
