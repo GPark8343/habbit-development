@@ -27,6 +27,8 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
   List<ProductDetails> view = [];
   Future fetch() async {
+    final folderTitle =
+        (ModalRoute.of(context)?.settings.arguments as Map)['folder_title'];
     final folderId =
         (ModalRoute.of(context)?.settings.arguments as Map)['folder_id'];
     final bool available = await _inAppPurchase.isAvailable();
@@ -48,8 +50,9 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
         if (e.pendingCompletePurchase) {
           if (!mounted) return;
           FirebaseFirestore.instance.collection('fame_folder').add({
+            'folder_title': folderTitle,
             'folderId': folderId,
-            'consumerId': FirebaseAuth.instance.currentUser!.email
+            'consumerEmail': FirebaseAuth.instance.currentUser!.email,
           });
 
           Navigator.of(context)
@@ -74,6 +77,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
     bool? isFame;
     bool? isRegistered;
     bool? isFameFolder;
+
     final folderId =
         (ModalRoute.of(context)?.settings.arguments as Map)['folder_id'];
     final category =

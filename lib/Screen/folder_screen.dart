@@ -166,9 +166,8 @@ class _FolderScreenState extends State<FolderScreen> {
                                         });
                                   },
                                   child: ListTile(
-                                    tileColor: isFameFolder
-                                        ? mainColor
-                                        : Colors.white,
+                                    tileColor:
+                                        isFameFolder ? mainColor : Colors.white,
 
                                     // leading: CircleAvatar(
                                     //   backgroundImage:
@@ -200,6 +199,8 @@ class _FolderScreenState extends State<FolderScreen> {
                                       Route _createRoute() {
                                         return PageRouteBuilder(
                                           settings: RouteSettings(arguments: {
+                                            'folder_title':
+                                                greatFolders.folders[i].title,
                                             'folder_id':
                                                 greatFolders.folders[i].id,
                                             'category':
