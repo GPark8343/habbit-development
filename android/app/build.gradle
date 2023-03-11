@@ -36,7 +36,7 @@ if (keystorePropertiesFile.exists()) {
 android {
      aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -60,7 +60,7 @@ android {
         minSdkVersion 19  
         multiDexEnabled true 
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 16 //업데이트 시 이거 변경
+        versionCode 22 //업데이트 시 이거 변경
         versionName flutterVersionName
     }
 

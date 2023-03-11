@@ -332,6 +332,19 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                     context: context,
                     builder: (context) => AlertDialog(
                           title: Text("60일 첼린지 시작"),
+                          content: SingleChildScrollView(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('  혜택:'),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text('1. 첼린지 스크린이 활성화됩니다'),
+                              Text('2. 60일을 달성할 시 명예의 전당 등록 권한을 얻게 됩니다.'),
+                              Text('3. 혜택 더 추가 예정'),
+                            ],
+                          )),
                           actions: [
                             TextButton(
                               child: Text(

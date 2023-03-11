@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ImageInput extends StatefulWidget {
   final Function onSelectImage;
@@ -15,6 +16,23 @@ class ImageInput extends StatefulWidget {
 
 class _ImageInputState extends State<ImageInput> {
   File? _storedImage;
+
+  Future<void> _requestCameraPermission() async {
+    final serviceStatus = await Permission.camera.isGranted;
+
+    bool isCameraOn = serviceStatus == ServiceStatus.enabled;
+
+    final status = await Permission.camera.request();
+
+    if (status == PermissionStatus.granted) {
+      _takePicture();
+    } else if (status == PermissionStatus.denied) {
+      print('Permission denied');
+    } else if (status == PermissionStatus.permanentlyDenied) {
+      print('Permission Permanently Denied');
+      await openAppSettings();
+    }
+  }
 
   Future<void> _takePicture() async {
     final picker = ImagePicker();
@@ -32,6 +50,23 @@ class _ImageInputState extends State<ImageInput> {
     final fileName = path.basename(imageFile.path as String);
     final savedImage = await _storedImage?.copy('${appDir.path}/$fileName');
     widget.onSelectImage(savedImage);
+  }
+
+  Future<void> _requestGalleryPermission() async {
+    final serviceStatus = await Permission.storage.isGranted;
+
+    bool isStorageOn = serviceStatus == ServiceStatus.enabled;
+
+    final status = await Permission.storage.request();
+
+    if (status == PermissionStatus.granted) {
+      _takeGallery();
+    } else if (status == PermissionStatus.denied) {
+      print('Permission denied');
+    } else if (status == PermissionStatus.permanentlyDenied) {
+      print('Permission Permanently Denied');
+      await openAppSettings();
+    }
   }
 
   Future<void> _takeGallery() async {
@@ -69,7 +104,9 @@ class _ImageInputState extends State<ImageInput> {
                 width: double.infinity,
               )
             : Text(
-                '이미지를 선택해주세요',style: TextStyle(fontSize: MediaQuery.of(context).size.width / 360*15 ),
+                '이미지를 선택해주세요',
+                style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 360 * 15),
                 textAlign: TextAlign.center,
               ),
         alignment: Alignment.center,
@@ -85,9 +122,14 @@ class _ImageInputState extends State<ImageInput> {
             width: MediaQuery.of(context).size.width / 360 * 100,
             height: MediaQuery.of(context).size.width / 360 * 50,
             child: TextButton.icon(
-              onPressed: _takePicture,
+              onPressed: _requestCameraPermission,
               icon: Icon(Icons.camera),
-              label: Text('카메라'),
+              label: Text(
+                '카메라',
+                style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 360 * 15),
+                textAlign: TextAlign.center,
+              ),
               style: TextButton.styleFrom(
                   foregroundColor: Colors.white, backgroundColor: mainColor),
             ),
@@ -96,9 +138,14 @@ class _ImageInputState extends State<ImageInput> {
             width: MediaQuery.of(context).size.width / 360 * 100,
             height: MediaQuery.of(context).size.width / 360 * 50,
             child: TextButton.icon(
-              onPressed: _takeGallery,
+              onPressed: _requestGalleryPermission,
               icon: Icon(Icons.browse_gallery),
-              label: Text('갤러리'),
+              label: Text(
+                '갤러리',
+                style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width / 360 * 15),
+                textAlign: TextAlign.center,
+              ),
               style: TextButton.styleFrom(
                   foregroundColor: Colors.white, backgroundColor: mainColor),
             ),

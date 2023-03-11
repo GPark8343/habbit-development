@@ -55,6 +55,8 @@ dependencies:
   in_app_purchase: ^3.1.5
   onboarding: ^3.1.0
   introduction_screen: ^3.1.6
+  permission_handler: ^10.2.0
+  url_launcher: ^6.1.10
   
 dev_dependencies:
   flutter_test:
