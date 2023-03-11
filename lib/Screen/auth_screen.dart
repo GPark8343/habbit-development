@@ -13,63 +13,81 @@ import 'package:url_launcher/url_launcher.dart';
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
 
-  realLogin(context) {
-    showDialog(
-        context: context,
-        builder: (ctx) {
-          return AlertDialog(
-            title: const Text('개인 정보 동의'),
-            content: SingleChildScrollView(
-                child: Column(children: [
-              Text.rich(TextSpan(
-                children: [
-                  TextSpan(text: "Habbit의 개인정보처리방침"),
-                  TextSpan(
-                      style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline),
-                      //make link blue and underline
-                      text:
-                          "https://sites.google.com/view/habbit-privacy-policy",
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () async {
-                          //on tap code here, you can navigate to other page or URL
-                          String url =
-                              "https://sites.google.com/view/habbit-privacy-policy";
-                          var urllaunchable = await canLaunch(
-                              url); //canLaunch is from url_launcher package
-                          if (urllaunchable) {
-                            await launch(
-                                url); //launch is from url_launcher package to launch URL
-                          } else {
-                            print("URL can't be launched.");
-                          }
-                        }),
+  Future first(context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (ctx) {
+            return WillPopScope(
+              onWillPop: () async => false,
+              child: AlertDialog(
+                title: const Text('개인 정보 동의'),
+                content: SingleChildScrollView(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                      Text.rich(TextSpan(
+                        children: [
+                          TextSpan(text: "Habbit의 개인정보처리방침"),
+                          TextSpan(
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  decoration: TextDecoration.underline),
+                              //make link blue and underline
+                              text:
+                                  "https://sites.google.com/view/habbit-privacy-policy",
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async {
+                                  //on tap code here, you can navigate to other page or URL
+                                  String url =
+                                      "https://sites.google.com/view/habbit-privacy-policy";
+                                  var urllaunchable = await canLaunch(
+                                      url); //canLaunch is from url_launcher package
+                                  if (urllaunchable) {
+                                    await launch(
+                                        url); //launch is from url_launcher package to launch URL
+                                  } else {
+                                    print("URL can't be launched.");
+                                  }
+                                }),
+                        ],
+                      )),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.width / 360 * 20,
+                      ),
+                      Text('또한 아래와 같은 권한이 필요합니다.(앱 사용에 있어 필수는 아닙니다.)'),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.width / 360 * 10,
+                      ),
+                      Card(
+                        child: Text('1. 저장공간(사진 또는 프로필 이미지 첨부 목적)'),
+                      ),
+                      Card(
+                        child: Text('2. 카메라(사진 업로드 목적)'),
+                      ),
+                    ])),
+                actions: <Widget>[
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: mainColor),
+                    onPressed: () {},
+                    child: const Text('동의하지 않습니다.'),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: mainColor),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('동의합니다'),
+                  ),
                 ],
-              )),
-            ])),
-            actions: <Widget>[
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: mainColor),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('동의하지 않습니다.'),
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: mainColor),
-                onPressed: () {
-                       Navigator.of(context).pop();
-                  signInWithGoogle(context);
-                },
-                child: const Text('동의합니다'),
-              ),
-            ],
-          );
-        });
+            );
+          });
+    });
   }
 
-  Future<void> signInWithGoogle(context) async {
+  Future<void> _signInWithGoogle(context) async {
     // Trigger the authentication flow
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn(scopes: [
@@ -112,50 +130,58 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: mainColor,
-      body: SafeArea(
-        child: Container(
-            padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.width / 360 * 50),
-            child: Center(
-              child: Card(
-                child: Padding(
-                    padding: EdgeInsets.all(
-                        MediaQuery.of(context).size.width / 360 * 8.0),
-                    child: Column(
-                      children: [
-                        Container(
-                          child: Image.asset(
-                            'assets/logos/logo.png',
-                            width:
-                                MediaQuery.of(context).size.width / 360 * 300,
-                            height:
-                                MediaQuery.of(context).size.width / 360 * 300,
-                          ),
-                        ),
-                        GestureDetector(
-                          child: Card(
-                            color: mainColor,
-                            child: Image.asset(
-                              'assets/logos/btn_google_signin_light_normal_web.png',
-                              width:
-                                  MediaQuery.of(context).size.width / 360 * 200,
-                              height:
-                                  MediaQuery.of(context).size.width / 360 * 50,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          onTap: () {
-                            realLogin(context);
-                          },
-                        ),
-                      ],
-                    )),
-              ),
-            )),
-      ),
-    );
+    return FutureBuilder(
+        future: first(context),
+        builder: (context, futureSnapshot) {
+          return Scaffold(
+            backgroundColor: mainColor,
+            body: SafeArea(
+              child: Container(
+                  padding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.width / 360 * 50),
+                  child: Center(
+                    child: Card(
+                      child: Padding(
+                          padding: EdgeInsets.all(
+                              MediaQuery.of(context).size.width / 360 * 8.0),
+                          child: Column(
+                            children: [
+                              Container(
+                                child: Image.asset(
+                                  'assets/logos/logo.png',
+                                  width: MediaQuery.of(context).size.width /
+                                      360 *
+                                      300,
+                                  height: MediaQuery.of(context).size.width /
+                                      360 *
+                                      300,
+                                ),
+                              ),
+                              GestureDetector(
+                                child: Card(
+                                  color: mainColor,
+                                  child: Image.asset(
+                                    'assets/logos/btn_google_signin_light_normal_web.png',
+                                    width: MediaQuery.of(context).size.width /
+                                        360 *
+                                        200,
+                                    height: MediaQuery.of(context).size.width /
+                                        360 *
+                                        50,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                                onTap: () {
+                                  _signInWithGoogle(context);
+                                },
+                              ),
+                            ],
+                          )),
+                    ),
+                  )),
+            ),
+          );
+        });
   }
 }
 // GestureDetector(

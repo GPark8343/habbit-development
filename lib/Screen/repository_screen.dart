@@ -10,7 +10,7 @@ import 'package:habbit/models/story.dart';
 import 'package:habbit/providers/fame_repository_manage.dart';
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:habbit/widgets/image_input.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
@@ -47,9 +47,10 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
         /// 구매 여부 pendingCompletePurchase - 승인 true / 취소 false
         if (e.pendingCompletePurchase) {
           if (!mounted) return;
-          FirebaseFirestore.instance
-              .collection('fame_folder')
-              .add({'folderId': folderId});
+          FirebaseFirestore.instance.collection('fame_folder').add({
+            'folderId': folderId,
+            'consumerId': FirebaseAuth.instance.currentUser!.email
+          });
 
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => ThankPage()));
@@ -342,7 +343,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                               ),
                               Text('1. 첼린지 스크린이 활성화됩니다'),
                               Text('2. 60일을 달성할 시 명예의 전당 등록 권한을 얻게 됩니다.'),
-                              Text('3. 혜택 더 추가 예정'),
+                              Text('3. 60일 첼린지 커뮤니티 입성 자격 휙득(4월 1일부터 활성화됩니다.)'),
                             ],
                           )),
                           actions: [
