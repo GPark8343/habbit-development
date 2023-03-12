@@ -1,6 +1,7 @@
 import 'dart:io';
 //addstorybutton 함부로 꺼내면 ㅈ됨 ancestor widget 어쩌구 에러남
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
 
@@ -14,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:habbit/widgets/image_input.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RepositoryScreen extends StatefulWidget {
   static const routeName = '/repository';
@@ -220,6 +222,49 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                       return null;
                                     },
                                   ),
+                                   SizedBox(
+                                    height: MediaQuery.of(context).size.width /
+                                        360 *
+                                        10,
+                                  ),
+                                  Text('스토리 작성 시 다음과 같은 이용약관에 동의하는 것으로 간주합니다.',
+                                      style: TextStyle(
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              15,
+                                          color: mainColor,
+                                          fontWeight: FontWeight.bold)),
+                                           SizedBox(
+                                    height: MediaQuery.of(context).size.width /
+                                        360 *
+                                        5,
+                                  ),
+                                  Text.rich(
+                                    TextSpan(
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            decoration:
+                                                TextDecoration.underline),
+                                        //make link blue and underline
+                                        text:
+                                            "https://sites.google.com/view/habbit-terms-of-use",
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () async {
+                                            //on tap code here, you can navigate to other page or URL
+                                            String url =
+                                                "https://sites.google.com/view/habbit-terms-of-use";
+                                            var urllaunchable = await canLaunch(
+                                                url); //canLaunch is from url_launcher package
+                                            if (urllaunchable) {
+                                              await launch(
+                                                  url); //launch is from url_launcher package to launch URL
+                                            } else {
+                                              print("URL can't be launched.");
+                                            }
+                                          }),
+                                  )
                                 ],
                               ),
                             ),
@@ -348,8 +393,8 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                   height: MediaQuery.of(context).size.width /
                                       360 *
                                       250,
-                                  child:
-                                      Image.asset('assets/icons/ad_challenge.png')),
+                                  child: Image.asset(
+                                      'assets/icons/ad_challenge.png')),
                               SizedBox(
                                 height: 10,
                               ),

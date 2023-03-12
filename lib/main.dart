@@ -8,6 +8,7 @@ import 'package:habbit/Screen/fame_detail_screen.dart';
 import 'package:habbit/Screen/fame_repository_screen.dart';
 import 'package:habbit/Screen/other_post_detail_screen.dart';
 import 'package:habbit/Screen/post_detail_screen.dart';
+import 'package:habbit/Screen/service_screen.dart';
 import 'package:habbit/Screen/tutorial_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
 import 'package:habbit/Screen/splash_screen.dart';
@@ -115,6 +116,7 @@ class MyApp extends StatelessWidget {
             OtherProfileScreen.routeName: (ctx) => OtherProfileScreen(),
             OtherPostDetailScreen.routeName: (ctx) => OtherPostDetailScreen(),
             PrivacyScreen.routeName: (ctx) => PrivacyScreen(),
+            ServiceScreen.routeName: (ctx) => ServiceScreen(),
           },
         ));
   }

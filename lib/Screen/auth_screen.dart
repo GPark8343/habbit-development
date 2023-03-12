@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:habbit/Screen/service_screen.dart';
 import 'package:habbit/Screen/splash_screen.dart';
 import 'package:habbit/Screen/tutorial_screen.dart';
 import 'package:habbit/colors.dart';
@@ -28,7 +29,24 @@ class AuthScreen extends StatelessWidget {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                      Text("회원가입 및 Habbit의 개인정보처리방침에 동의하시겠습니까?"),
+                      Text("회원가입 및 Habbit의 이용약관 및 개인정보처리방침에 동의하시겠습니까?"),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(ServiceScreen.routeName);
+                        },
+                        child: Card(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text('서비스 이용약관 확인하기'),
+                            Icon(Icons.arrow_right_alt_rounded)
+                          ],
+                        )),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.width / 360 * 20,
+                      ),
                       GestureDetector(
                         onTap: () {
                           Navigator.of(context)
@@ -38,7 +56,7 @@ class AuthScreen extends StatelessWidget {
                             child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text('이용약관 확인하기'),
+                            Text('개인정보처리방침 확인하기'),
                             Icon(Icons.arrow_right_alt_rounded)
                           ],
                         )),
@@ -200,6 +218,7 @@ class AuthScreen extends StatelessWidget {
 //                     ),
 //                   ),
 
+
 class PrivacyScreen extends StatelessWidget {
   static const routeName = '/privacy';
   const PrivacyScreen({super.key});
@@ -216,7 +235,7 @@ class PrivacyScreen extends StatelessWidget {
           color: mainColor, //색변경
         ),
         title: Text(
-          '이용약관 동의',
+          '개인정보처리방침',
           style: TextStyle(color: mainColor),
         ),
       ),
@@ -257,7 +276,7 @@ class PrivacyScreen extends StatelessWidget {
                     height: MediaQuery.of(context).size.width / 360 * 20,
                   ),
                   PrivacyWidget2(7),
-                   SizedBox(
+                  SizedBox(
                     height: MediaQuery.of(context).size.width / 360 * 20,
                   ),
                   PrivacyWidget2(8),
