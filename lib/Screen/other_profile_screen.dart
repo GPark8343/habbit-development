@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/edit_profile_screen.dart';
@@ -7,6 +8,8 @@ import 'package:habbit/Screen/other_post_detail_screen.dart';
 import 'package:habbit/Screen/post_detail_screen.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
 import 'package:habbit/colors.dart';
+import 'package:habbit/providers/ban_manage.dart';
+import 'package:habbit/providers/report_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/widgets/avatar_widget.dart';
 import 'package:habbit/widgets/buttons/signout-button.dart';
@@ -214,8 +217,202 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
           });
     }
 
+    ReportButton() {
+      return StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .where('uid', isEqualTo: uid)
+              .snapshots(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Container(
+                  color: Colors.white,
+                ),
+              );
+            }
+            final docs = snapshot.data?.docs;
+
+            return IconButton(
+                onPressed: () async {
+                  //신고
+                  showDialog(
+                      context: context,
+                      builder: (_) {
+                        return AlertDialog(
+                          content: Text('이 유저를 신고할까요?'),
+                          actions: <Widget>[
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: mainColor),
+                              child: Text('아니오.'),
+                              onPressed: () {
+                                Navigator.of(context).pop(false);
+                              },
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: mainColor),
+                              child: Text('네. 신고합니다.'),
+                              onPressed: () async {
+                                await Provider.of<ReportManage>(context,
+                                        listen: false)
+                                    .reportUser(
+                                        docs!.first.data()['description'],
+                                        FirebaseAuth
+                                            .instance.currentUser!.email!);
+                                Navigator.of(context).pop();
+
+                                showDialog(
+                                    context: context,
+                                    builder: (_) {
+                                      return AlertDialog(
+                                        content: SingleChildScrollView(
+                                          child: Column(
+                                              children: [Text('신고가 완료되었습니다.')]),
+                                        ),
+                                      );
+                                    });
+                                // 화면 업데이트 추가
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                },
+                icon: Image.asset(
+                  'assets/icons/siren.png',
+                  width: MediaQuery.of(context).size.width / 360 * 30,
+                  height: MediaQuery.of(context).size.width / 360 * 30,
+                ));
+          });
+    }
+
+    BanButton() {
+      return StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('friends')
+              .doc(FirebaseAuth.instance.currentUser?.uid)
+              .collection(FirebaseAuth.instance.currentUser?.uid ?? 'error')
+              .doc(uid)
+              .snapshots(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Container(
+                  color: Colors.white,
+                ),
+              );
+            }
+            final data = snapshot.data?.data();
+            var isBanned = data?['isBan'] ?? false;
+            return isBanned
+                ? IconButton(
+                    onPressed: () async {
+                      //신고
+                      showDialog(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              content: Text('차단을 해제할까요?'),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: mainColor),
+                                  child: Text('아니오.'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: mainColor),
+                                  child: Text('네. 차단을 해제합니다.'),
+                                  onPressed: () async {
+                                    await Provider.of<BanManage>(context,
+                                            listen: false)
+                                        .unlockUser(uid);
+                                    Navigator.of(context).pop();
+
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) {
+                                          return AlertDialog(
+                                            content: SingleChildScrollView(
+                                              child: Column(children: [
+                                                Text('차단 해제가 완료되었습니다.')
+                                              ]),
+                                            ),
+                                          );
+                                        });
+                                    // 화면 업데이트 추가
+                                  },
+                                ),
+                              ],
+                            );
+                          });
+                    },
+                    icon: Image.asset(
+                      'assets/icons/unlock.png',
+                      width: MediaQuery.of(context).size.width / 360 * 30,
+                      height: MediaQuery.of(context).size.width / 360 * 30,
+                    ))
+                : IconButton(
+                    onPressed: () async {
+                      //신고
+                      showDialog(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              content: Text('이 유저를 차단할까요?'),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: mainColor),
+                                  child: Text('아니오.'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: mainColor),
+                                  child: Text('네. 차단합니다.'),
+                                  onPressed: () async {
+                                    await Provider.of<BanManage>(context,
+                                            listen: false)
+                                        .banUser(uid);
+                                    Navigator.of(context).pop();
+
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) {
+                                          return AlertDialog(
+                                            content: SingleChildScrollView(
+                                              child: Column(children: [
+                                                Text('차단이 완료되었습니다.')
+                                              ]),
+                                            ),
+                                          );
+                                        });
+                                    // 화면 업데이트 추가
+                                  },
+                                ),
+                              ],
+                            );
+                          });
+                    },
+                    icon: Image.asset(
+                      'assets/icons/ban.png',
+                      width: MediaQuery.of(context).size.width / 360 * 30,
+                      height: MediaQuery.of(context).size.width / 360 * 30,
+                    ));
+          });
+    }
+
     return Scaffold(
       appBar: AppBar(
+          actions: [ReportButton(), BanButton()],
           iconTheme: IconThemeData(
             color: mainColor, //색변경
           ),

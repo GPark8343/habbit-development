@@ -3,7 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:habbit/Screen/auth_screen.dart';
+import 'package:habbit/Screen/ban_screen.dart';
 import 'package:habbit/Screen/edit_profile_screen.dart';
+import 'package:habbit/Screen/explain_screen.dart';
 import 'package:habbit/Screen/fame_detail_screen.dart';
 import 'package:habbit/Screen/fame_repository_screen.dart';
 import 'package:habbit/Screen/other_post_detail_screen.dart';
@@ -17,6 +19,7 @@ import 'package:habbit/Screen/tap_screen.dart';
 import 'package:habbit/Screen/other_profile_screen.dart';
 
 import 'package:habbit/colors.dart';
+import 'package:habbit/providers/ban_manage.dart';
 import 'package:habbit/providers/category_manage.dart';
 import 'package:habbit/providers/deco_manage.dart';
 import 'package:habbit/providers/fame_repository_manage.dart';
@@ -76,6 +79,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(
             value: ReportManage(),
           ),
+           ChangeNotifierProvider.value(
+            value: BanManage(),
+          ),
           //  ChangeNotifierProvider.value(
           //   value: CategoryManage(),
           // ),
@@ -117,6 +123,8 @@ class MyApp extends StatelessWidget {
             OtherPostDetailScreen.routeName: (ctx) => OtherPostDetailScreen(),
             PrivacyScreen.routeName: (ctx) => PrivacyScreen(),
             ServiceScreen.routeName: (ctx) => ServiceScreen(),
+           BanScreen.routeName: (ctx) => BanScreen(),
+          ExplainScreen.routeName: (ctx) =>  ExplainScreen(),
           },
         ));
   }

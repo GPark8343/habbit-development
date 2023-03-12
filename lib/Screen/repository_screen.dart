@@ -398,7 +398,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                               SizedBox(
                                 height: 10,
                               ),
-                              Text('**4월 1일 Habbit 커뮤니티 오픈**'),
+                              Text('** Habbit 커뮤니티 오픈 준비 중 **'),
                             ],
                           )),
                           actions: [

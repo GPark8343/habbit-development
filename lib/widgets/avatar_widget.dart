@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/other_profile_screen.dart';
 import 'package:habbit/colors.dart';
@@ -81,10 +82,13 @@ class AvatarWidget extends StatelessWidget {
     }
 
     Widget type4Widget() {
+      var isMe = uid == FirebaseAuth.instance.currentUser?.uid;
       return GestureDetector(
           onTap: () {
-            Navigator.of(context).pushNamed(OtherProfileScreen.routeName,
-                arguments: {'uid': uid});
+            isMe
+                ? null
+                : Navigator.of(context).pushNamed(OtherProfileScreen.routeName,
+                    arguments: {'uid': uid});
           },
           child: type3Widget());
     }

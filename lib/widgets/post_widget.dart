@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/colors.dart';
 import 'package:habbit/models/post.dart';
+import 'package:habbit/providers/ban_manage.dart';
 import 'package:habbit/providers/report_manage.dart';
 import 'package:habbit/widgets/avatar_widget.dart';
 import 'package:habbit/widgets/image_frame.dart';
@@ -256,44 +257,53 @@ class PostWidget extends StatelessWidget {
               child: Image.asset('assets/icons/siren.png')));
     }
 
-    return Container(
-      margin:
-          EdgeInsets.only(top: MediaQuery.of(context).size.width / 360 * 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _header(),
-              Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                        right: MediaQuery.of(context).size.width / 360 * 25),
-                    child: ReportIcon(post),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        right: MediaQuery.of(context).size.width / 360 * 20),
-                    child: CategoryIcon(post.category!),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: MediaQuery.of(context).size.width / 360 * 15),
-          _image(),
-          SizedBox(height: MediaQuery.of(context).size.width / 360 * 15),
-          // _infoCount(),
-          // const SizedBox(height: 5),
-          _infoDescription(),
-          // const SizedBox(height: 5),
-          // _replyTextBtn(),
-          SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
-          _dateAgo(MediaQuery.of(context).size.width / 360),
-        ],
-      ),
-    );
+    var isBanned = Provider.of<BanManage>(context, listen: false)
+        .banList
+        .contains(post.userId);
+    print(Provider.of<BanManage>(context, listen: false).banList);
+    print(isBanned);
+    return isBanned
+        ? Container()
+        : Container(
+            margin: EdgeInsets.only(
+                top: MediaQuery.of(context).size.width / 360 * 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _header(),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              right:
+                                  MediaQuery.of(context).size.width / 360 * 25),
+                          child: ReportIcon(post),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              right:
+                                  MediaQuery.of(context).size.width / 360 * 20),
+                          child: CategoryIcon(post.category!),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: MediaQuery.of(context).size.width / 360 * 15),
+                _image(),
+                SizedBox(height: MediaQuery.of(context).size.width / 360 * 15),
+                // _infoCount(),
+                // const SizedBox(height: 5),
+                _infoDescription(),
+                // const SizedBox(height: 5),
+                // _replyTextBtn(),
+                SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
+                _dateAgo(MediaQuery.of(context).size.width / 360),
+              ],
+            ),
+          );
   }
 }

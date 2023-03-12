@@ -4,7 +4,9 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:habbit/Screen/ban_screen.dart';
 import 'package:habbit/Screen/challenge_screen.dart';
+import 'package:habbit/Screen/explain_screen.dart';
 import 'package:habbit/Screen/folder_screen.dart';
 import 'package:habbit/Screen/insta_screen.dart';
 import 'package:habbit/Screen/fame_screen.dart';
@@ -52,7 +54,7 @@ class _TapScreenState extends State<TapScreen> {
       {'page': FolderScreen(), 'title': 'folder'},
       {'page': ChallengeScreen(), 'title': 'challenge'},
     ];
-           
+
     super.initState();
   }
 
@@ -61,8 +63,8 @@ class _TapScreenState extends State<TapScreen> {
       _selectedPageIndex = index;
     });
   }
-@override
- 
+
+  @override
   @override
   Widget build(BuildContext context) {
     // var pickedCategory =
@@ -120,7 +122,31 @@ class _TapScreenState extends State<TapScreen> {
               ),
             ],
             icon: Icon(Icons.settings),
-          )
+          ),
+          PopupMenuButton(
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                  onTap: () {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      Navigator.of(context).pushNamed(BanScreen.routeName);
+                    });
+                  },
+                  child: Center(
+                    child: Container(
+                      color: Colors.white,
+                      child: Text(
+                        '차단 리스트',
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width / 360 * 15,
+                            color: mainColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )),
+            ],
+            icon: Icon(Icons.more_vert),
+          ),
         ];
       } else if (chosenPageIndex == 1) {
         return [];
@@ -237,6 +263,25 @@ class _TapScreenState extends State<TapScreen> {
                       color: Colors.white,
                       child: Text(
                         '튜토리얼',
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width / 360 * 15,
+                            color: mainColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )),
+                  PopupMenuItem(
+                  onTap: () {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      Navigator.of(context).pushNamed(ExplainScreen.routeName);
+                    });
+                  },
+                  child: Center(
+                    child: Container(
+                      color: Colors.white,
+                      child: Text(
+                        '첼린지 유의사항',
                         style: TextStyle(
                             fontSize:
                                 MediaQuery.of(context).size.width / 360 * 15,

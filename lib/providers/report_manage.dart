@@ -5,8 +5,18 @@ import 'package:habbit/models/post.dart';
 class ReportManage extends ChangeNotifier {
   reportPost(Post reportedPost, String reportingUserEmail) async {
     await FirebaseFirestore.instance
-        .collection('reports')
+        .collection('reportsPost')
         .doc('${reportedPost.uid}${reportingUserEmail}')
         .set({...reportedPost.toMap(), 'reporting_user': reportingUserEmail});
+  }
+
+  reportUser(String reportedUserEmail, String reportingUserEmail) async {
+    await FirebaseFirestore.instance
+        .collection('reportsUser')
+        .doc('${reportedUserEmail}${reportingUserEmail}')
+        .set({
+      'reported_user': reportedUserEmail,
+      'reporting_user': reportingUserEmail
+    });
   }
 }
