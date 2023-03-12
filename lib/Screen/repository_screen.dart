@@ -339,16 +339,21 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                           title: Text("60일 첼린지 시작"),
                           content: SingleChildScrollView(
                               child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text('  혜택:'),
+                              Container(
+                                  width: MediaQuery.of(context).size.width /
+                                      360 *
+                                      250,
+                                  height: MediaQuery.of(context).size.width /
+                                      360 *
+                                      250,
+                                  child:
+                                      Image.asset('assets/icons/ad_challenge.png')),
                               SizedBox(
                                 height: 10,
                               ),
-                              Text('1. 첼린지 스크린이 활성화됩니다'),
-                              Text('2. 60일을 달성할 시 명예의 전당 등록 권한을 얻게 됩니다.'),
-                              Text('3. 60일 첼린지 커뮤니티 입성 자격 휙득(4월 1일부터 활성화됩니다.)'),
-                              Text('4. 커뮤니티에 60일 첼린지 입증 시 100% 환급'),
+                              Text('**4월 1일 Habbit 커뮤니티 오픈**'),
                             ],
                           )),
                           actions: [

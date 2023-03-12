@@ -114,6 +114,7 @@ class MyApp extends StatelessWidget {
             TutorialScreen.routeName: (ctx) => TutorialScreen(),
             OtherProfileScreen.routeName: (ctx) => OtherProfileScreen(),
             OtherPostDetailScreen.routeName: (ctx) => OtherPostDetailScreen(),
+            PrivacyScreen.routeName: (ctx) => PrivacyScreen(),
           },
         ));
   }
