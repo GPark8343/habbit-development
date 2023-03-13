@@ -121,7 +121,6 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                       child: Column(
                         children: [
                           Container(
-                            
                             child: Image.file(
                               selectedStory.image,
                               fit: BoxFit.cover,
@@ -129,33 +128,39 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.width / 360 * 10,
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 10,
                           ),
                           Text(
                             '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.width / 360 * 20,
+                                fontSize: MediaQuery.of(context).size.width /
+                                    360 *
+                                    20,
                                 color: Colors.grey),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.width / 360 * 10,
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 10,
                           ),
                           Text(
                             selectedStory.description as String,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.width / 360 * 20,
+                                fontSize: MediaQuery.of(context).size.width /
+                                    360 *
+                                    20,
                                 color: Colors.grey),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.width / 360 * 10,
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 10,
                           ),
                           CategoryIcon(selectedStory.category),
                           SizedBox(
-                            height: MediaQuery.of(context).size.width / 360 * 10,
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 10,
                           ),
                           isToday
                               ? TextButton(
@@ -184,7 +189,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                                       ? deleteStory(storyId)
                                                       : deleteStoryAndPost(
                                                           storyId);
-                                                
+                                                  fetchAndSetStories();
                                                   Navigator.of(context).pop();
                                                   Navigator.of(context).pop();
                                                   Navigator.of(context).pop();
@@ -194,7 +199,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                             ],
                                           );
                                         });
-                    
+
                                     // 여기에 화면 다시 업데이트하는 함수 만들기
                                   },
                                   child: Text('스토리 삭제하기'),
@@ -208,25 +213,28 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: mainColor),
                                   onPressed: () async {
-                                    Navigator.of(context).pop();
                                     // firebase upload function
-                                    IUser? userInfo = await upload.loadUserByUid(
-                                        FirebaseAuth.instance.currentUser!.uid);
+                                    IUser? userInfo =
+                                        await upload.loadUserByUid(FirebaseAuth
+                                            .instance.currentUser!.uid);
                                     upload.uploadPost(
-                                      Post(
-                                          title: selectedStory.title,
-                                          userId: FirebaseAuth
-                                              .instance.currentUser!.uid,
-                                          userInfo: userInfo,
-                                          description: selectedStory.description,
-                                          uid: selectedStory.id,
-                                          createdAt: DateTime.now(),
-                                          category: selectedStory.category),
-                                      selectedStory.image,
-                                    );
-                                    Provider.of<StoryManage>(context,
+                                        Post(
+                                            title: selectedStory.title,
+                                            userId: FirebaseAuth
+                                                .instance.currentUser!.uid,
+                                            userInfo: userInfo,
+                                            description:
+                                                selectedStory.description,
+                                            uid: selectedStory.id,
+                                            createdAt: DateTime.now(),
+                                            category: selectedStory.category),
+                                        selectedStory.image,
+                                        selectedStory.folderId);
+                                    await Provider.of<StoryManage>(context,
                                             listen: false)
                                         .changeIsUploaded(selectedStory);
+                                    await fetchAndSetStories();
+                                    Navigator.of(context).pop();
                                     // upload.uploadFile(selectedStory.image, '/${selectedStory.id}/${Uuid().v4()}.jpg');
                                     // upload.updatePost(Post(id: 'post', userInfo: userInfo,description:selectedStory.description ,thumbnail:selectedStory.image. ,uid: id ));
                                   },

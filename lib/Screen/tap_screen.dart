@@ -271,25 +271,25 @@ class _TapScreenState extends State<TapScreen> {
                       ),
                     ),
                   )),
-                  PopupMenuItem(
-                  onTap: () {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.of(context).pushNamed(ExplainScreen.routeName);
-                    });
-                  },
-                  child: Center(
-                    child: Container(
-                      color: Colors.white,
-                      child: Text(
-                        '첼린지 유의사항',
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 360 * 15,
-                            color: mainColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  )),
+                  // PopupMenuItem(
+                  // onTap: () {
+                  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+                  //     Navigator.of(context).pushNamed(ExplainScreen.routeName);
+                  //   });
+                  // },
+                  // child: Center(
+                  //   child: Container(
+                  //     color: Colors.white,
+                  //     child: Text(
+                  //       '첼린지 유의사항',
+                  //       style: TextStyle(
+                  //           fontSize:
+                  //               MediaQuery.of(context).size.width / 360 * 15,
+                  //           color: mainColor,
+                  //           fontWeight: FontWeight.bold),
+                  //     ),
+                  //   ),
+                  // )),
             ],
             icon: Icon(Icons.more_vert),
           )

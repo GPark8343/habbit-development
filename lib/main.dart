@@ -124,7 +124,7 @@ class MyApp extends StatelessWidget {
             PrivacyScreen.routeName: (ctx) => PrivacyScreen(),
             ServiceScreen.routeName: (ctx) => ServiceScreen(),
            BanScreen.routeName: (ctx) => BanScreen(),
-          ExplainScreen.routeName: (ctx) =>  ExplainScreen(),
+          // ExplainScreen.routeName: (ctx) =>  ExplainScreen(),
           },
         ));
   }

@@ -74,7 +74,7 @@ class Upload with ChangeNotifier {
     return ref.putFile(file, metadata);
   }
 
-  void uploadPost(Post post, File file) {
+  void uploadPost(Post post, File file, String folderId) {
     var filename = '/${post.uid}.jpg';
     var task = _uploadPostFile(file, filename);
     if (task != null) {
@@ -88,7 +88,7 @@ class Upload with ChangeNotifier {
             );
             await FirebaseFirestore.instance
                 .collection('posts')
-                .add(updatedPost.toMap());
+                .add({...updatedPost.toMap(), 'folderId': folderId});
           }
         },
       );

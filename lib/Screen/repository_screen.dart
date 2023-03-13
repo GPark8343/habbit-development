@@ -78,6 +78,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
     Folder? folder;
     bool? isFame;
     bool? isRegistered;
+
     bool? isFameFolder;
 
     final folderId =
@@ -102,6 +103,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           .length;
 
       isFame = numberOfStories >= 60;
+
       await FirebaseFirestore.instance
           .collection('fame_repository')
           .where('folderId', isEqualTo: folderId)
@@ -112,7 +114,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           .where('folderId', isEqualTo: folderId)
           .get()
           .then((value) => isFameFolder = value.docs.isNotEmpty);
-      print(folderId);
+      print('folderId${folderId}');
       print(stories);
 
       print('${isFame}isFame');
@@ -222,7 +224,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                       return null;
                                     },
                                   ),
-                                   SizedBox(
+                                  SizedBox(
                                     height: MediaQuery.of(context).size.width /
                                         360 *
                                         10,
@@ -236,7 +238,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                               15,
                                           color: mainColor,
                                           fontWeight: FontWeight.bold)),
-                                           SizedBox(
+                                  SizedBox(
                                     height: MediaQuery.of(context).size.width /
                                         360 *
                                         5,
@@ -357,7 +359,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                             !(isFame ?? false)
                                 ? Text('명예의 전당에 올리려면 60일을 채워야 합니다.')
                                 : (!(isRegistered ?? true)
-                                    ? Text('등록하는데 1분이 걸립니다. 앱을 종료하지 마세요')
+                                    ? Text('명예의 전당 등록이 완료되었습니다')
                                     : Text('이미 등록되었습니다.'))
                           ]),
                         ),
