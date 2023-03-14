@@ -63,6 +63,25 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
       //     .minusOneDay(findedFolder);
     }
 
+    _uploadPost() async {
+      IUser? userInfo =
+          await upload.loadUserByUid(FirebaseAuth.instance.currentUser!.uid);
+      upload.uploadPost(
+          Post(
+              title: selectedStory.title,
+              userId: FirebaseAuth.instance.currentUser!.uid,
+              userInfo: userInfo,
+              description: selectedStory.description,
+              uid: selectedStory.id,
+              createdAt: DateTime.now(),
+              category: selectedStory.category),
+          selectedStory.image,
+          selectedStory.folderId);
+      await Provider.of<StoryManage>(context, listen: false)
+          .changeIsUploaded(selectedStory);
+      await fetchAndSetStories();
+    }
+
     Widget CategoryIcon(String selectedCategory) {
       if (selectedCategory == 'Kind.Reading') {
         return Container(
@@ -99,6 +118,45 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
+              actions: [
+                isUploaded == 0
+                    ? IconButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white),
+                        onPressed: () async {
+                          showDialog<bool>(
+                              context: _scaffoldKey!.currentContext!,
+                              builder: (ctx) {
+                                return AlertDialog(
+                                  content: Text('포스트를 업로드할까요?'),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: mainColor),
+                                      child: Text('아니오.'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: mainColor),
+                                      child: Text('네. 업로드합니다.'),
+                                      onPressed: () async {
+                                        await _uploadPost();
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                        icon: Icon(
+                          Icons.upload_file,
+                          color: mainColor,
+                        ))
+                    : Container()
+              ],
               iconTheme: IconThemeData(
                 color: mainColor, //색변경
               ),
@@ -208,38 +266,6 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                       backgroundColor: mainColor),
                                 )
                               : Container(),
-                          isUploaded == 0
-                              ? ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: mainColor),
-                                  onPressed: () async {
-                                    // firebase upload function
-                                    IUser? userInfo =
-                                        await upload.loadUserByUid(FirebaseAuth
-                                            .instance.currentUser!.uid);
-                                    upload.uploadPost(
-                                        Post(
-                                            title: selectedStory.title,
-                                            userId: FirebaseAuth
-                                                .instance.currentUser!.uid,
-                                            userInfo: userInfo,
-                                            description:
-                                                selectedStory.description,
-                                            uid: selectedStory.id,
-                                            createdAt: DateTime.now(),
-                                            category: selectedStory.category),
-                                        selectedStory.image,
-                                        selectedStory.folderId);
-                                    await Provider.of<StoryManage>(context,
-                                            listen: false)
-                                        .changeIsUploaded(selectedStory);
-                                    await fetchAndSetStories();
-                                    Navigator.of(context).pop();
-                                    // upload.uploadFile(selectedStory.image, '/${selectedStory.id}/${Uuid().v4()}.jpg');
-                                    // upload.updatePost(Post(id: 'post', userInfo: userInfo,description:selectedStory.description ,thumbnail:selectedStory.image. ,uid: id ));
-                                  },
-                                  child: Text('포스트 올리기'))
-                              : Container()
                         ],
                       ),
                     ),

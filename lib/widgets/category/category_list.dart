@@ -55,7 +55,15 @@ class _CategoryListState extends State<CategoryList> {
     }
 
     return AlertDialog(
-      content: Text('카테고리를 선택하세요'),
+      content: Column(
+        children: [
+          Text('폴더 만들기(1)'),
+          SizedBox(
+            height: 20,
+          ),
+          Text('만들 습관의 카테고리를 선택하세요'),
+        ],
+      ),
       actions: <Widget>[
         Column(
           children: [
@@ -193,11 +201,12 @@ class _CategoryListState extends State<CategoryList> {
                                           10.0),
                                   child: Column(
                                     children: [
+                                      Text('폴더 만들기(2)'),
                                       Text('폴더 정보를 입력하세요'),
                                       TextFormField(
                                         controller: _titleController,
                                         decoration:
-                                            InputDecoration(labelText: '제목'),
+                                            InputDecoration(labelText: '폴더 제목'),
                                         textInputAction: TextInputAction.next,
                                         onFieldSubmitted: (_) {
                                           FocusScope.of(context)
@@ -219,7 +228,7 @@ class _CategoryListState extends State<CategoryList> {
                                       TextFormField(
                                         controller: _descriptionController,
                                         decoration:
-                                            InputDecoration(labelText: '설명'),
+                                            InputDecoration(labelText: '폴더에 대한 간략한 설명'),
                                         maxLines: 3,
                                         keyboardType: TextInputType.multiline,
                                         focusNode: _descriptionFocusNode,
