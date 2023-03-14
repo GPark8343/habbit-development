@@ -36,7 +36,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
     final bool available = await _inAppPurchase.isAvailable();
     if (available) {
       Set<String> ids = Set<String>.from([
-        "challenge_registration_service",
+        "60challenge_registration_service",
       ]);
       ProductDetailsResponse res =
           await _inAppPurchase.queryProductDetails(ids);
