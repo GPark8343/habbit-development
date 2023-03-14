@@ -61,46 +61,48 @@ class InstaScreen extends StatelessWidget {
     final upload = Provider.of<Upload>(context, listen: false);
     // var pickedCategory =
     //     Provider.of<CategoryManage>(context, listen: false).category;
-    return FutureBuilder(future:  Provider.of<BanManage>(context, listen: false).fetchAndSetBanUser(),
-      builder: (context,futureSnapshot) {
-        return StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection('posts')
-                .orderBy('created_at', descending: true)
-                .snapshots(),
-            builder: (ctx, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: Container(
-                    color: Colors.white,
-                  ),
-                );
-              }
-              final docs = snapshot.data?.docs;
-              return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: docs?.length,
-                  itemBuilder: (context, index) {
-                    return docs?.length == 0
-                        ? Container()
-                        : PostWidget(
-                            post: Post.fromJson(
-                                docs![index]['uid'], docs[index].data()),
-                          );
-                  });
+    return FutureBuilder(
+        future:
+            Provider.of<BanManage>(context, listen: false).fetchAndSetBanUser(),
+        builder: (context, futureSnapshot) {
+          return StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('posts')
+                  .orderBy('created_at', descending: true)
+                  .limit(20)
+                  .snapshots(),
+              builder: (ctx, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: Container(
+                      color: Colors.white,
+                    ),
+                  );
+                }
+                final docs = snapshot.data?.docs;
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: docs?.length,
+                    itemBuilder: (context, index) {
+                      return docs?.length == 0
+                          ? Container()
+                          : PostWidget(
+                              post: Post.fromJson(
+                                  docs![index]['uid'], docs[index].data()),
+                            );
+                    });
 
-              // SingleChildScrollView(
-              //   child: Column(
-              //     children: List.generate(
-              //         upload.postList.length,
-              //         (index) => PostWidget(
-              //               post: upload.postList[index],
-              //             )).toList(),
-              //   ),
-              // );
-            });
-      }
-    );
+                // SingleChildScrollView(
+                //   child: Column(
+                //     children: List.generate(
+                //         upload.postList.length,
+                //         (index) => PostWidget(
+                //               post: upload.postList[index],
+                //             )).toList(),
+                //   ),
+                // );
+              });
+        });
 
     // FutureBuilder(
     //     future: upload.addPostList(),

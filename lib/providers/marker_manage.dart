@@ -20,8 +20,7 @@ class MarkerManage extends ChangeNotifier {
         DateTime.utc(datetime.year, datetime.month, datetime.day): [Event('')]
       });
     });
-    print(attendanceDate);
-    print(events);
+  
     notifyListeners();
   }
 

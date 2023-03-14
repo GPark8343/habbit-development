@@ -45,8 +45,6 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
       /// 📌 소모 및 비소모 둘 다
       _inAppPurchase.purchaseStream.listen((List<PurchaseDetails> event) {
         PurchaseDetails e = event[0];
-        print(
-            "📌 EVENT $e ${e.status} ${e.productID} ${e.pendingCompletePurchase}");
 
         /// 구매 여부 pendingCompletePurchase - 승인 true / 취소 false
         if (e.pendingCompletePurchase) {
@@ -114,12 +112,6 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           .where('folderId', isEqualTo: folderId)
           .get()
           .then((value) => isFameFolder = value.docs.isNotEmpty);
-      print('folderId${folderId}');
-      print(stories);
-
-      print('${isFame}isFame');
-      print('${numberOfStories}numberOfStories');
-      print('${isRegistered}isRegistered');
     }
 
     final _priceFocusNode = FocusNode();
@@ -137,7 +129,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
 
     void _saveStory() async {
       if (_pickedImage == null || _descriptionController.text.isEmpty) {
-        Navigator.of(context).pop(); // 빈 스토리는 작성 못하게 해야 함
+        // 빈 스토리는 작성 못하게 해야 함
         return;
       }
       await Provider.of<StoryManage>(context, listen: false)
@@ -262,9 +254,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                             if (urllaunchable) {
                                               await launch(
                                                   url); //launch is from url_launcher package to launch URL
-                                            } else {
-                                              print("URL can't be launched.");
-                                            }
+                                            } else {}
                                           }),
                                   )
                                 ],
@@ -283,14 +273,22 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                             backgroundColor: mainColor),
                         onPressed: () {
                           _saveStory();
-                          Navigator.of(context).pop();
+                          (_pickedImage == null ||
+                                  _descriptionController.text.isEmpty)
+                              ? null
+                              : Navigator.of(context).pop();
                           showDialog(
                               context: context,
                               builder: (_) {
                                 return AlertDialog(
                                   content: SingleChildScrollView(
-                                    child: Column(
-                                        children: [Text('스토리 업로드가 완료되었습니다.')]),
+                                    child: Column(children: [
+                                      _pickedImage == null
+                                          ? Text('스토리에 올릴 사진을 올려주세요.')
+                                          : (_descriptionController.text.isEmpty
+                                              ? Text('스토리에 대한 설명을 적어주세요.')
+                                              : Text('스토리 업로드가 완료되었습니다.'))
+                                    ]),
                                   ),
                                 );
                               });
@@ -561,7 +559,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                     Navigator.of(context).push(_createRoute());
                                   },
                                   trailing: Text(
-                                    '업로드 ? ${storiesOfFoler[i].isUploaded == 0 ? false : true}',
+                                    '업로드${storiesOfFoler[i].isUploaded == 0 ? ' 미완료' : ' 완료'}',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),

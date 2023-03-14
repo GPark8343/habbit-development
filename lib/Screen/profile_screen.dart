@@ -206,6 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         stream: FirebaseFirestore.instance
             .collection('posts')
             .where('userId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+            .orderBy('created_at', descending: true)
             .snapshots(),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -215,7 +216,9 @@ class _ProfileScreenState extends State<ProfileScreen>
               ),
             );
           }
+
           final docs = snapshot.data?.docs;
+          if (!snapshot.hasData) return const Text('Loading...');
           return GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,

@@ -116,7 +116,7 @@ class _FolderScreenState extends State<FolderScreen> {
                       itemCount: greatFolders.folders.length,
                       itemBuilder: (ctx, i) {
                         bool isFameFolder = false;
-                        print(greatFolders.folders[i].id);
+           
                         return FutureBuilder(
                             future: FirebaseFirestore.instance
                                 .collection('fame_folder')
@@ -127,7 +127,7 @@ class _FolderScreenState extends State<FolderScreen> {
                               isFameFolder = value.docs.isNotEmpty;
                             }),
                             builder: (context, futureSnapshot) {
-                              print(isFameFolder);
+                            
                               return Card(
                                 child: Dismissible(
                                   key: UniqueKey(),

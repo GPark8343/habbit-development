@@ -37,7 +37,6 @@ class _CategoryListState extends State<CategoryList> {
 
     void _selectCategory(Kind pickedCategory) {
       _pickedCategory = pickedCategory.toString();
-      print(_pickedCategory);
     }
 
     void _saveFolder() {
@@ -57,96 +56,96 @@ class _CategoryListState extends State<CategoryList> {
     return AlertDialog(
       content: Column(
         children: [
-          Text('폴더 만들기(1)'),
+          Text('폴더 만들기(1단계)'),
           SizedBox(
             height: 20,
           ),
           Text('만들 습관의 카테고리를 선택하세요'),
+          Column(
+            children: [
+              RadioListTile(
+                activeColor: mainColor,
+                //ListTile - title에는 내용,
+                //leading or trailing에 체크박스나 더보기와 같은 아이콘을 넣는다.
+                title: Text('독서',
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 360 * 17,
+                        color: mainColor,
+                        fontWeight: FontWeight.bold)),
+
+                value: Kind.Reading,
+                groupValue: _kind,
+                onChanged: (Kind? value) {
+                  setState(() {
+                    _kind = value;
+                  });
+                },
+              ),
+              RadioListTile(
+                activeColor: mainColor,
+                title: Text('운동',
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 360 * 17,
+                        color: mainColor,
+                        fontWeight: FontWeight.bold)),
+                value: Kind.Exercise,
+                groupValue: _kind,
+                onChanged: (Kind? value) {
+                  setState(() {
+                    _kind = value;
+                  });
+                },
+              ),
+              RadioListTile(
+                activeColor: mainColor,
+                title: Text('언어',
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 360 * 17,
+                        color: mainColor,
+                        fontWeight: FontWeight.bold)),
+                value: Kind.Language,
+                groupValue: _kind,
+                onChanged: (Kind? value) {
+                  setState(() {
+                    _kind = value;
+                  });
+                },
+              ),
+              RadioListTile(
+                activeColor: mainColor,
+                title: Text('공부',
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 360 * 17,
+                        color: mainColor,
+                        fontWeight: FontWeight.bold)),
+                value: Kind.Study,
+                groupValue: _kind,
+                onChanged: (Kind? value) {
+                  setState(() {
+                    _kind = value;
+                  });
+                },
+              ),
+              RadioListTile(
+                activeColor: mainColor,
+                title: Text('기타',
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 360 * 17,
+                        color: mainColor,
+                        fontWeight: FontWeight.bold)),
+                value: Kind.Etc,
+                groupValue: _kind,
+                onChanged: (Kind? value) {
+                  setState(() {
+                    _kind = value;
+                  });
+                },
+              ),
+            ],
+          ),
         ],
       ),
       actions: <Widget>[
-        Column(
-          children: [
-            RadioListTile(
-              activeColor: mainColor,
-              //ListTile - title에는 내용,
-              //leading or trailing에 체크박스나 더보기와 같은 아이콘을 넣는다.
-              title: Text('독서',
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 360 * 17,
-                      color: mainColor,
-                      fontWeight: FontWeight.bold)),
-
-              value: Kind.Reading,
-              groupValue: _kind,
-              onChanged: (Kind? value) {
-                setState(() {
-                  _kind = value;
-                });
-              },
-            ),
-            RadioListTile(
-              activeColor: mainColor,
-              title: Text('운동',
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 360 * 17,
-                      color: mainColor,
-                      fontWeight: FontWeight.bold)),
-              value: Kind.Exercise,
-              groupValue: _kind,
-              onChanged: (Kind? value) {
-                setState(() {
-                  _kind = value;
-                });
-              },
-            ),
-            RadioListTile(
-              activeColor: mainColor,
-              title: Text('언어',
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 360 * 17,
-                      color: mainColor,
-                      fontWeight: FontWeight.bold)),
-              value: Kind.Language,
-              groupValue: _kind,
-              onChanged: (Kind? value) {
-                setState(() {
-                  _kind = value;
-                });
-              },
-            ),
-            RadioListTile(
-              activeColor: mainColor,
-              title: Text('공부',
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 360 * 17,
-                      color: mainColor,
-                      fontWeight: FontWeight.bold)),
-              value: Kind.Study,
-              groupValue: _kind,
-              onChanged: (Kind? value) {
-                setState(() {
-                  _kind = value;
-                });
-              },
-            ),
-            RadioListTile(
-              activeColor: mainColor,
-              title: Text('기타',
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width / 360 * 17,
-                      color: mainColor,
-                      fontWeight: FontWeight.bold)),
-              value: Kind.Etc,
-              groupValue: _kind,
-              onChanged: (Kind? value) {
-                setState(() {
-                  _kind = value;
-                });
-              },
-            ),
-          ],
-        ),
         // Container(
         //   child: Consumer<CategoryList>(
         //       builder: (context, categoryList, child) {
@@ -201,7 +200,7 @@ class _CategoryListState extends State<CategoryList> {
                                           10.0),
                                   child: Column(
                                     children: [
-                                      Text('폴더 만들기(2)'),
+                                      Text('폴더 만들기(2단계)'),
                                       Text('폴더 정보를 입력하세요'),
                                       TextFormField(
                                         controller: _titleController,
@@ -227,8 +226,8 @@ class _CategoryListState extends State<CategoryList> {
                                       ),
                                       TextFormField(
                                         controller: _descriptionController,
-                                        decoration:
-                                            InputDecoration(labelText: '폴더에 대한 간략한 설명'),
+                                        decoration: InputDecoration(
+                                            labelText: '폴더에 대한 간략한 설명'),
                                         maxLines: 3,
                                         keyboardType: TextInputType.multiline,
                                         focusNode: _descriptionFocusNode,

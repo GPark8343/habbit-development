@@ -31,7 +31,7 @@ class Deco extends StatelessWidget {
       }
       Provider.of<DecoManage>(context, listen: false)
           .updateReward(attendanceList);
-      print(attendanceList);
+   
     }
 
     return FutureBuilder(

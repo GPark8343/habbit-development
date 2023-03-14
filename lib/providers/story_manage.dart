@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/helper/db_helper.dart';
 import 'package:habbit/models/story.dart';
@@ -70,11 +72,11 @@ class StoryManage extends ChangeNotifier {
             folderId: item['folder_id'],
             isUploaded: item['is_uploaded']))
         .toList();
-    print(items);
+
     notifyListeners();
   }
 
-   changeIsUploaded(Story findedStory) {
+  changeIsUploaded(Story findedStory) {
     Story updatedStory = findedStory.copyWith(
       isUploaded: findedStory.isUploaded == 0 ? 1 : 0,
     );
@@ -83,5 +85,16 @@ class StoryManage extends ChangeNotifier {
 
   Future<void> deleteStories(String id) async {
     DBHelper.deleteStory('i_user_stories', id);
+  }
+
+ 
+  checkIsUploaded(String storyId) async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection('posts')
+        .where('uid', isEqualTo: storyId)
+        .get();
+    var isEmpty = snapshot.docs.isEmpty;
+
+    return isEmpty;
   }
 }

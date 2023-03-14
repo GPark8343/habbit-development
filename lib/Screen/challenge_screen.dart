@@ -43,8 +43,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     }
 
     void moveRightIndex() {
-      print(MediaQuery.of(context).size.height);
-      print(MediaQuery.of(context).size.width);
+ 
       if (index + 1 > folderListLength - 1) {
         setState(() {
           index = 0;
@@ -61,32 +60,35 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
           .fetchAndSetFolders();
       await Provider.of<StoryManage>(context, listen: false)
           .fetchAndSetStories();
-
       for (int i = 0; i < folderListAll.length; i++) {
-        try{await FirebaseFirestore.instance
-            .collection('fame_folder')
-            .where('folderId', isEqualTo: folderListAll[i].id)
-            .get()
-            .then((value) {
-          print(value.docs.first.data()['folderId']);
-          folderList.add(Provider.of<FolderManage>(context, listen: false)
-              .findById(value.docs.first.data()['folderId']));
-          print('${folderList}1');
-        });}catch(err){
-          return;
-        }
+        folderList.add(folderListAll[i]);
       }
+      // for (int i = 0; i < folderListAll.length; i++) {
+      //   try {
+      //     await FirebaseFirestore.instance
+      //         .collection('fame_folder')
+      //         .where('folderId', isEqualTo: folderListAll[i].id)
+      //         .get()
+      //         .then((value) {
+      //       print(value.docs.first.data()['folderId']);
+      //       folderList.add(Provider.of<FolderManage>(context, listen: false)
+      //           .findById(value.docs.first.data()['folderId']));
+      //       print('${folderList}1');
+      //     });
+      //   } catch (err) {
+      //     return;
+      //   }
+      // }
       folderListLength = folderList.length;
-      print('${folderList}2');
+      
       await Provider.of<MarkerManage>(context, listen: false).addMarker();
     }
 
-    print('${folderList}3');
+ 
     return FutureBuilder(
         future: first(),
         builder: (context, snapshot) {
-            print('${folderList}4');
-            print('${folderListLength}5');
+        
           return folderList.length == 0
               ? Center(
                   child: Column(

@@ -30,7 +30,7 @@ class TimeManage with ChangeNotifier {
         .inDays;
 
   
-    print(allDifferenceTypeOfDay);
+
     return allDifferenceTypeOfDay;
   }
 

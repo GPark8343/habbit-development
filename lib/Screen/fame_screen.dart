@@ -87,7 +87,7 @@ class _FameScreenState extends State<FameScreen> {
                   shrinkWrap: true,
                   itemCount: docs1?.length,
                   itemBuilder: (ctx, i) {
-                    print(docs1?[i]['folderId']);
+               
                     return StreamBuilder(
                         stream: FirebaseFirestore.instance
                             .collection('users')

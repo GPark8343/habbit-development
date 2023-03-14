@@ -53,7 +53,7 @@ class FolderManage extends ChangeNotifier {
             category: item['category'],
             days: item['days']))
         .toList();
-    print(folders);
+   
     notifyListeners();
   }
 

@@ -55,12 +55,12 @@ class _CalendarState extends State<Calendar> {
 
     Future<List<DateTime>>? _getAttendanceDate() {
       attendanceDate = [];
-      print('${items}이거 보고 싶어');
+  
       items.forEach(
           (story) => attendanceDate.add(DateTime.parse(story.createdAt)));
       Provider.of<MarkerManage>(context, listen: false)
           .updateAttendanceDate(attendanceDate);
-      print('${attendanceDate}이거 보고 싶어');
+   
     }
 
     Future? first() async {
@@ -87,7 +87,7 @@ class _CalendarState extends State<Calendar> {
                         Padding(
                           padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 360 * 15),
                           child: Text(
-                            '${widget.folder.title} 폴더',
+                            '${widget.folder.title} 폴더 현황',
                             style: TextStyle(
                                 fontSize:
                                     MediaQuery.of(context).size.width / 360 * 25,

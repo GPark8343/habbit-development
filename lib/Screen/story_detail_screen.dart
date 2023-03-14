@@ -34,8 +34,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
         DateTime.utc(now.year, now.month, now.day);
 
     fetchAndSetStories() {
-      print(isToday);
-      print(isToday);
+
       Provider.of<StoryManage>(context, listen: false).fetchAndSetStories();
     }
 
@@ -119,6 +118,50 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
             key: _scaffoldKey,
             appBar: AppBar(
               actions: [
+                isToday
+                    ? IconButton(
+                        onPressed: () {
+                          showDialog<bool>(
+                              context: _scaffoldKey!.currentContext!,
+                              builder: (ctx) {
+                                return AlertDialog(
+                                  content: Text('스토리를 내릴까요?'),
+                                  actions: <Widget>[
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: mainColor),
+                                      child: Text('아니오.'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: mainColor),
+                                      child: Text('네. 삭제합니다.'),
+                                      onPressed: () {
+                                        isUploaded == 0
+                                            ? deleteStory(storyId)
+                                            : deleteStoryAndPost(storyId);
+                                        fetchAndSetStories();
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                        // 화면 업데이트 추가
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+
+                          // 여기에 화면 다시 업데이트하는 함수 만들기
+                        },
+                        icon: Icon(Icons.delete),
+                        style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: mainColor),
+                      )
+                    : Container(),
                 isUploaded == 0
                     ? IconButton(
                         style: ElevatedButton.styleFrom(
@@ -144,6 +187,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                       child: Text('네. 업로드합니다.'),
                                       onPressed: () async {
                                         await _uploadPost();
+                                        Navigator.of(context).pop();
                                         Navigator.of(context).pop();
                                       },
                                     ),
@@ -220,52 +264,6 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                             height:
                                 MediaQuery.of(context).size.width / 360 * 10,
                           ),
-                          isToday
-                              ? TextButton(
-                                  onPressed: () {
-                                    showDialog<bool>(
-                                        context: _scaffoldKey!.currentContext!,
-                                        builder: (ctx) {
-                                          return AlertDialog(
-                                            content: Text('스토리 를 내릴까요?'),
-                                            actions: <Widget>[
-                                              ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor: mainColor),
-                                                child: Text('아니오.'),
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(false);
-                                                },
-                                              ),
-                                              ElevatedButton(
-                                                style: ElevatedButton.styleFrom(
-                                                    backgroundColor: mainColor),
-                                                child: Text('네. 삭제합니다.'),
-                                                onPressed: () {
-                                                  isUploaded == 0
-                                                      ? deleteStory(storyId)
-                                                      : deleteStoryAndPost(
-                                                          storyId);
-                                                  fetchAndSetStories();
-                                                  Navigator.of(context).pop();
-                                                  Navigator.of(context).pop();
-                                                  Navigator.of(context).pop();
-                                                  // 화면 업데이트 추가
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        });
-
-                                    // 여기에 화면 다시 업데이트하는 함수 만들기
-                                  },
-                                  child: Text('스토리 삭제하기'),
-                                  style: TextButton.styleFrom(
-                                      foregroundColor: Colors.white,
-                                      backgroundColor: mainColor),
-                                )
-                              : Container(),
                         ],
                       ),
                     ),

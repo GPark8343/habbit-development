@@ -59,9 +59,9 @@ class FameRepositoryManage extends ChangeNotifier {
   registerFameStories(Folder folder, List<Story> stories) async {
     List<Story> fameData1 =
         stories.where((element) => element.folderId == folder.id).toList();
-    print('${fameData1.length}3번임');
+   
     List fameData2 = [];
-    print('${fameData2}3번임');
+  
 
     // await _uploadFame(fameData1);
 
@@ -73,10 +73,10 @@ class FameRepositoryManage extends ChangeNotifier {
     var isEmpty = snapshot.docs.isEmpty;
 
     if (isEmpty) {
-      print(isEmpty);
+     
       return;
     } else {
-      print(isEmpty);
+ 
       await FirebaseFirestore.instance
           .collection('posts')
           .where('folderId', isEqualTo: folder.id)
@@ -87,7 +87,7 @@ class FameRepositoryManage extends ChangeNotifier {
           fameData2
               .add((fameData1[i] as Story).toMapImageUrl(docs[i]['thumbnail']));
         }
-        print('${fameData2}4번임');
+  
         FirebaseFirestore.instance.collection('fame_repository').add({
           'userId': FirebaseAuth.instance.currentUser!.uid,
           'fameData': fameData2,

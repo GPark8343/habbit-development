@@ -127,7 +127,7 @@ class AuthScreen extends StatelessWidget {
           .collection('users')
           .where('uid', isEqualTo: user!.uid)
           .get();
-      print(data.docs.length);
+  
       if (data.docs.length == 0) {
         upload.registerUser();
         Navigator.of(context).pushNamed(TutorialScreen.routeName);
@@ -135,7 +135,7 @@ class AuthScreen extends StatelessWidget {
 
       // 오류남-> splash screen으로 가려야 함
     } catch (error) {
-      print(error);
+   
     }
   }
 

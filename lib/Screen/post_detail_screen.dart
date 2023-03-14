@@ -89,6 +89,45 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
+              actions: [
+               IconButton(
+                  onPressed: () {
+                    showDialog<bool>(
+                        context: _scaffoldKey!.currentContext!,
+                        builder: (ctx) {
+                          return AlertDialog(
+                            content: Text('포스트를 내릴까요?'),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
+                                child: Text('아니오.'),
+                                onPressed: () {
+                                  Navigator.of(context).pop(false);
+                                },
+                              ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: mainColor),
+                                child: Text('네. 삭제합니다.'),
+                                onPressed: () {
+                                  deletePost(storyId);
+
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                  // 화면 업데이트 추가
+                                },
+                              ),
+                            ],
+                          );
+                        });
+
+                    // 여기에 화면 다시 업데이트하는 함수 만들기
+                  },
+                  icon:Icon(Icons.delete),
+                  style: TextButton.styleFrom(foregroundColor: mainColor),
+                ),
+              ],
               iconTheme: IconThemeData(
                 color: mainColor, //색변경
               ),
@@ -111,81 +150,46 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       child: Column(
                         children: [
                           Container(
-                        
                             child: CachedNetworkImage(
-        imageUrl: image,
-        placeholder: (context, url) =>Container(color: Colors.white,),
-        width: double.infinity,
-        fit: BoxFit.cover,
-      ),
+                              imageUrl: image,
+                              placeholder: (context, url) => Container(
+                                color: Colors.white,
+                              ),
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.width / 360 * 10,
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 10,
                           ),
                           Text(
                             '${dateTime.year}년 ${dateTime.month}월 ${dateTime.day}일',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.width / 360 * 20,
+                                fontSize: MediaQuery.of(context).size.width /
+                                    360 *
+                                    20,
                                 color: Colors.grey),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.width / 360 * 10,
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 10,
                           ),
                           Text(
                             description as String,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.width / 360 * 20,
+                                fontSize: MediaQuery.of(context).size.width /
+                                    360 *
+                                    20,
                                 color: Colors.grey),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.width / 360 * 10,
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 10,
                           ),
                           CategoryIcon(category),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.width / 360 * 10,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              showDialog<bool>(
-                                  context: _scaffoldKey!.currentContext!,
-                                  builder: (ctx) {
-                                    return AlertDialog(
-                                      content: Text('포스트를 내릴까요?'),
-                                      actions: <Widget>[
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor: mainColor),
-                                          child: Text('아니오.'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop(false);
-                                          },
-                                        ),
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor: mainColor),
-                                          child: Text('네. 삭제합니다.'),
-                                          onPressed: () {
-                                            deletePost(storyId);
-                    
-                                            Navigator.of(context).pop();
-                                            Navigator.of(context).pop();
-                                            // 화면 업데이트 추가
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  });
-                    
-                              // 여기에 화면 다시 업데이트하는 함수 만들기
-                            },
-                            child: Text('포스트 삭제하기'),
-                            style:
-                                TextButton.styleFrom(foregroundColor: mainColor),
-                          ),
                         ],
                       ),
                     ),
