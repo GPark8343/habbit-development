@@ -5,6 +5,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class ImageInput extends StatefulWidget {
   final Function onSelectImage;
@@ -51,19 +52,52 @@ class _ImageInputState extends State<ImageInput> {
   }
 
   Future<void> _requestGalleryPermission() async {
-    final serviceStatus = await Permission.storage.isGranted;
+    if (Platform.isAndroid) {
+  final androidInfo = await DeviceInfoPlugin().androidInfo;
+  if (androidInfo.version.sdkInt <= 32) {
+   final serviceStatus = await Permission.storage.isGranted;
 
     bool isStorageOn = serviceStatus == ServiceStatus.enabled;
 
     final status = await Permission.storage.request();
-
-    if (status == PermissionStatus.granted) {
+      if (status == PermissionStatus.granted) {
       _takeGallery();
     } else if (status == PermissionStatus.denied) {
   
     } else if (status == PermissionStatus.permanentlyDenied) {
       await openAppSettings();
     }
+  }  else {
+      final serviceStatus = await Permission.photos.isGranted;
+
+    bool isStorageOn = serviceStatus == ServiceStatus.enabled;
+
+    final status = await Permission.photos.request();
+      if (status == PermissionStatus.granted) {
+      _takeGallery();
+    } else if (status == PermissionStatus.denied) {
+  
+    } else if (status == PermissionStatus.permanentlyDenied) {
+      await openAppSettings();
+    }
+  }
+}else{
+  final serviceStatus = await Permission.storage.isGranted;
+
+    bool isStorageOn = serviceStatus == ServiceStatus.enabled;
+
+    final status = await Permission.storage.request();
+      if (status == PermissionStatus.granted) {
+      _takeGallery();
+    } else if (status == PermissionStatus.denied) {
+  
+    } else if (status == PermissionStatus.permanentlyDenied) {
+      await openAppSettings();
+    }
+}
+  
+
+  
   }
 
   Future<void> _takeGallery() async {
