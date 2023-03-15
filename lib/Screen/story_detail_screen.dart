@@ -34,7 +34,6 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
         DateTime.utc(now.year, now.month, now.day);
 
     fetchAndSetStories() {
-
       Provider.of<StoryManage>(context, listen: false).fetchAndSetStories();
     }
 
@@ -253,7 +252,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                                 fontSize: MediaQuery.of(context).size.width /
                                     360 *
                                     20,
-                                color: Colors.grey),
+                                color: Colors.black),
                           ),
                           SizedBox(
                             height:

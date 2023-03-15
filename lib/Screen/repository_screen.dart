@@ -16,6 +16,7 @@ import 'package:habbit/widgets/image_input.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class RepositoryScreen extends StatefulWidget {
   static const routeName = '/repository';
@@ -26,6 +27,42 @@ class RepositoryScreen extends StatefulWidget {
 }
 
 class _RepositoryScreenState extends State<RepositoryScreen> {
+  InterstitialAd? _interstitialAd;
+  bool _isAdLoaded = false;
+
+  void onAdLoaded(InterstitialAd ad) {
+    _interstitialAd = ad;
+    _isAdLoaded = true;
+
+    _interstitialAd!.fullScreenContentCallback =
+        FullScreenContentCallback(onAdDismissedFullScreenContent: (ad) {
+      _interstitialAd?.dispose();
+    }, onAdFailedToShowFullScreenContent: (ad, error) {
+      _interstitialAd?.dispose();
+    });
+  }
+
+  void loadInterstitial() async {
+    InterstitialAd.load(
+      adUnitId:
+          // 'ca-app-pub-3940256099942544/1033173712',
+          'ca-app-pub-7806371932663728/1349927845',
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: onAdLoaded,
+        onAdFailedToLoad: (LoadAdError error) {
+          // nothing to do
+        },
+      ),
+    );
+  }
+
+  void showInterstitial() {
+    if (_isAdLoaded) {
+      _interstitialAd?.show();
+    }
+  }
+
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
   List<ProductDetails> view = [];
   Future fetch() async {
@@ -67,6 +104,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
   @override
   void initState() {
     Future(this.fetch);
+    loadInterstitial();
     super.initState();
   }
 
@@ -76,8 +114,6 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
     Folder? folder;
     bool? isFame;
     bool? isRegistered;
-
-    bool? isFameFolder;
 
     final folderId =
         (ModalRoute.of(context)?.settings.arguments as Map)['folder_id'];
@@ -107,11 +143,6 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           .where('folderId', isEqualTo: folderId)
           .get()
           .then((value) => isRegistered = value.docs.isNotEmpty);
-      await FirebaseFirestore.instance
-          .collection('fame_folder')
-          .where('folderId', isEqualTo: folderId)
-          .get()
-          .then((value) => isFameFolder = value.docs.isNotEmpty);
     }
 
     final _priceFocusNode = FocusNode();
@@ -277,6 +308,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                   _descriptionController.text.isEmpty)
                               ? null
                               : Navigator.of(context).pop();
+
                           showDialog(
                               context: context,
                               builder: (_) {
@@ -292,6 +324,10 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                   ),
                                 );
                               });
+                          (_pickedImage == null ||
+                                  _descriptionController.text.isEmpty)
+                              ? null
+                              : showInterstitial();
                         },
                         icon: Icon(Icons.add),
                         label: Text('스토리 추가하기 '),
@@ -341,96 +377,38 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
     }
 
     Widget ActionButton2() {
-      return (isFameFolder ?? false)
-          ? IconButton(
-              style: IconButton.styleFrom(
-                  backgroundColor: !(isRegistered ?? true) && (isFame ?? false)
-                      ? mainColor
-                      : Colors.grey),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (_) {
-                      return AlertDialog(
-                        content: SingleChildScrollView(
-                          child: Column(children: [
-                            !(isFame ?? false)
-                                ? Text('명예의 전당에 올리려면 60일을 채워야 합니다.')
-                                : (!(isRegistered ?? true)
-                                    ? Text('명예의 전당 등록이 완료되었습니다')
-                                    : Text('이미 등록되었습니다.'))
-                          ]),
-                        ),
-                      );
-                    });
-                !(isRegistered ?? true) && (isFame ?? false)
-                    ? Provider.of<FameRepositoryManage>(context, listen: false)
-                        .registerFameStories(folder!, stories)
-                    : print('');
-              },
-              icon: !(isRegistered ?? true)
-                  ? Container(
-                      width: MediaQuery.of(context).size.width / 360 * 20,
-                      height: MediaQuery.of(context).size.width / 360 * 20,
-                      child: Image.asset('assets/icons/trophy.png'))
-                  : Icon(Icons.highlight_off))
-          : IconButton(
-              onPressed: () async {
-                final PurchaseParam purchaseParam =
-                    PurchaseParam(productDetails: this.view[0]);
-                await showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                          title: Text("60일 첼린지 시작"),
-                          content: SingleChildScrollView(
-                              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                  width: MediaQuery.of(context).size.width /
-                                      360 *
-                                      250,
-                                  height: MediaQuery.of(context).size.width /
-                                      360 *
-                                      250,
-                                  child: Image.asset(
-                                      'assets/icons/ad_challenge.png')),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text('** Habbit 커뮤니티 오픈 준비 중 **'),
-                            ],
-                          )),
-                          actions: [
-                            TextButton(
-                              child: Text(
-                                "첼린지 폴더로 업그레이드",
-                                style: TextStyle(
-                                    color: mainColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              onPressed: () async {
-                                bool c = await _inAppPurchase.buyConsumable(
-                                    purchaseParam: purchaseParam);
-
-                                /// popup 나타나는 여부
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            TextButton(
-                              child: Text(
-                                "닫기",
-                                style: TextStyle(
-                                    color: mainColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              onPressed: () async =>
-                                  Navigator.of(context).pop(),
-                            )
-                          ],
-                        ));
-              },
-              icon: Icon(Icons.app_registration));
+      return IconButton(
+          style: IconButton.styleFrom(
+              backgroundColor: !(isRegistered ?? true) && (isFame ?? false)
+                  ? mainColor
+                  : Colors.grey),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (_) {
+                  return AlertDialog(
+                    content: SingleChildScrollView(
+                      child: Column(children: [
+                        !(isFame ?? false)
+                            ? Text('명예의 전당에 올리려면 60일을 채워야 합니다.')
+                            : (!(isRegistered ?? true)
+                                ? Text('명예의 전당 등록이 완료되었습니다')
+                                : Text('이미 등록되었습니다.'))
+                      ]),
+                    ),
+                  );
+                });
+            !(isRegistered ?? true) && (isFame ?? false)
+                ? Provider.of<FameRepositoryManage>(context, listen: false)
+                    .registerFameStories(folder!, stories)
+                : print('');
+          },
+          icon: !(isRegistered ?? true)
+              ? Container(
+                  width: MediaQuery.of(context).size.width / 360 * 20,
+                  height: MediaQuery.of(context).size.width / 360 * 20,
+                  child: Image.asset('assets/icons/trophy.png'))
+              : Icon(Icons.highlight_off));
     }
 
     return FutureBuilder(

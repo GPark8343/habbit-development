@@ -111,9 +111,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               child: Text(
                                 docData['nickname'],
                                 style: TextStyle(
-                                    fontSize: MediaQuery.of(context).size.width /
-                                        360 *
-                                        30,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width /
+                                            360 *
+                                            30,
                                     color: textColor,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -147,10 +148,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     child: Column(
                                       children: [
                                         SizedBox(
-                                          height:
-                                              MediaQuery.of(context).size.width /
-                                                  360 *
-                                                  10,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              10,
                                         ),
                                         TextFormField(
                                           controller: _titleController,
@@ -170,12 +172,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         ),
                                         TextButton(
                                             onPressed: () {
-                                              if (_titleController.text.isEmpty) {
+                                              if (_titleController
+                                                  .text.isEmpty) {
                                                 Navigator.of(context)
                                                     .pop(); // 빈 스토리는 작성 못하게 해야 함
                                                 return;
                                               }
-                                              _changeName(_titleController.text);
+                                              _changeName(
+                                                  _titleController.text);
+                                              Navigator.of(context).pop();
                                             },
                                             child: Text('변경 완료'))
                                       ],

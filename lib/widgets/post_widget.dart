@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:habbit/Screen/post_chat_screen.dart';
 import 'package:habbit/colors.dart';
 import 'package:habbit/models/post.dart';
 import 'package:habbit/providers/ban_manage.dart';
+import 'package:habbit/providers/post_message_manage.dart';
 import 'package:habbit/providers/report_manage.dart';
 import 'package:habbit/widgets/avatar_widget.dart';
 import 'package:habbit/widgets/image_frame.dart';
@@ -103,38 +105,49 @@ class PostWidget extends StatelessWidget {
       );
     }
 
-    // Widget _infoCount() {
-    //   return Padding(
-    //     padding: const EdgeInsets.symmetric(horizontal: 15.0),
-    //     child: Row(
-    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //       children: [
-    //         Row(
-    //           children: [
-    //             ImageFrame(
-    //               IconsPath.likeOffIcon,
-    //               width: 65,
-    //             ),
-    //             const SizedBox(width: 15),
-    //             ImageFrame(
-    //               IconsPath.replyIcon,
-    //               width: 60,
-    //             ),
-    //             const SizedBox(width: 15),
-    //             ImageFrame(
-    //               IconsPath.directMessage,
-    //               width: 55,
-    //             ),
-    //           ],
-    //         ),
-    //         ImageFrame(
-    //           IconsPath.bookMarkOffIcon,
-    //           width: 50,
-    //         ),
-    //       ],
-    //     ),
-    //   );
-    // }
+    Widget _infoCount() {
+      return Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / 360 * 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 360 * 60,
+                  child: IconButton(
+                    onPressed: () async {
+                      Navigator.of(context).pushNamed(PostChatScreen.routeName,
+                          arguments: {'postId': post.uid});
+                    },
+                    icon: Icon(Icons.message),
+                  ),
+                ),
+                StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('messages')
+                        .doc(post.uid)
+                        .collection(post.uid!)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      }
+                      var number = snapshot.data!.docs.length;
+                      return Text('댓글 ${number}개');
+                    }),
+                SizedBox(width: MediaQuery.of(context).size.width / 360 * 10),
+                // ImageFrame(
+                //   IconsPath.directMessage,
+                //   width: MediaQuery.of(context).size.width / 360 * 55,
+                // ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
 
     Widget _infoDescription() {
       return StreamBuilder(
@@ -157,16 +170,10 @@ class PostWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    '좋아요 ${post.likeCount ?? 0}개',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
                   ExpandableText(
                     post.description ?? '',
                     prefixText: docData!['nickname'],
-                    onPrefixTap: () {
-                      print('개발하는남자 페이지 이동');
-                    },
+                    onPrefixTap: () {},
                     prefixStyle: const TextStyle(fontWeight: FontWeight.bold),
                     expandText: '더보기',
                     collapseText: '접기',
@@ -264,45 +271,55 @@ class PostWidget extends StatelessWidget {
     print(isBanned);
     return isBanned
         ? Container()
-        : Container(
-            margin: EdgeInsets.only(
-                top: MediaQuery.of(context).size.width / 360 * 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _header(),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right:
-                                  MediaQuery.of(context).size.width / 360 * 25),
-                          child: ReportIcon(post),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right:
-                                  MediaQuery.of(context).size.width / 360 * 20),
-                          child: CategoryIcon(post.category!),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: MediaQuery.of(context).size.width / 360 * 15),
-                _image(),
-                SizedBox(height: MediaQuery.of(context).size.width / 360 * 15),
-                // _infoCount(),
-                // const SizedBox(height: 5),
-                _infoDescription(),
-                // const SizedBox(height: 5),
-                // _replyTextBtn(),
-                SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
-                _dateAgo(MediaQuery.of(context).size.width / 360),
-              ],
+        : Card(
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                  vertical: MediaQuery.of(context).size.width / 360 * 20),
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.width / 360 * 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _header(),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            right:
+                                MediaQuery.of(context).size.width / 360 * 20),
+                        child: CategoryIcon(post.category!),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                      height: MediaQuery.of(context).size.width / 360 * 15),
+                  _image(),
+                  SizedBox(
+                      height: MediaQuery.of(context).size.width / 360 * 15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _infoCount(),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            right:
+                                MediaQuery.of(context).size.width / 360 * 25),
+                        child: ReportIcon(post),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                      height: MediaQuery.of(context).size.width / 360 * 15),
+
+                  _infoDescription(),
+                  // const SizedBox(height: 5),
+                  // _replyTextBtn(),
+
+                  SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
+                  _dateAgo(MediaQuery.of(context).size.width / 360),
+                ],
+              ),
             ),
           );
   }

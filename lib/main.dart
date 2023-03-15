@@ -9,6 +9,7 @@ import 'package:habbit/Screen/explain_screen.dart';
 import 'package:habbit/Screen/fame_detail_screen.dart';
 import 'package:habbit/Screen/fame_repository_screen.dart';
 import 'package:habbit/Screen/other_post_detail_screen.dart';
+import 'package:habbit/Screen/post_chat_screen.dart';
 import 'package:habbit/Screen/post_detail_screen.dart';
 import 'package:habbit/Screen/service_screen.dart';
 import 'package:habbit/Screen/tutorial_screen.dart';
@@ -25,6 +26,7 @@ import 'package:habbit/providers/deco_manage.dart';
 import 'package:habbit/providers/fame_repository_manage.dart';
 import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/marker_manage.dart';
+import 'package:habbit/providers/post_message_manage.dart';
 import 'package:habbit/providers/report_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/providers/time_manage.dart';
@@ -79,8 +81,11 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(
             value: ReportManage(),
           ),
-           ChangeNotifierProvider.value(
+          ChangeNotifierProvider.value(
             value: BanManage(),
+          ),
+          ChangeNotifierProvider.value(
+            value: PostMessageManage(),
           ),
           //  ChangeNotifierProvider.value(
           //   value: CategoryManage(),
@@ -123,8 +128,9 @@ class MyApp extends StatelessWidget {
             OtherPostDetailScreen.routeName: (ctx) => OtherPostDetailScreen(),
             PrivacyScreen.routeName: (ctx) => PrivacyScreen(),
             ServiceScreen.routeName: (ctx) => ServiceScreen(),
-           BanScreen.routeName: (ctx) => BanScreen(),
-          // ExplainScreen.routeName: (ctx) =>  ExplainScreen(),
+            BanScreen.routeName: (ctx) => BanScreen(),
+            PostChatScreen.routeName: (ctx) => PostChatScreen(),
+            // ExplainScreen.routeName: (ctx) =>  ExplainScreen(),
           },
         ));
   }

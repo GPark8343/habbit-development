@@ -15,7 +15,6 @@ import 'package:habbit/widgets/avatar_widget.dart';
 import 'package:habbit/widgets/buttons/signout-button.dart';
 import 'package:habbit/widgets/deco.dart';
 import 'package:habbit/widgets/image_frame.dart';
-import 'package:habbit/widgets/user_card.dart';
 import 'package:provider/provider.dart';
 
 class OtherProfileScreen extends StatefulWidget {

@@ -88,13 +88,5 @@ class StoryManage extends ChangeNotifier {
   }
 
  
-  checkIsUploaded(String storyId) async {
-    var snapshot = await FirebaseFirestore.instance
-        .collection('posts')
-        .where('uid', isEqualTo: storyId)
-        .get();
-    var isEmpty = snapshot.docs.isEmpty;
-
-    return isEmpty;
-  }
+  
 }

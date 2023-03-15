@@ -27,9 +27,7 @@ class _ImageInputState extends State<ImageInput> {
     if (status == PermissionStatus.granted) {
       _takePicture();
     } else if (status == PermissionStatus.denied) {
-      
     } else if (status == PermissionStatus.permanentlyDenied) {
-    
       await openAppSettings();
     }
   }
@@ -62,9 +60,8 @@ class _ImageInputState extends State<ImageInput> {
     if (status == PermissionStatus.granted) {
       _takeGallery();
     } else if (status == PermissionStatus.denied) {
-   
+  
     } else if (status == PermissionStatus.permanentlyDenied) {
-
       await openAppSettings();
     }
   }

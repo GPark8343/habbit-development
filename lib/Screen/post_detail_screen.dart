@@ -90,7 +90,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
             key: _scaffoldKey,
             appBar: AppBar(
               actions: [
-               IconButton(
+                IconButton(
                   onPressed: () {
                     showDialog<bool>(
                         context: _scaffoldKey!.currentContext!,
@@ -124,7 +124,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
                     // 여기에 화면 다시 업데이트하는 함수 만들기
                   },
-                  icon:Icon(Icons.delete),
+                  icon: Icon(Icons.delete),
                   style: TextButton.styleFrom(foregroundColor: mainColor),
                 ),
               ],
@@ -183,7 +183,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                 fontSize: MediaQuery.of(context).size.width /
                                     360 *
                                     20,
-                                color: Colors.grey),
+                                color: Colors.black),
                           ),
                           SizedBox(
                             height:
