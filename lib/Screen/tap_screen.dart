@@ -10,11 +10,16 @@ import 'package:habbit/Screen/explain_screen.dart';
 import 'package:habbit/Screen/folder_screen.dart';
 import 'package:habbit/Screen/insta_screen.dart';
 import 'package:habbit/Screen/fame_screen.dart';
+import 'package:habbit/test/test_screen.dart';
 import 'package:habbit/Screen/tutorial_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/profile_screen.dart';
 import 'package:habbit/colors.dart';
+import 'package:habbit/fitness_app/fitness_app_theme.dart';
+import 'package:habbit/fitness_app/models/tabIcon_data.dart';
+import 'package:habbit/fitness_app/my_diary/my_diary_screen.dart';
+import 'package:habbit/introduction_animation/tutorial_screen.dart';
 import 'package:habbit/providers/category_manage.dart';
 import 'package:habbit/widgets/buttons/add_folder_button.dart';
 
@@ -29,7 +34,15 @@ class TapScreen extends StatefulWidget {
   State<TapScreen> createState() => _TapScreenState();
 }
 
-class _TapScreenState extends State<TapScreen> {
+class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
+  AnimationController? animationController;
+
+  Widget tabBody = Container(
+    color: FitnessAppTheme.background,
+  );
+
+  
+
   late List<Map<String, Object>> _pages; //
   int _selectedPageIndex = 2;
 
@@ -37,6 +50,15 @@ class _TapScreenState extends State<TapScreen> {
   BannerAd? banner;
   @override
   void initState() {
+
+
+   
+  
+
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 600), vsync: this);
+    
+
     admobBannerId = "ca-app-pub-3940256099942544/6300978111";
     banner = BannerAd(
       size: AdSize.banner,
@@ -53,10 +75,25 @@ class _TapScreenState extends State<TapScreen> {
       {'page': InstaScreen(), 'title': 'upload'},
       {'page': FolderScreen(), 'title': 'folder'},
       {'page': ChallengeScreen(), 'title': 'challenge'},
+      {
+        'page': TestScreen(
+          animationController: animationController,
+        ),
+        'title': 'test'
+      },
     ];
+
+
 
     super.initState();
   }
+
+@override
+  void dispose() {
+    animationController?.dispose();
+    super.dispose();
+  }
+
 
   void _selectPage(int index) {
     setState(() {
@@ -271,27 +308,27 @@ class _TapScreenState extends State<TapScreen> {
                       ),
                     ),
                   )),
-                  // PopupMenuItem(
-                  // onTap: () {
-                  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-                  //     Navigator.of(context).pushNamed(ExplainScreen.routeName);
-                  //   });
-                  // },
-                  // child: Center(
-                  //   child: Container(
-                  //     color: Colors.white,
-                  //     child: Text(
-                  //       '첼린지 유의사항',
-                  //       style: TextStyle(
-                  //           fontSize:
-                  //               MediaQuery.of(context).size.width / 360 * 15,
-                  //           color: mainColor,
-                  //           fontWeight: FontWeight.bold),
-                  //     ),
-                  //   ),
-                  // )),
+              // PopupMenuItem(
+              // onTap: () {
+              //   WidgetsBinding.instance.addPostFrameCallback((_) {
+              //     Navigator.of(context).pushNamed(ExplainScreen.routeName);
+              //   });
+              // },
+              // child: Center(
+              //   child: Container(
+              //     color: Colors.white,
+              //     child: Text(
+              //       '첼린지 유의사항',
+              //       style: TextStyle(
+              //           fontSize:
+              //               MediaQuery.of(context).size.width / 360 * 15,
+              //           color: mainColor,
+              //           fontWeight: FontWeight.bold),
+              //     ),
+              //   ),
+              // )),
             ],
-            icon: Icon(Icons.more_vert),
+            icon: Icon(Icons.help_outline_sharp),
           )
         ];
       } else if (chosenPageIndex == 3) {
@@ -304,16 +341,16 @@ class _TapScreenState extends State<TapScreen> {
     }
 
     return Scaffold(
-      drawerScrimColor: mainColor,
+      drawerScrimColor: FitnessAppTheme.background,
       appBar: AppBar(
         // actions: [SignOutButton()],
         actions: [...actionWidget(_selectedPageIndex)],
         iconTheme: IconThemeData(color: mainColor),
         title: Row(
           children: [
-            Image.asset('assets/logos/header_logo.png',
-                width: MediaQuery.of(context).size.width / 360 * 45,
-                height: MediaQuery.of(context).size.width / 360 * 45),
+            // Image.asset('assets/logos/header_logo.png',
+            //     width: MediaQuery.of(context).size.width / 360 * 45,
+            //     height: MediaQuery.of(context).size.width / 360 * 45),
             SizedBox(width: MediaQuery.of(context).size.width / 360 * 15),
             Text(
               'Habbit',
@@ -332,7 +369,7 @@ class _TapScreenState extends State<TapScreen> {
       bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: mainColor,
           onTap: _selectPage,
-          backgroundColor: Colors.white,
+          backgroundColor: FitnessAppTheme.background,
           unselectedItemColor: blackColor,
           currentIndex: _selectedPageIndex,
           type: BottomNavigationBarType.fixed,
@@ -356,7 +393,11 @@ class _TapScreenState extends State<TapScreen> {
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.calendar_today),
-                label: 'challenge'),
+                label: 'challenge'),BottomNavigationBarItem(
+                backgroundColor: Theme.of(context).primaryColor,
+                icon: Icon(Icons.ten_mp_sharp),
+                label: 'test'),
+
           ]),
     );
   }

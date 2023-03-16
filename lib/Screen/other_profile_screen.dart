@@ -72,7 +72,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: Colors.white,
+                  color: backgroundColor
                 ),
               );
             }
@@ -98,7 +98,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: Colors.white,
+                  color: backgroundColor
                 ),
               );
             }
@@ -150,7 +150,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: Colors.white,
+                  color: backgroundColor
                 ),
               );
             }
@@ -206,7 +206,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
                     imageUrl: docs![index]['thumbnail'],
                     placeholder: (context, url) => Center(
                       child: Container(
-                        color: Colors.white,
+                        color: backgroundColor
                       ),
                     ),
                   ),
@@ -226,7 +226,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: Colors.white,
+                  color: backgroundColor
                 ),
               );
             }
@@ -299,7 +299,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: Colors.white,
+                  color: backgroundColor
                 ),
               );
             }
@@ -351,11 +351,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
                             );
                           });
                     },
-                    icon: Image.asset(
-                      'assets/icons/unlock.png',
-                      width: MediaQuery.of(context).size.width / 360 * 30,
-                      height: MediaQuery.of(context).size.width / 360 * 30,
-                    ))
+                    icon: Icon(Icons.refresh))
                 : IconButton(
                     onPressed: () async {
                       //신고

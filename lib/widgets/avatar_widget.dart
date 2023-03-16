@@ -55,10 +55,7 @@ class AvatarWidget extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [
-              Colors.purple,
-              Colors.orange,
-            ],
+            colors: [Color.fromRGBO(255,254,255,1),Colors.white],
           ),
           shape: BoxShape.circle,
         ),

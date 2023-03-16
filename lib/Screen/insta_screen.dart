@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/models/post.dart';
 import 'package:habbit/providers/ban_manage.dart';
 import 'package:habbit/providers/category_manage.dart';
@@ -75,7 +76,7 @@ class InstaScreen extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: Container(
-                      color: Colors.white,
+                      color: backgroundColor
                     ),
                   );
                 }

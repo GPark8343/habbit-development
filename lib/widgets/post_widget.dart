@@ -59,7 +59,7 @@ class PostWidget extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: Colors.white,
+                  color: backgroundColor
                 ),
               );
             }
@@ -99,7 +99,7 @@ class PostWidget extends StatelessWidget {
         imageUrl: post.thumbnail!,
         placeholder: (context, url) => Center(
           child: Container(
-            color: Colors.white,
+            color: backgroundColor
           ),
         ),
       );
@@ -159,7 +159,7 @@ class PostWidget extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: Colors.white,
+                  color: backgroundColor
                 ),
               );
             }
@@ -272,11 +272,13 @@ class PostWidget extends StatelessWidget {
     return isBanned
         ? Container()
         : Card(
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.width / 360 * 20),
-              margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.width / 360 * 20),
+            margin: EdgeInsets.only(
+                top: MediaQuery.of(context).size.width / 360 * 15,
+                left: MediaQuery.of(context).size.width / 360 * 15,
+                right: MediaQuery.of(context).size.width / 360 * 15),
+            child: Padding(
+              padding:
+                  EdgeInsets.all(MediaQuery.of(context).size.width / 360 * 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -297,6 +299,9 @@ class PostWidget extends StatelessWidget {
                   _image(),
                   SizedBox(
                       height: MediaQuery.of(context).size.width / 360 * 15),
+                  Divider(
+                    color: Colors.grey,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -310,7 +315,7 @@ class PostWidget extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                      height: MediaQuery.of(context).size.width / 360 * 15),
+                      height: MediaQuery.of(context).size.width / 360 * 10),
 
                   _infoDescription(),
                   // const SizedBox(height: 5),
@@ -318,6 +323,7 @@ class PostWidget extends StatelessWidget {
 
                   SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
                   _dateAgo(MediaQuery.of(context).size.width / 360),
+                  SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
                 ],
               ),
             ),

@@ -53,14 +53,13 @@ class _CalendarState extends State<Calendar> {
         .toList();
     int attendanceProgress = items.length;
 
-    Future<List<DateTime>>? _getAttendanceDate() {
+     _getAttendanceDate() async{
       attendanceDate = [];
-  
+
       items.forEach(
           (story) => attendanceDate.add(DateTime.parse(story.createdAt)));
-      Provider.of<MarkerManage>(context, listen: false)
+    await  Provider.of<MarkerManage>(context, listen: false)
           .updateAttendanceDate(attendanceDate);
-   
     }
 
     Future? first() async {
@@ -80,17 +79,21 @@ class _CalendarState extends State<Calendar> {
                 height: MediaQuery.of(context).size.width / 360 * 120,
                 child: Card(
                   color: mainColor,
-                  child: SingleChildScrollView(scrollDirection: Axis.horizontal,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Padding(
-                          padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 360 * 15),
+                          padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width / 360 * 15),
                           child: Text(
                             '${widget.folder.title} 폴더 현황',
                             style: TextStyle(
-                                fontSize:
-                                    MediaQuery.of(context).size.width / 360 * 25,
+                                fontSize: MediaQuery.of(context).size.width /
+                                    360 *
+                                    25,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -149,6 +152,9 @@ class _CalendarState extends State<Calendar> {
                               image: AssetImage('assets/icons/check.png')),
                           color: Colors.yellow,
                           shape: BoxShape.circle),
+                      todayDecoration: BoxDecoration(
+                          color: Colors.white, shape: BoxShape.circle),
+                      
                       todayTextStyle: TextStyle(
                           fontSize:
                               MediaQuery.of(context).size.width / 360 * 20,

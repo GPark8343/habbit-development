@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AuthScreen extends StatelessWidget {
+    static const routeName = '/auth';
   const AuthScreen({super.key});
 
   Future first(context) async {
@@ -130,7 +131,7 @@ class AuthScreen extends StatelessWidget {
   
       if (data.docs.length == 0) {
         upload.registerUser();
-        Navigator.of(context).pushNamed(TutorialScreen.routeName);
+    
       }
 
       // 오류남-> splash screen으로 가려야 함

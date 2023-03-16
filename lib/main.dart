@@ -5,6 +5,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:habbit/Screen/auth_screen.dart';
 import 'package:habbit/Screen/ban_screen.dart';
 import 'package:habbit/Screen/edit_profile_screen.dart';
+import 'package:habbit/Screen/error_screen.dart';
 import 'package:habbit/Screen/explain_screen.dart';
 import 'package:habbit/Screen/fame_detail_screen.dart';
 import 'package:habbit/Screen/fame_repository_screen.dart';
@@ -20,6 +21,9 @@ import 'package:habbit/Screen/tap_screen.dart';
 import 'package:habbit/Screen/other_profile_screen.dart';
 
 import 'package:habbit/colors.dart';
+import 'package:habbit/fitness_app/fitness_app_theme.dart';
+import 'package:habbit/introduction_animation/introduction_animation_screen.dart';
+import 'package:habbit/introduction_animation/tutorial_screen.dart';
 import 'package:habbit/providers/ban_manage.dart';
 import 'package:habbit/providers/category_manage.dart';
 import 'package:habbit/providers/deco_manage.dart';
@@ -95,9 +99,9 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'FlutterChat',
           theme: ThemeData(
-            scaffoldBackgroundColor: Colors.white,
+            scaffoldBackgroundColor: FitnessAppTheme.background,
             appBarTheme: const AppBarTheme(
-              color: Colors.white,
+              color: FitnessAppTheme.background,
             ),
           ),
           home: StreamBuilder(
@@ -110,7 +114,7 @@ class MyApp extends StatelessWidget {
                   .hasData /*|| FirebaseAuth.instance.currentUser != null*/) {
                 return TapScreen();
               } else
-                return AuthScreen();
+                return IntroductionAnimationScreen();
             },
           ),
           routes: {
@@ -130,8 +134,25 @@ class MyApp extends StatelessWidget {
             ServiceScreen.routeName: (ctx) => ServiceScreen(),
             BanScreen.routeName: (ctx) => BanScreen(),
             PostChatScreen.routeName: (ctx) => PostChatScreen(),
+            IntroductionAnimationScreen.routeName: (ctx) =>
+                IntroductionAnimationScreen(),
+            AuthScreen.routeName: (ctx) => AuthScreen(),
+            ErrorScreen.routeName: (ctx) => ErrorScreen(),
+
             // ExplainScreen.routeName: (ctx) =>  ExplainScreen(),
           },
         ));
+  }
+}
+
+class HexColor extends Color {
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll('#', '');
+    if (hexColor.length == 6) {
+      hexColor = 'FF' + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
   }
 }

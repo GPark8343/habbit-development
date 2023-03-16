@@ -64,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: Container(
-                color: Colors.white,
+                color: backgroundColor,
               ),
             );
           }
@@ -212,7 +212,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: Container(
-                color: Colors.white,
+                color: backgroundColor,
               ),
             );
           }
@@ -270,7 +270,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   imageUrl: docs![index]['thumbnail'],
                   placeholder: (context, url) => Center(
                     child: Container(
-                      color: Colors.white,
+                      color: backgroundColor
                     ),
                   ),
                 ),

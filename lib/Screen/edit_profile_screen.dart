@@ -103,7 +103,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     Center(
                       child: Container(
                         width: double.infinity,
-                        child: Card(
+                        child: Card(color: backgroundColor,
                           child: Padding(
                             padding: EdgeInsets.all(
                                 MediaQuery.of(context).size.width / 360 * 15),
