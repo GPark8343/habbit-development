@@ -10,6 +10,8 @@ import 'package:habbit/Screen/explain_screen.dart';
 import 'package:habbit/Screen/folder_screen.dart';
 import 'package:habbit/Screen/insta_screen.dart';
 import 'package:habbit/Screen/fame_screen.dart';
+import 'package:habbit/design_course/course_info_screen.dart';
+import 'package:habbit/design_course/home_design_course.dart';
 import 'package:habbit/test/test_screen.dart';
 import 'package:habbit/Screen/tutorial_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
@@ -41,8 +43,6 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
     color: FitnessAppTheme.background,
   );
 
-  
-
   late List<Map<String, Object>> _pages; //
   int _selectedPageIndex = 2;
 
@@ -50,14 +50,8 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
   BannerAd? banner;
   @override
   void initState() {
-
-
-   
-  
-
     animationController = AnimationController(
         duration: const Duration(milliseconds: 600), vsync: this);
-    
 
     admobBannerId = "ca-app-pub-3940256099942544/6300978111";
     banner = BannerAd(
@@ -75,25 +69,17 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
       {'page': InstaScreen(), 'title': 'upload'},
       {'page': FolderScreen(), 'title': 'folder'},
       {'page': ChallengeScreen(), 'title': 'challenge'},
-      {
-        'page': TestScreen(
-          animationController: animationController,
-        ),
-        'title': 'test'
-      },
+      {'page': DesignCourseHomeScreen(), 'title': 'test'},
     ];
-
-
 
     super.initState();
   }
 
-@override
+  @override
   void dispose() {
     animationController?.dispose();
     super.dispose();
   }
-
 
   void _selectPage(int index) {
     setState(() {
@@ -393,11 +379,11 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.calendar_today),
-                label: 'challenge'),BottomNavigationBarItem(
+                label: 'challenge'),
+            BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.ten_mp_sharp),
                 label: 'test'),
-
           ]),
     );
   }

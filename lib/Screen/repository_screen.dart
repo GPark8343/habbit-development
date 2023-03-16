@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
 
 import 'package:habbit/colors.dart';
+import 'package:habbit/design_course/course_info_screen.dart';
 import 'package:habbit/fitness_app/fitness_app_theme.dart';
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/models/story.dart';
@@ -522,7 +523,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                           }),
                                           pageBuilder: (context, animation,
                                                   secondaryAnimation) =>
-                                              StoryDetailScreen(),
+                                              CourseInfoScreen(),
                                           transitionsBuilder: (context,
                                               animation,
                                               secondaryAnimation,

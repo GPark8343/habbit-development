@@ -21,6 +21,7 @@ import 'package:habbit/Screen/tap_screen.dart';
 import 'package:habbit/Screen/other_profile_screen.dart';
 
 import 'package:habbit/colors.dart';
+import 'package:habbit/design_course/course_info_screen.dart';
 import 'package:habbit/fitness_app/fitness_app_theme.dart';
 import 'package:habbit/introduction_animation/introduction_animation_screen.dart';
 import 'package:habbit/introduction_animation/tutorial_screen.dart';
@@ -138,6 +139,7 @@ class MyApp extends StatelessWidget {
                 IntroductionAnimationScreen(),
             AuthScreen.routeName: (ctx) => AuthScreen(),
             ErrorScreen.routeName: (ctx) => ErrorScreen(),
+            CourseInfoScreen.routeName: (ctx) => CourseInfoScreen(),
 
             // ExplainScreen.routeName: (ctx) =>  ExplainScreen(),
           },
