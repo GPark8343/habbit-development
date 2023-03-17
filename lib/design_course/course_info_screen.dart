@@ -1,5 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:habbit/colors.dart';
+import 'package:habbit/models/folder.dart';
+import 'package:habbit/models/i_user.dart';
+import 'package:habbit/models/post.dart';
+import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
+import 'package:habbit/providers/upload.dart';
 import 'package:provider/provider.dart';
 import 'design_course_app_theme.dart';
 
@@ -11,7 +18,6 @@ class CourseInfoScreen extends StatefulWidget {
 
 class _CourseInfoScreenState extends State<CourseInfoScreen>
     with TickerProviderStateMixin {
-  final double infoHeight = 364.0;
   AnimationController? animationController;
   Animation<double>? animation;
   double opacity1 = 0.0;
@@ -46,10 +52,74 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
 
   @override
   Widget build(BuildContext context) {
+    final double infoHeight = MediaQuery.of(context).size.width / 360 * 360;
     final storyId =
         (ModalRoute.of(context)?.settings.arguments as Map)['story_id'];
+
+    final upload = Provider.of<Upload>(context, listen: false);
     final selectedStory =
         Provider.of<StoryManage>(context, listen: false).findById(storyId);
+    var isUploaded = selectedStory.isUploaded;
+
+    DateTime now = DateTime.now();
+    DateTime dateTime = DateTime.parse(selectedStory.createdAt);
+    var isToday = DateTime.utc(dateTime.year, dateTime.month, dateTime.day) ==
+        DateTime.utc(now.year, now.month, now.day);
+
+    fetchAndSetStories() {
+      Provider.of<StoryManage>(context, listen: false).fetchAndSetStories();
+    }
+
+    deletePost(String selectedStoryId) {
+      if (selectedStory.id == 'no_found') {
+        Provider.of<Upload>(context, listen: false).deletePost(selectedStoryId);
+      } else {
+        Provider.of<StoryManage>(context, listen: false)
+            .changeIsUploaded(selectedStory);
+        Provider.of<Upload>(context, listen: false).deletePost(selectedStoryId);
+      }
+    }
+
+    deleteStory(String selectedStoryId) {
+      Folder findedFolder = Provider.of<FolderManage>(context, listen: false)
+          .findById(selectedStory.folderId);
+      Provider.of<StoryManage>(context, listen: false)
+          .deleteStories(selectedStoryId);
+      Provider.of<StoryManage>(context, listen: false).fetchAndSetStories();
+      // Provider.of<FolderManage>(context, listen: false)
+      //     .minusOneDay(findedFolder);
+    }
+
+    deleteStoryAndPost(String selectedStoryId) {
+      Provider.of<Upload>(context, listen: false).deletePost(selectedStoryId);
+      Folder findedFolder = Provider.of<FolderManage>(context, listen: false)
+          .findById(selectedStory.folderId);
+      Provider.of<StoryManage>(context, listen: false)
+          .deleteStories(selectedStoryId);
+      // Provider.of<FolderManage>(context, listen: false)
+      //     .minusOneDay(findedFolder);
+    }
+
+    _uploadPost() async {
+      IUser? userInfo =
+          await upload.loadUserByUid(FirebaseAuth.instance.currentUser!.uid);
+      upload.uploadPost(
+          Post(
+              title: selectedStory.title,
+              userId: FirebaseAuth.instance.currentUser!.uid,
+              userInfo: userInfo,
+              description: selectedStory.description,
+              uid: selectedStory.id,
+              createdAt: DateTime.now(),
+              category: selectedStory.category),
+          selectedStory.image,
+          selectedStory.folderId);
+      await Provider.of<StoryManage>(context, listen: false)
+          .changeIsUploaded(selectedStory);
+      await fetchAndSetStories();
+    }
+
+    final GlobalKey<ScaffoldState>? _scaffoldKey = GlobalKey<ScaffoldState>();
     final double tempHeight = MediaQuery.of(context).size.height -
         (MediaQuery.of(context).size.width / 1.2) +
         24.0;
@@ -60,6 +130,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
           return Container(
             color: DesignCourseAppTheme.nearlyWhite,
             child: Scaffold(
+              key: _scaffoldKey,
               backgroundColor: Colors.transparent,
               body: Stack(
                 children: <Widget>[
@@ -72,16 +143,21 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                     ],
                   ),
                   Positioned(
-                    top: (MediaQuery.of(context).size.width / 1.2) - 24.0,
+                    top: (MediaQuery.of(context).size.width / 1.2) -
+                        MediaQuery.of(context).size.width / 360 * 24.0,
                     bottom: 0,
                     left: 0,
                     right: 0,
                     child: Container(
                       decoration: BoxDecoration(
                         color: DesignCourseAppTheme.nearlyWhite,
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(32.0),
-                            topRight: Radius.circular(32.0)),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(
+                                MediaQuery.of(context).size.width / 360 * 32.0),
+                            topRight: Radius.circular(
+                                MediaQuery.of(context).size.width /
+                                    360 *
+                                    32.0)),
                         boxShadow: <BoxShadow>[
                           BoxShadow(
                               color: DesignCourseAppTheme.grey.withOpacity(0.2),
@@ -90,7 +166,9 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                         ],
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width / 360 * 8,
+                            right: MediaQuery.of(context).size.width / 360 * 8),
                         child: SingleChildScrollView(
                           child: Container(
                             constraints: BoxConstraints(
@@ -103,22 +181,48 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 32.0, left: 18, right: 16),
+                                  padding: EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.width /
+                                          360 *
+                                          32.0,
+                                      left: MediaQuery.of(context).size.width /
+                                          360 *
+                                          18,
+                                      right: MediaQuery.of(context).size.width /
+                                          360 *
+                                          16),
                                   child: Text(
                                     selectedStory.title,
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
-                                      fontSize: 22,
-                                      letterSpacing: 0.27,
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              360 *
+                                              22,
+                                      letterSpacing:
+                                          MediaQuery.of(context).size.width /
+                                              360 *
+                                              0.27,
                                       color: DesignCourseAppTheme.darkerText,
                                     ),
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, right: 16, bottom: 8, top: 16),
+                                  padding: EdgeInsets.only(
+                                      left: MediaQuery.of(context).size.width /
+                                          360 *
+                                          16,
+                                      right: MediaQuery.of(context).size.width /
+                                          360 *
+                                          16,
+                                      bottom:
+                                          MediaQuery.of(context).size.width /
+                                              360 *
+                                              8,
+                                      top: MediaQuery.of(context).size.width /
+                                          360 *
+                                          16),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -130,8 +234,16 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w200,
-                                          fontSize: 22,
-                                          letterSpacing: 0.27,
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              22,
+                                          letterSpacing: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              0.27,
                                           color:
                                               DesignCourseAppTheme.nearlyBlue,
                                         ),
@@ -144,8 +256,17 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w200,
-                                                fontSize: 22,
-                                                letterSpacing: 0.27,
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    22,
+                                                letterSpacing:
+                                                    MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        360 *
+                                                        0.27,
                                                 color:
                                                     DesignCourseAppTheme.grey,
                                               ),
@@ -154,7 +275,11 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                               Icons.star,
                                               color: DesignCourseAppTheme
                                                   .nearlyBlue,
-                                              size: 24,
+                                              size: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  360 *
+                                                  24,
                                             ),
                                           ],
                                         ),
@@ -166,7 +291,10 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                   duration: const Duration(milliseconds: 500),
                                   opacity: opacity1,
                                   child: Padding(
-                                    padding: const EdgeInsets.all(8),
+                                    padding: EdgeInsets.all(
+                                        MediaQuery.of(context).size.width /
+                                            360 *
+                                            8),
                                     child: Row(
                                       children: <Widget>[
                                         getTimeBoxUI('24', 'Classe'),
@@ -181,18 +309,42 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                     duration: const Duration(milliseconds: 500),
                                     opacity: opacity2,
                                     child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 16,
-                                          right: 16,
-                                          top: 8,
-                                          bottom: 8),
+                                      padding: EdgeInsets.only(
+                                          left: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              16,
+                                          right: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              16,
+                                          top: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              8,
+                                          bottom: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              8),
                                       child: Text(
                                         selectedStory.description,
                                         textAlign: TextAlign.justify,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w200,
-                                          fontSize: 14,
-                                          letterSpacing: 0.27,
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              14,
+                                          letterSpacing: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              0.27,
                                           color: DesignCourseAppTheme.grey,
                                         ),
                                         maxLines: 3,
@@ -205,8 +357,19 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                   duration: const Duration(milliseconds: 500),
                                   opacity: opacity3,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 16, bottom: 16, right: 16),
+                                    padding: EdgeInsets.only(
+                                        left:
+                                            MediaQuery.of(context).size.width /
+                                                360 *
+                                                16,
+                                        bottom:
+                                            MediaQuery.of(context).size.width /
+                                                360 *
+                                                16,
+                                        right:
+                                            MediaQuery.of(context).size.width /
+                                                360 *
+                                                16),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -214,41 +377,140 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                           CrossAxisAlignment.center,
                                       children: <Widget>[
                                         Container(
-                                          width: 48,
-                                          height: 48,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              48,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              48,
                                           child: Container(
                                             decoration: BoxDecoration(
                                               color: DesignCourseAppTheme
                                                   .nearlyWhite,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(16.0),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                    MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        360 *
+                                                        16.0),
                                               ),
                                               border: Border.all(
                                                   color: DesignCourseAppTheme
                                                       .grey
                                                       .withOpacity(0.2)),
                                             ),
-                                            child: Icon(
-                                              Icons.add,
+                                            child: IconButton(
+                                              icon: Icon(Icons.delete,
+                                                  size: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      360 *
+                                                      28,
+                                                  color: isToday
+                                                      ? DesignCourseAppTheme
+                                                          .nearlyBlue
+                                                      : Colors.grey),
+                                              onPressed: () {
+                                                isToday
+                                                    ? showDialog<bool>(
+                                                        context: _scaffoldKey!
+                                                            .currentContext!,
+                                                        builder: (ctx) {
+                                                          return AlertDialog(
+                                                            content: Text(
+                                                                '스토리를 내릴까요?'),
+                                                            actions: <Widget>[
+                                                              ElevatedButton(
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                        backgroundColor:
+                                                                            mainColor),
+                                                                child: Text(
+                                                                    '아니오.'),
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop(
+                                                                          false);
+                                                                },
+                                                              ),
+                                                              ElevatedButton(
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                        backgroundColor:
+                                                                            mainColor),
+                                                                child: Text(
+                                                                    '네. 삭제합니다.'),
+                                                                onPressed: () {
+                                                                  isUploaded ==
+                                                                          0
+                                                                      ? deleteStory(
+                                                                          storyId)
+                                                                      : deleteStoryAndPost(
+                                                                          storyId);
+                                                                  fetchAndSetStories();
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                  // 화면 업데이트 추가
+                                                                },
+                                                              ),
+                                                            ],
+                                                          );
+                                                        })
+                                                    : showDialog<bool>(
+                                                        context: _scaffoldKey!
+                                                            .currentContext!,
+                                                        builder: (ctx) {
+                                                          return AlertDialog(
+                                                            content: Text(
+                                                                '오늘 올리지 않은 스토리는 내릴 수 없습니다.'),
+                                                            actions: <Widget>[],
+                                                          );
+                                                        });
+                                              },
                                               color: DesignCourseAppTheme
                                                   .nearlyBlue,
-                                              size: 28,
                                             ),
                                           ),
                                         ),
-                                        const SizedBox(
-                                          width: 16,
+                                        SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              360 *
+                                              16,
                                         ),
                                         Expanded(
                                           child: Container(
-                                            height: 48,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                360 *
+                                                48,
                                             decoration: BoxDecoration(
-                                              color: DesignCourseAppTheme
-                                                  .nearlyBlue,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(16.0),
+                                              color: isUploaded == 0
+                                                  ? DesignCourseAppTheme
+                                                      .nearlyBlue
+                                                  : Colors.grey,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                    MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        360 *
+                                                        16.0),
                                               ),
                                               boxShadow: <BoxShadow>[
                                                 BoxShadow(
@@ -257,22 +519,104 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                                         .withOpacity(0.5),
                                                     offset:
                                                         const Offset(1.1, 1.1),
-                                                    blurRadius: 10.0),
+                                                    blurRadius:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            360 *
+                                                            10.0),
                                               ],
                                             ),
-                                            child: Center(
-                                              child: Text(
-                                                'Join Course',
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 18,
-                                                  letterSpacing: 0.0,
-                                                  color: DesignCourseAppTheme
-                                                      .nearlyWhite,
-                                                ),
-                                              ),
-                                            ),
+                                            child: isUploaded == 0
+                                                ? InkWell(
+                                                    onTap: () {
+                                                      showDialog<bool>(
+                                                          context: _scaffoldKey!
+                                                              .currentContext!,
+                                                          builder: (ctx) {
+                                                            return AlertDialog(
+                                                              content: Text(
+                                                                  '포스트를 업로드할까요?'),
+                                                              actions: <Widget>[
+                                                                ElevatedButton(
+                                                                  style: ElevatedButton
+                                                                      .styleFrom(
+                                                                          backgroundColor:
+                                                                              mainColor),
+                                                                  child: Text(
+                                                                      '아니오.'),
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop(
+                                                                            false);
+                                                                  },
+                                                                ),
+                                                                ElevatedButton(
+                                                                  style: ElevatedButton
+                                                                      .styleFrom(
+                                                                          backgroundColor:
+                                                                              mainColor),
+                                                                  child: Text(
+                                                                      '네. 업로드합니다.'),
+                                                                  onPressed:
+                                                                      () async {
+                                                                    await _uploadPost();
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            );
+                                                          });
+                                                    },
+                                                    child: Center(
+                                                      child: Text(
+                                                        '업로드하기',
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize:  MediaQuery.of(context).size.width / 360 *18,
+                                                          letterSpacing: 0.0,
+                                                          color:
+                                                              DesignCourseAppTheme
+                                                                  .nearlyWhite,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : InkWell(
+                                                    onTap: () {
+                                                      deletePost(storyId);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Center(
+                                                      child: Text(
+                                                        '업로드 내리기',
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: MediaQuery.of(context).size.width / 360 * 18,
+                                                          letterSpacing: 0.0,
+                                                          color:
+                                                              DesignCourseAppTheme
+                                                                  .nearlyWhite,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
                                           ),
                                         )
                                       ],
@@ -290,8 +634,8 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                     ),
                   ),
                   Positioned(
-                    top: (MediaQuery.of(context).size.width / 1.2) - 24.0 - 35,
-                    right: 35,
+                    top: (MediaQuery.of(context).size.width / 1.2) -  MediaQuery.of(context).size.width / 360 *24.0 -  MediaQuery.of(context).size.width / 360 *35,
+                    right:  MediaQuery.of(context).size.width / 360 *35,
                     child: ScaleTransition(
                       alignment: Alignment.center,
                       scale: CurvedAnimation(
@@ -300,16 +644,16 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                       child: Card(
                         color: DesignCourseAppTheme.nearlyBlue,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50.0)),
+                            borderRadius: BorderRadius.circular( MediaQuery.of(context).size.width / 360 *50.0)),
                         elevation: 10.0,
                         child: Container(
-                          width: 60,
-                          height: 60,
+                          width:  MediaQuery.of(context).size.width / 360 *60,
+                          height: MediaQuery.of(context).size.width / 360 * 60,
                           child: Center(
                             child: Icon(
                               Icons.favorite,
                               color: DesignCourseAppTheme.nearlyWhite,
-                              size: 30,
+                              size: MediaQuery.of(context).size.width / 360 * 30,
                             ),
                           ),
                         ),
@@ -347,21 +691,21 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
 
   Widget getTimeBoxUI(String text1, String txt2) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding:  EdgeInsets.all( MediaQuery.of(context).size.width / 360 *8.0),
       child: Container(
         decoration: BoxDecoration(
           color: DesignCourseAppTheme.nearlyWhite,
-          borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+          borderRadius: BorderRadius.all(Radius.circular( MediaQuery.of(context).size.width / 360 *16.0)),
           boxShadow: <BoxShadow>[
             BoxShadow(
                 color: DesignCourseAppTheme.grey.withOpacity(0.2),
                 offset: const Offset(1.1, 1.1),
-                blurRadius: 8.0),
+                blurRadius:  MediaQuery.of(context).size.width / 360 *8.0),
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.only(
-              left: 18.0, right: 18.0, top: 12.0, bottom: 12.0),
+          padding:  EdgeInsets.only(
+              left: MediaQuery.of(context).size.width / 360 * 18.0, right: MediaQuery.of(context).size.width / 360 * 18.0, top:  MediaQuery.of(context).size.width / 360 *12.0, bottom:  MediaQuery.of(context).size.width / 360 *12.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -371,8 +715,8 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                  letterSpacing: 0.27,
+                  fontSize: MediaQuery.of(context).size.width / 360 * 14,
+                  letterSpacing:  MediaQuery.of(context).size.width / 360 *0.27,
                   color: DesignCourseAppTheme.nearlyBlue,
                 ),
               ),
@@ -381,8 +725,8 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.w200,
-                  fontSize: 14,
-                  letterSpacing: 0.27,
+                  fontSize:  MediaQuery.of(context).size.width / 360 *14,
+                  letterSpacing:  MediaQuery.of(context).size.width / 360 *0.27,
                   color: DesignCourseAppTheme.grey,
                 ),
               ),

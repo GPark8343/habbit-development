@@ -49,7 +49,8 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8),
+      padding:
+          EdgeInsets.only(top: MediaQuery.of(context).size.width / 360 * 8),
       child: FutureBuilder<bool>(
         future: getData(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -57,7 +58,8 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
             return const SizedBox();
           } else {
             return GridView(
-              padding: const EdgeInsets.all(8),
+              padding:
+                  EdgeInsets.all(MediaQuery.of(context).size.width / 360 * 8),
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               children: List<Widget>.generate(
@@ -88,10 +90,11 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
                   );
                 },
               ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 32.0,
-                crossAxisSpacing: 32.0,
+                mainAxisSpacing: MediaQuery.of(context).size.width / 360 * 32.0,
+                crossAxisSpacing:
+                    MediaQuery.of(context).size.width / 360 * 32.0,
                 childAspectRatio: 0.8,
               ),
             );
@@ -139,7 +142,7 @@ class CategoryView extends StatelessWidget {
                 });
               },
               child: SizedBox(
-                height: 280,
+                height: MediaQuery.of(context).size.width / 360 * 280,
                 child: Stack(
                   alignment: AlignmentDirectional.bottomCenter,
                   children: <Widget>[
@@ -150,8 +153,10 @@ class CategoryView extends StatelessWidget {
                             child: Container(
                               decoration: BoxDecoration(
                                 color: HexColor('#F8FAFB'),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(16.0)),
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    MediaQuery.of(context).size.width /
+                                        360 *
+                                        16.0)),
                                 // border: new Border.all(
                                 //     color: DesignCourseAppTheme.notWhite),
                               ),
@@ -162,26 +167,40 @@ class CategoryView extends StatelessWidget {
                                       child: Column(
                                         children: <Widget>[
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 16, left: 16, right: 16),
+                                            padding: EdgeInsets.only(
+                                                top: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    16,
+                                                left: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    16,
+                                                right: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    16),
                                             child: Text(
                                               folder!.title,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 16,
-                                                letterSpacing: 0.27,
+                                                fontSize: MediaQuery.of(context).size.width / 360 *16,
+                                                letterSpacing:MediaQuery.of(context).size.width / 360 * 0.27,
                                                 color: DesignCourseAppTheme
                                                     .darkerText,
                                               ),
                                             ),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 8,
-                                                left: 16,
-                                                right: 16,
-                                                bottom: 8),
+                                            padding:  EdgeInsets.only(
+                                                top: MediaQuery.of(context).size.width / 360 *8,
+                                                left: MediaQuery.of(context).size.width / 360 *16,
+                                                right: MediaQuery.of(context).size.width / 360 *16,
+                                                bottom: MediaQuery.of(context).size.width / 360 *8),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -194,8 +213,8 @@ class CategoryView extends StatelessWidget {
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w200,
-                                                    fontSize: 12,
-                                                    letterSpacing: 0.27,
+                                                    fontSize: MediaQuery.of(context).size.width / 360 *12,
+                                                    letterSpacing: MediaQuery.of(context).size.width / 360 *0.27,
                                                     color: DesignCourseAppTheme
                                                         .grey,
                                                   ),
@@ -210,8 +229,8 @@ class CategoryView extends StatelessWidget {
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w200,
-                                                          fontSize: 18,
-                                                          letterSpacing: 0.27,
+                                                          fontSize:MediaQuery.of(context).size.width / 360 * 18,
+                                                          letterSpacing: MediaQuery.of(context).size.width / 360 *0.27,
                                                           color:
                                                               DesignCourseAppTheme
                                                                   .grey,
@@ -222,7 +241,7 @@ class CategoryView extends StatelessWidget {
                                                         color:
                                                             DesignCourseAppTheme
                                                                 .nearlyBlue,
-                                                        size: 20,
+                                                        size: MediaQuery.of(context).size.width / 360 *20,
                                                       ),
                                                     ],
                                                   ),
@@ -234,15 +253,15 @@ class CategoryView extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 48,
+                                  SizedBox(
+                                    width:MediaQuery.of(context).size.width / 360 * 48,
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            height: 48,
+                          SizedBox(
+                            height: MediaQuery.of(context).size.width / 360 *48,
                           ),
                         ],
                       ),
@@ -250,17 +269,17 @@ class CategoryView extends StatelessWidget {
                     Container(
                       child: Padding(
                         padding:
-                            const EdgeInsets.only(top: 24, right: 16, left: 16),
+                           EdgeInsets.only(top:MediaQuery.of(context).size.width / 360 * 24, right: MediaQuery.of(context).size.width / 360 *16, left: MediaQuery.of(context).size.width / 360 *16),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(16.0)),
+                             BorderRadius.all(Radius.circular(MediaQuery.of(context).size.width / 360 *16.0)),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
                                   color: DesignCourseAppTheme.grey
                                       .withOpacity(0.2),
                                   offset: const Offset(0.0, 0.0),
-                                  blurRadius: 6.0),
+                                  blurRadius: MediaQuery.of(context).size.width / 360 *6.0),
                             ],
                           ),
                           child: ClipRRect(

@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:habbit/Screen/profile_screen.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/design_course/category_list_view.dart';
 import 'package:habbit/design_course/course_info_screen.dart';
 import 'package:habbit/design_course/popular_course_list_view.dart';
@@ -11,12 +15,18 @@ class DesignCourseHomeScreen extends StatefulWidget {
 }
 
 class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
-  CategoryType categoryType = CategoryType.ui;
+  CategoryType categoryType = CategoryType.Reading;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: DesignCourseAppTheme.nearlyWhite,
+      // color: DesignCourseAppTheme.nearlyWhite,
+      decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [const Color(0xFF543CBA),const Color(0xFF3FA5B1)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.0, 1.0])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
@@ -53,41 +63,50 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 18, right: 16),
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.width / 360 * 8.0,
+              left: MediaQuery.of(context).size.width / 360 * 18,
+              right: MediaQuery.of(context).size.width / 360 * 16),
           child: Text(
             '명예의 전당',
             textAlign: TextAlign.left,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              fontSize: 22,
-              letterSpacing: 0.27,
+              fontSize: MediaQuery.of(context).size.width / 360 * 22,
+              letterSpacing: MediaQuery.of(context).size.width / 360 * 0.27,
               color: DesignCourseAppTheme.darkerText,
             ),
           ),
         ),
-        const SizedBox(
-          height: 16,
+        SizedBox(
+          height: MediaQuery.of(context).size.width / 360 * 16,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16),
+          padding: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width / 360 * 16,
+              right: MediaQuery.of(context).size.width / 360 * 16),
           child: Row(
             children: <Widget>[
-              getButtonUI(CategoryType.ui, categoryType == CategoryType.ui),
-              const SizedBox(
-                width: 16,
+              getButtonUI(
+                  CategoryType.Reading, categoryType == CategoryType.Reading),
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 360 * 16,
               ),
               getButtonUI(
-                  CategoryType.coding, categoryType == CategoryType.coding),
-              const SizedBox(
-                width: 16,
+                  CategoryType.Exercise, categoryType == CategoryType.Exercise),
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 360 * 16,
               ),
               getButtonUI(
-                  CategoryType.basic, categoryType == CategoryType.basic),
+                  CategoryType.Language, categoryType == CategoryType.Language),
+              getButtonUI(
+                  CategoryType.Study, categoryType == CategoryType.Study),
+              getButtonUI(CategoryType.Etc, categoryType == CategoryType.Etc),
             ],
           ),
         ),
-        const SizedBox(
-          height: 16,
+        SizedBox(
+          height: MediaQuery.of(context).size.width / 360 * 16,
         ),
         CategoryListView(
           callBack: () {
@@ -100,7 +119,10 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
 
   Widget getPopularCourseUI() {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, left: 18, right: 16),
+      padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.width / 360 * 8.0,
+          left: MediaQuery.of(context).size.width / 360 * 18,
+          right: MediaQuery.of(context).size.width / 360 * 16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,8 +132,8 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
             textAlign: TextAlign.left,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              fontSize: 22,
-              letterSpacing: 0.27,
+              fontSize: MediaQuery.of(context).size.width / 360 * 22,
+              letterSpacing: MediaQuery.of(context).size.width / 360 * 0.27,
               color: DesignCourseAppTheme.darkerText,
             ),
           ),
@@ -138,12 +160,16 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
 
   Widget getButtonUI(CategoryType categoryTypeData, bool isSelected) {
     String txt = '';
-    if (CategoryType.ui == categoryTypeData) {
-      txt = 'Ui/Ux';
-    } else if (CategoryType.coding == categoryTypeData) {
-      txt = 'Coding';
-    } else if (CategoryType.basic == categoryTypeData) {
-      txt = 'Basic UI';
+    if (CategoryType.Reading == categoryTypeData) {
+      txt = '독서';
+    } else if (CategoryType.Exercise == categoryTypeData) {
+      txt = '운동';
+    } else if (CategoryType.Language == categoryTypeData) {
+      txt = '언어';
+    } else if (CategoryType.Study == categoryTypeData) {
+      txt = '공부';
+    } else if (CategoryType.Etc == categoryTypeData) {
+      txt = '기타';
     }
     return Expanded(
       child: Container(
@@ -151,29 +177,35 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
             color: isSelected
                 ? DesignCourseAppTheme.nearlyBlue
                 : DesignCourseAppTheme.nearlyWhite,
-            borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+            borderRadius: BorderRadius.all(Radius.circular(
+                MediaQuery.of(context).size.width / 360 * 24.0)),
             border: Border.all(color: DesignCourseAppTheme.nearlyBlue)),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
             splashColor: Colors.white24,
-            borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+            borderRadius: BorderRadius.all(Radius.circular(
+                MediaQuery.of(context).size.width / 360 * 24.0)),
             onTap: () {
               setState(() {
                 categoryType = categoryTypeData;
               });
             },
             child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 12, bottom: 12, left: 18, right: 18),
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.width / 360 * 12,
+                  bottom: MediaQuery.of(context).size.width / 360 * 12,
+                  left: MediaQuery.of(context).size.width / 360 * 18,
+                  right: MediaQuery.of(context).size.width / 360 * 18),
               child: Center(
                 child: Text(
                   txt,
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                    letterSpacing: 0.27,
+                    fontSize: MediaQuery.of(context).size.width / 360 * 12,
+                    letterSpacing:
+                        MediaQuery.of(context).size.width / 360 * 0.27,
                     color: isSelected
                         ? DesignCourseAppTheme.nearlyWhite
                         : DesignCourseAppTheme.nearlyBlue,
@@ -189,51 +221,66 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
 
   Widget getSearchBarUI() {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, left: 18),
+      padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.width / 360 * 8.0,
+          left: MediaQuery.of(context).size.width / 360 * 18),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
             width: MediaQuery.of(context).size.width * 0.75,
-            height: 64,
+            height: MediaQuery.of(context).size.width / 360 * 64,
             child: Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 8),
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.width / 360 * 8,
+                  bottom: MediaQuery.of(context).size.width / 360 * 8),
               child: Container(
                 decoration: BoxDecoration(
                   color: HexColor('#F8FAFB'),
-                  borderRadius: const BorderRadius.only(
-                    bottomRight: Radius.circular(13.0),
-                    bottomLeft: Radius.circular(13.0),
-                    topLeft: Radius.circular(13.0),
-                    topRight: Radius.circular(13.0),
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(
+                        MediaQuery.of(context).size.width / 360 * 13.0),
+                    bottomLeft: Radius.circular(
+                        MediaQuery.of(context).size.width / 360 * 13.0),
+                    topLeft: Radius.circular(
+                        MediaQuery.of(context).size.width / 360 * 13.0),
+                    topRight: Radius.circular(
+                        MediaQuery.of(context).size.width / 360 * 13.0),
                   ),
                 ),
                 child: Row(
                   children: <Widget>[
                     Expanded(
                       child: Container(
-                        padding: const EdgeInsets.only(left: 16, right: 16),
+                        padding: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width / 360 * 16,
+                            right:
+                                MediaQuery.of(context).size.width / 360 * 16),
                         child: TextFormField(
                           style: TextStyle(
                             fontFamily: 'WorkSans',
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize:
+                                MediaQuery.of(context).size.width / 360 * 16,
                             color: DesignCourseAppTheme.nearlyBlue,
                           ),
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
-                            labelText: 'Search for course',
+                            labelText: 'Search for habit',
                             border: InputBorder.none,
                             helperStyle: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                              fontSize:
+                                  MediaQuery.of(context).size.width / 360 * 16,
                               color: HexColor('#B9BABC'),
                             ),
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              letterSpacing: 0.2,
+                              fontSize:
+                                  MediaQuery.of(context).size.width / 360 * 16,
+                              letterSpacing:
+                                  MediaQuery.of(context).size.width / 360 * 0.2,
                               color: HexColor('#B9BABC'),
                             ),
                           ),
@@ -242,8 +289,8 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
                       ),
                     ),
                     SizedBox(
-                      width: 60,
-                      height: 60,
+                      width: MediaQuery.of(context).size.width / 360 * 60,
+                      height: MediaQuery.of(context).size.width / 360 * 60,
                       child: Icon(Icons.search, color: HexColor('#B9BABC')),
                     )
                   ],
@@ -261,7 +308,10 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
 
   Widget getAppBarUI() {
     return Padding(
-      padding: const EdgeInsets.only(top: 8.0, left: 18, right: 18),
+      padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.width / 360 * 8.0,
+          left: MediaQuery.of(context).size.width / 360 * 18,
+          right: MediaQuery.of(context).size.width / 360 * 18),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -270,41 +320,66 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Choose your',
+                  'Make your',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    letterSpacing: 0.2,
+                    fontSize: MediaQuery.of(context).size.width / 360 * 14,
+                    letterSpacing:
+                        MediaQuery.of(context).size.width / 360 * 0.2,
                     color: DesignCourseAppTheme.grey,
                   ),
                 ),
                 Text(
-                  'Design Course',
+                  'Habbit',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                    letterSpacing: 0.27,
+                    fontSize: MediaQuery.of(context).size.width / 360 * 22,
+                    letterSpacing:
+                        MediaQuery.of(context).size.width / 360 * 0.27,
                     color: DesignCourseAppTheme.darkerText,
                   ),
                 ),
               ],
             ),
           ),
-          Container(
-            width: 60,
-            height: 60,
-            child: Image.asset('assets/design_course/userImage.png'),
-          )
+          StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .where('uid',
+                      isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+                  .snapshots(),
+              builder: (ctx, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: Container(
+                      color: backgroundColor,
+                    ),
+                  );
+                }
+                final docs = snapshot.data?.docs;
+                return InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(ProfileScreen.routeName);
+                  },
+                  child: Container(
+                      width: MediaQuery.of(context).size.width / 360 * 60,
+                      height: MediaQuery.of(context).size.width / 360 * 60,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(
+                            MediaQuery.of(context).size.width / 360 * 16.0)),
+                        child: AspectRatio(
+                            aspectRatio: 1.0,
+                            child:
+                                Image.network(docs!.first.data()['thumbnail'])),
+                      )),
+                );
+              })
         ],
       ),
     );
   }
 }
 
-enum CategoryType {
-  ui,
-  coding,
-  basic,
-}
+enum CategoryType { Reading, Exercise, Language, Study, Etc }

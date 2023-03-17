@@ -12,6 +12,7 @@ import 'package:habbit/Screen/fame_repository_screen.dart';
 import 'package:habbit/Screen/other_post_detail_screen.dart';
 import 'package:habbit/Screen/post_chat_screen.dart';
 import 'package:habbit/Screen/post_detail_screen.dart';
+import 'package:habbit/Screen/profile_screen.dart';
 import 'package:habbit/Screen/service_screen.dart';
 import 'package:habbit/Screen/tutorial_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
@@ -140,6 +141,7 @@ class MyApp extends StatelessWidget {
             AuthScreen.routeName: (ctx) => AuthScreen(),
             ErrorScreen.routeName: (ctx) => ErrorScreen(),
             CourseInfoScreen.routeName: (ctx) => CourseInfoScreen(),
+            ProfileScreen.routeName: (ctx) => ProfileScreen(),
 
             // ExplainScreen.routeName: (ctx) =>  ExplainScreen(),
           },

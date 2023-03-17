@@ -178,9 +178,11 @@ class _CategoryListViewState extends State<CategoryListView>
             .orderBy('created_at', descending: true)
             .snapshots();
     return Padding(
-      padding: const EdgeInsets.only(top: 16, bottom: 16),
+      padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.width / 360 * 16,
+          bottom: MediaQuery.of(context).size.width / 360 * 16),
       child: Container(
-        height: 134,
+        height: MediaQuery.of(context).size.width / 360 * 134,
         width: double.infinity,
         child: FutureBuilder<bool>(
           future: getData(),
@@ -200,8 +202,11 @@ class _CategoryListViewState extends State<CategoryListView>
                     }
                     final docs1 = snapshot1.data?.docs;
                     return ListView.builder(
-                      padding: const EdgeInsets.only(
-                          top: 0, bottom: 0, right: 16, left: 16),
+                      padding: EdgeInsets.only(
+                          top: 0,
+                          bottom: 0,
+                          right: MediaQuery.of(context).size.width / 360 * 16,
+                          left: MediaQuery.of(context).size.width / 360 * 16),
                       itemCount: docs1?.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (ctx, i) {
@@ -236,7 +241,6 @@ class _CategoryListViewState extends State<CategoryListView>
                                 category: Category.categoryList[i],
                                 animation: animation,
                                 animationController: animationController,
-                                
                               );
                             });
                       },
@@ -251,20 +255,18 @@ class _CategoryListViewState extends State<CategoryListView>
 }
 
 class CategoryView extends StatelessWidget {
-  const CategoryView(
-      {Key? key,
-      this.image,
-      this.category,
-      this.fameInfo,
-      this.animationController,
-      this.animation,
-     })
-      : super(key: key);
+  const CategoryView({
+    Key? key,
+    this.image,
+    this.category,
+    this.fameInfo,
+    this.animationController,
+    this.animation,
+  }) : super(key: key);
 
- 
   final Category? category;
   final String? image;
-  final  fameInfo;
+  final fameInfo;
 
   final AnimationController? animationController;
   final Animation<double>? animation;
@@ -289,41 +291,58 @@ class CategoryView extends StatelessWidget {
                 });
               },
               child: SizedBox(
-                width: 280,
+                width: MediaQuery.of(context).size.width / 360 * 280,
                 child: Stack(
                   children: <Widget>[
                     Container(
                       child: Row(
                         children: <Widget>[
-                          const SizedBox(
-                            width: 48,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 360 * 48,
                           ),
                           Expanded(
                             child: Container(
                               decoration: BoxDecoration(
                                 color: HexColor('#F8FAFB'),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(16.0)),
+                                borderRadius: BorderRadius.all(Radius.circular(
+                                    MediaQuery.of(context).size.width /
+                                        360 *
+                                        16.0)),
                               ),
                               child: Row(
                                 children: <Widget>[
-                                  const SizedBox(
-                                    width: 48 + 24.0,
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width /
+                                        360 *
+                                        72,
                                   ),
                                   Expanded(
                                     child: Container(
                                       child: Column(
                                         children: <Widget>[
                                           Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 16),
+                                            padding: EdgeInsets.only(
+                                                top: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    16),
                                             child: Text(
                                               fameInfo!['folder']['title'],
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: 16,
-                                                letterSpacing: 0.27,
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    16,
+                                                letterSpacing:
+                                                    MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        360 *
+                                                        0.27,
                                                 color: DesignCourseAppTheme
                                                     .darkerText,
                                               ),
@@ -333,8 +352,17 @@ class CategoryView extends StatelessWidget {
                                             child: SizedBox(),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 16, bottom: 8),
+                                            padding: EdgeInsets.only(
+                                                right: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    16,
+                                                bottom: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    8),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -347,8 +375,18 @@ class CategoryView extends StatelessWidget {
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w200,
-                                                    fontSize: 12,
-                                                    letterSpacing: 0.27,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            360 *
+                                                            12,
+                                                    letterSpacing:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            360 *
+                                                            0.27,
                                                     color: DesignCourseAppTheme
                                                         .grey,
                                                   ),
@@ -363,8 +401,19 @@ class CategoryView extends StatelessWidget {
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w200,
-                                                          fontSize: 18,
-                                                          letterSpacing: 0.27,
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              360 *
+                                                              18,
+                                                          letterSpacing:
+                                                              MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width /
+                                                                  360 *
+                                                                  0.27,
                                                           color:
                                                               DesignCourseAppTheme
                                                                   .grey,
@@ -375,7 +424,12 @@ class CategoryView extends StatelessWidget {
                                                         color:
                                                             DesignCourseAppTheme
                                                                 .nearlyBlue,
-                                                        size: 20,
+                                                        size: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            360 *
+                                                            20,
                                                       ),
                                                     ],
                                                   ),
@@ -384,8 +438,17 @@ class CategoryView extends StatelessWidget {
                                             ),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 16, right: 16),
+                                            padding: EdgeInsets.only(
+                                                bottom: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    16,
+                                                right: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    16),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -398,8 +461,18 @@ class CategoryView extends StatelessWidget {
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w600,
-                                                    fontSize: 18,
-                                                    letterSpacing: 0.27,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            360 *
+                                                            18,
+                                                    letterSpacing:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            360 *
+                                                            0.27,
                                                     color: DesignCourseAppTheme
                                                         .nearlyBlue,
                                                   ),
@@ -408,14 +481,21 @@ class CategoryView extends StatelessWidget {
                                                   decoration: BoxDecoration(
                                                     color: DesignCourseAppTheme
                                                         .nearlyBlue,
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
+                                                    borderRadius: BorderRadius
+                                                        .all(Radius.circular(
+                                                            MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                360 *
                                                                 8.0)),
                                                   ),
                                                   child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
+                                                    padding: EdgeInsets.all(
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            360 *
                                                             4.0),
                                                     child: Icon(
                                                       Icons.add,
@@ -441,8 +521,11 @@ class CategoryView extends StatelessWidget {
                     ),
                     Container(
                       child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 24, bottom: 24, left: 16),
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.width / 360 * 24,
+                            bottom:
+                                MediaQuery.of(context).size.width / 360 * 24,
+                            left: MediaQuery.of(context).size.width / 360 * 16),
                         child: Row(
                           children: <Widget>[
                             ClipRRect(

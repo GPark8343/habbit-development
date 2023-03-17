@@ -15,6 +15,7 @@ import 'package:habbit/widgets/image_frame.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
+  static const routeName = '/myprofile';
   const ProfileScreen({super.key});
 
   @override
@@ -269,9 +270,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   fit: BoxFit.cover,
                   imageUrl: docs![index]['thumbnail'],
                   placeholder: (context, url) => Center(
-                    child: Container(
-                      color: backgroundColor
-                    ),
+                    child: Container(color: backgroundColor),
                   ),
                 ),
               );
@@ -282,44 +281,60 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.width / 360 * 10),
-          _information(),
-          _menu(),
-          // _discoverPeople(),
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: mainColor, //색변경
+        ),
+        title: Text(
+          '내 프로필',
+          style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width / 360 * 25,
+              color: mainColor,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.width / 360 * 10),
+              _information(),
+              _menu(),
+              // _discoverPeople(),
 
-          Deco(),
-          // _tabMenu(),
-          SizedBox(height: MediaQuery.of(context).size.width / 360 * 20),
-          Container(
-            padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.width / 360 * 2),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(
-                  MediaQuery.of(context).size.width / 360 * 3),
-              border: Border.all(
-                color: const Color(0xffdedede),
+              Deco(),
+              // _tabMenu(),
+              SizedBox(height: MediaQuery.of(context).size.width / 360 * 20),
+              Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.width / 360 * 2),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      MediaQuery.of(context).size.width / 360 * 3),
+                  border: Border.all(
+                    color: const Color(0xffdedede),
+                  ),
+                ),
+                child: Text(
+                  '내 포스트',
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: MediaQuery.of(context).size.width / 360 * 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            child: Text(
-              '내 포스트',
-              style: TextStyle(
-                color: textColor,
-                fontSize: MediaQuery.of(context).size.width / 360 * 14,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
+              SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
+              Divider(
+                  color: backgroundColor,
+                  thickness: MediaQuery.of(context).size.width / 360 * 2.0),
+              SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
+              _tabView(),
+            ],
           ),
-          SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
-          Divider(
-              color: backgroundColor,
-              thickness: MediaQuery.of(context).size.width / 360 * 2.0),
-          SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
-          _tabView(),
-        ],
+        ),
       ),
     );
   }
