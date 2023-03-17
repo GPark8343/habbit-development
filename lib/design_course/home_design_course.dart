@@ -7,6 +7,7 @@ import 'package:habbit/design_course/category_list_view.dart';
 import 'package:habbit/design_course/course_info_screen.dart';
 import 'package:habbit/design_course/popular_course_list_view.dart';
 import 'package:habbit/main.dart';
+import 'package:habbit/widgets/buttons/add_folder_button.dart';
 import 'design_course_app_theme.dart';
 
 class DesignCourseHomeScreen extends StatefulWidget {
@@ -20,13 +21,13 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: DesignCourseAppTheme.nearlyWhite,
-      decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [const Color(0xFF543CBA),const Color(0xFF3FA5B1)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0.0, 1.0])),
+      color: DesignCourseAppTheme.nearlyWhite,
+      // decoration: BoxDecoration(
+      //       gradient: LinearGradient(
+      //           colors: [const Color(0xFF543CBA),const Color(0xFF3FA5B1)],
+      //           begin: Alignment.topCenter,
+      //           end: Alignment.bottomCenter,
+      //           stops: [0.0, 1.0])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
@@ -41,7 +42,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
                   height: MediaQuery.of(context).size.height,
                   child: Column(
                     children: <Widget>[
-                      getSearchBarUI(),
+                      // getSearchBarUI(),
                       getCategoryUI(),
                       Flexible(
                         child: getPopularCourseUI(),
@@ -81,38 +82,34 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         SizedBox(
           height: MediaQuery.of(context).size.width / 360 * 16,
         ),
-        Padding(
-          padding: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width / 360 * 16,
-              right: MediaQuery.of(context).size.width / 360 * 16),
-          child: Row(
-            children: <Widget>[
-              getButtonUI(
-                  CategoryType.Reading, categoryType == CategoryType.Reading),
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 360 * 16,
-              ),
-              getButtonUI(
-                  CategoryType.Exercise, categoryType == CategoryType.Exercise),
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 360 * 16,
-              ),
-              getButtonUI(
-                  CategoryType.Language, categoryType == CategoryType.Language),
-              getButtonUI(
-                  CategoryType.Study, categoryType == CategoryType.Study),
-              getButtonUI(CategoryType.Etc, categoryType == CategoryType.Etc),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: MediaQuery.of(context).size.width / 360 * 16,
-        ),
-        CategoryListView(
-          callBack: () {
-            moveTo();
-          },
-        ),
+        // Padding(
+        //   padding: EdgeInsets.only(
+        //       left: MediaQuery.of(context).size.width / 360 * 16,
+        //       right: MediaQuery.of(context).size.width / 360 * 16),
+        //   child: Row(
+        //     children: <Widget>[
+        //       getButtonUI(
+        //           CategoryType.Reading, categoryType == CategoryType.Reading),
+        //       SizedBox(
+        //         width: MediaQuery.of(context).size.width / 360 * 16,
+        //       ),
+        //       getButtonUI(
+        //           CategoryType.Exercise, categoryType == CategoryType.Exercise),
+        //       SizedBox(
+        //         width: MediaQuery.of(context).size.width / 360 * 16,
+        //       ),
+        //       getButtonUI(
+        //           CategoryType.Language, categoryType == CategoryType.Language),
+        //       getButtonUI(
+        //           CategoryType.Study, categoryType == CategoryType.Study),
+        //       getButtonUI(CategoryType.Etc, categoryType == CategoryType.Etc),
+        //     ],
+        //   ),
+        // ),
+        // SizedBox(
+        //   height: MediaQuery.of(context).size.width / 360 * 16,
+        // ),
+        CategoryListView(),
       ],
     );
   }
@@ -127,22 +124,23 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            'your folder',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: MediaQuery.of(context).size.width / 360 * 22,
-              letterSpacing: MediaQuery.of(context).size.width / 360 * 0.27,
-              color: DesignCourseAppTheme.darkerText,
-            ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '폴더 목록',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: MediaQuery.of(context).size.width / 360 * 22,
+                  letterSpacing: MediaQuery.of(context).size.width / 360 * 0.27,
+                  color: DesignCourseAppTheme.darkerText,
+                ),
+              ),
+              AddFolderButton()
+            ],
           ),
           Flexible(
-            child: PopularCourseListView(
-              callBack: () {
-                moveTo();
-              },
-            ),
+            child: PopularCourseListView(),
           )
         ],
       ),
@@ -354,7 +352,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: Container(
-                      color: backgroundColor,
+                      color: Colors.white,
                     ),
                   );
                 }

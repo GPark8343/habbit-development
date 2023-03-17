@@ -76,7 +76,7 @@ class InstaScreen extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: Container(
-                      color: backgroundColor
+                      color: Colors.white
                     ),
                   );
                 }

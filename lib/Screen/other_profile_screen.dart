@@ -72,7 +72,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: backgroundColor
+                  color: Colors.white
                 ),
               );
             }
@@ -98,7 +98,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: backgroundColor
+                  color:Colors.white
                 ),
               );
             }
@@ -150,7 +150,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: backgroundColor
+                  color: Colors.white
                 ),
               );
             }
@@ -206,7 +206,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
                     imageUrl: docs![index]['thumbnail'],
                     placeholder: (context, url) => Center(
                       child: Container(
-                        color: backgroundColor
+                        color: Colors.white
                       ),
                     ),
                   ),
@@ -226,7 +226,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: backgroundColor
+                  color:Colors.white
                 ),
               );
             }
@@ -299,7 +299,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: backgroundColor
+                  color: Colors.white
                 ),
               );
             }
@@ -440,7 +440,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
             ),
             SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
             Divider(
-                color: backgroundColor,
+                color: Colors.white,
                 thickness: MediaQuery.of(context).size.width / 360 * 2.0),
             SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
             _tabView(),

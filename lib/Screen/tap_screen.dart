@@ -44,7 +44,7 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
   );
 
   late List<Map<String, Object>> _pages; //
-  int _selectedPageIndex = 2;
+  int _selectedPageIndex = 0;
 
   late String admobBannerId;
   BannerAd? banner;
@@ -64,12 +64,9 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
       request: AdRequest(),
     )..load();
     _pages = [
-      {'page': ProfileScreen(), 'title': 'Profile'},
-      {'page': FameScreen(), 'title': 'Hall of Fame'},
-      {'page': InstaScreen(), 'title': 'upload'},
-      {'page': FolderScreen(), 'title': 'folder'},
-      {'page': ChallengeScreen(), 'title': 'challenge'},
       {'page': DesignCourseHomeScreen(), 'title': 'test'},
+      {'page': InstaScreen(), 'title': 'upload'},
+      {'page': ChallengeScreen(), 'title': 'challenge'},
     ];
 
     super.initState();
@@ -87,6 +84,11 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
     });
   }
 
+  void _signOut() {
+    FirebaseAuth.instance.signOut();
+    GoogleSignIn().signOut();
+  }
+
   @override
   @override
   Widget build(BuildContext context) {
@@ -97,13 +99,10 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
     //       .changeCategory(selectedCategory);
     // }
 
-    void _signOut() {
-      FirebaseAuth.instance.signOut();
-      GoogleSignIn().signOut();
-    }
-
     List actionWidget(int chosenPageIndex) {
       if (chosenPageIndex == 0) {
+        return [];
+      } else if (chosenPageIndex == 1) {
         return [
           PopupMenuButton(
             itemBuilder: (_) => [
@@ -146,133 +145,6 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
             ],
             icon: Icon(Icons.settings),
           ),
-          PopupMenuButton(
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                  onTap: () {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.of(context).pushNamed(BanScreen.routeName);
-                    });
-                  },
-                  child: Center(
-                    child: Container(
-                      color: Colors.white,
-                      child: Text(
-                        '차단 리스트',
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width / 360 * 15,
-                            color: mainColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  )),
-            ],
-            icon: Icon(Icons.more_vert),
-          ),
-        ];
-      } else if (chosenPageIndex == 1) {
-        return [];
-      } else if (chosenPageIndex == 2) {
-        return [
-          // PopupMenuButton(
-          //   itemBuilder: (_) => [
-          //     PopupMenuItem(
-          //       child: GestureDetector(
-          //         child: Text(
-          //           '전부',
-          //           style: TextStyle(
-          //               fontSize: MediaQuery.of(context).size.width / 360 * 15,
-          //               color: mainColor,
-          //               fontWeight: FontWeight.bold),
-          //         ),
-          //         onTap: () {
-          //           changeCategory('all');
-          //           print(pickedCategory);
-          //         },
-          //       ),
-          //     ),
-          //     PopupMenuItem(
-          //       child: GestureDetector(
-          //         child: Text(
-          //           '독서',
-          //           style: TextStyle(
-          //               fontSize: MediaQuery.of(context).size.width / 360 * 15,
-          //               color: mainColor,
-          //               fontWeight: FontWeight.bold),
-          //         ),
-          //         onTap: () {
-          //           changeCategory('reading');
-          //           print(pickedCategory);
-          //         },
-          //       ),
-          //     ),
-          //     PopupMenuItem(
-          //       child: GestureDetector(
-          //         child: Text(
-          //           '운동',
-          //           style: TextStyle(
-          //               fontSize: MediaQuery.of(context).size.width / 360 * 15,
-          //               color: mainColor,
-          //               fontWeight: FontWeight.bold),
-          //         ),
-          //         onTap: () {
-          //           changeCategory('exercise');
-          //           print(pickedCategory);
-          //         },
-          //       ),
-          //     ),
-          //     PopupMenuItem(
-          //       child: GestureDetector(
-          //         child: Text(
-          //           '언어',
-          //           style: TextStyle(
-          //               fontSize: MediaQuery.of(context).size.width / 360 * 15,
-          //               color: mainColor,
-          //               fontWeight: FontWeight.bold),
-          //         ),
-          //         onTap: () {
-          //           changeCategory('language');
-          //           print(pickedCategory);
-          //         },
-          //       ),
-          //     ),
-          //     PopupMenuItem(
-          //       child: GestureDetector(
-          //         child: Text(
-          //           '공부',
-          //           style: TextStyle(
-          //               fontSize: MediaQuery.of(context).size.width / 360 * 15,
-          //               color: mainColor,
-          //               fontWeight: FontWeight.bold),
-          //         ),
-          //         onTap: () {
-          //           changeCategory('study');
-          //           print(pickedCategory);
-          //         },
-          //       ),
-          //     ),
-          //     PopupMenuItem(
-          //       child: GestureDetector(
-          //         child: Text(
-          //           '기타',
-          //           style: TextStyle(
-          //               fontSize: MediaQuery.of(context).size.width / 360 * 15,
-          //               color: mainColor,
-          //               fontWeight: FontWeight.bold),
-          //         ),
-          //         onTap: () {
-          //           changeCategory('etc');
-          //           print(pickedCategory);
-          //         },
-          //       ),
-          //     ),
-          //   ],
-          //   icon: Container(
-          //       width: MediaQuery.of(context).size.width / 360 * 20,
-          //       height: MediaQuery.of(context).size.width / 360 * 20,
-          //       child: Image.asset('assets/icons/category.png')),
-          // ),
           PopupMenuButton(
             itemBuilder: (ctx) => [
               PopupMenuItem(
@@ -317,10 +189,6 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
             icon: Icon(Icons.help_outline_sharp),
           )
         ];
-      } else if (chosenPageIndex == 3) {
-        return [AddFolderButton()];
-      } else if (chosenPageIndex == 4) {
-        return [];
       } else {
         return [];
       }
@@ -328,26 +196,28 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
 
     return Scaffold(
       drawerScrimColor: FitnessAppTheme.background,
-      appBar: AppBar(
-        // actions: [SignOutButton()],
-        actions: [...actionWidget(_selectedPageIndex)],
-        iconTheme: IconThemeData(color: mainColor),
-        title: Row(
-          children: [
-            // Image.asset('assets/logos/header_logo.png',
-            //     width: MediaQuery.of(context).size.width / 360 * 45,
-            //     height: MediaQuery.of(context).size.width / 360 * 45),
-            SizedBox(width: MediaQuery.of(context).size.width / 360 * 15),
-            Text(
-              'Habbit',
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width / 360 * 25,
-                  color: mainColor,
-                  fontWeight: FontWeight.bold),
-            )
-          ],
-        ),
-      ),
+      appBar: _selectedPageIndex == 0
+          ? null
+          : AppBar(
+              // actions: [SignOutButton()],
+              actions: [...actionWidget(_selectedPageIndex)],
+              iconTheme: IconThemeData(color: mainColor),
+              title: Row(
+                children: [
+                  // Image.asset('assets/logos/header_logo.png',
+                  //     width: MediaQuery.of(context).size.width / 360 * 45,
+                  //     height: MediaQuery.of(context).size.width / 360 * 45),
+                  SizedBox(width: MediaQuery.of(context).size.width / 360 * 15),
+                  Text(
+                    'Habbit',
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 360 * 25,
+                        color: mainColor,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
       body: SafeArea(
         child: _pages[_selectedPageIndex]['page'] as Widget,
         // AdWidget(ad: banner!)
@@ -362,28 +232,16 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
           items: [
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
-                icon: Icon(Icons.person_2_outlined),
-                label: 'Profile'),
-            BottomNavigationBarItem(
-                backgroundColor: Theme.of(context).primaryColor,
-                icon: Icon(Icons.aspect_ratio_rounded),
-                label: 'Fame'),
+                icon: Icon(Icons.ten_mp_sharp),
+                label: 'test'),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.upload_file),
                 label: 'upload'),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
-                icon: Icon(Icons.folder_open_rounded),
-                label: 'folder'),
-            BottomNavigationBarItem(
-                backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.calendar_today),
                 label: 'challenge'),
-            BottomNavigationBarItem(
-                backgroundColor: Theme.of(context).primaryColor,
-                icon: Icon(Icons.ten_mp_sharp),
-                label: 'test'),
           ]),
     );
   }

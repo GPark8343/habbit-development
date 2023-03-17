@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const backgroundColor = Color(0xffF7EBE1);
+
 const textColor = Colors.black;
 const unselectedItemColor = Color.fromRGBO(92, 106, 196, 1);
 const mainColor = Color.fromRGBO(41, 44, 53, 1);

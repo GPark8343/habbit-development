@@ -95,7 +95,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '첼린지 폴더를 먼저 추가해주세요',
+                      '폴더를 먼저 추가해주세요',
                       style: TextStyle(
                           fontSize:
                               MediaQuery.of(context).size.width / 360 * 15,

@@ -59,7 +59,7 @@ class PostWidget extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: backgroundColor
+                  color: Colors.white
                 ),
               );
             }
@@ -99,7 +99,7 @@ class PostWidget extends StatelessWidget {
         imageUrl: post.thumbnail!,
         placeholder: (context, url) => Center(
           child: Container(
-            color: backgroundColor
+            color: Colors.white
           ),
         ),
       );
@@ -159,7 +159,7 @@ class PostWidget extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
-                  color: backgroundColor
+                  color: Colors.white
                 ),
               );
             }

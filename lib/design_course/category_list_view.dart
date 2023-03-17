@@ -8,9 +8,8 @@ import 'package:habbit/main.dart';
 import 'package:habbit/models/folder.dart';
 
 class CategoryListView extends StatefulWidget {
-  const CategoryListView({Key? key, this.callBack}) : super(key: key);
+  const CategoryListView({Key? key}) : super(key: key);
 
-  final Function()? callBack;
   @override
   _CategoryListViewState createState() => _CategoryListViewState();
 }
@@ -238,7 +237,6 @@ class _CategoryListViewState extends State<CategoryListView>
                               return CategoryView(
                                 fameInfo: docs1[i],
                                 image: docs2!.first.data()['thumbnail'],
-                                category: Category.categoryList[i],
                                 animation: animation,
                                 animationController: animationController,
                               );
@@ -258,13 +256,11 @@ class CategoryView extends StatelessWidget {
   const CategoryView({
     Key? key,
     this.image,
-    this.category,
     this.fameInfo,
     this.animationController,
     this.animation,
   }) : super(key: key);
 
-  final Category? category;
   final String? image;
   final fameInfo;
 
@@ -273,6 +269,64 @@ class CategoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String CategoryWord(String selectedCategory) {
+      if (selectedCategory == 'Kind.Reading') {
+        return '독서';
+      } else if (selectedCategory == 'Kind.Exercise') {
+        return '운동';
+      } else if (selectedCategory == 'Kind.Language') {
+        return '언어';
+      } else if (selectedCategory == 'Kind.Study') {
+        return '공부';
+      } else {
+        return '기타';
+      }
+    }
+
+    Widget CategoryIcon(String selectedCategory) {
+      if (selectedCategory == 'Kind.Reading') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 30,
+            height: MediaQuery.of(context).size.width / 360 * 30,
+            child: Image.asset(
+              'assets/icons/reading.png',
+              color: DesignCourseAppTheme.nearlyWhite,
+            ));
+      } else if (selectedCategory == 'Kind.Exercise') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 30,
+            height: MediaQuery.of(context).size.width / 360 * 30,
+            child: Image.asset(
+              'assets/icons/exercise.png',
+              color: DesignCourseAppTheme.nearlyWhite,
+            ));
+      } else if (selectedCategory == 'Kind.Language') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 30,
+            height: MediaQuery.of(context).size.width / 360 * 30,
+            child: Image.asset(
+              'assets/icons/language.png',
+              color: DesignCourseAppTheme.nearlyWhite,
+            ));
+      } else if (selectedCategory == 'Kind.Study') {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 30,
+            height: MediaQuery.of(context).size.width / 360 * 30,
+            child: Image.asset(
+              'assets/icons/study.png',
+              color: DesignCourseAppTheme.nearlyWhite,
+            ));
+      } else {
+        return Container(
+            width: MediaQuery.of(context).size.width / 360 * 30,
+            height: MediaQuery.of(context).size.width / 360 * 30,
+            child: Image.asset(
+              'assets/icons/etc.png',
+              color: DesignCourseAppTheme.nearlyWhite,
+            ));
+      }
+    }
+
     return AnimatedBuilder(
       animation: animationController!,
       builder: (BuildContext context, Widget? child) {
@@ -371,7 +425,9 @@ class CategoryView extends StatelessWidget {
                                                   CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  '${category!.lessonCount} lesson',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  '${fameInfo!['folder']['description']}',
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w200,
@@ -395,7 +451,7 @@ class CategoryView extends StatelessWidget {
                                                   child: Row(
                                                     children: <Widget>[
                                                       Text(
-                                                        '${category!.rating}',
+                                                        '${(fameInfo['fameData'] as List).length}일',
                                                         textAlign:
                                                             TextAlign.left,
                                                         style: TextStyle(
@@ -419,18 +475,22 @@ class CategoryView extends StatelessWidget {
                                                                   .grey,
                                                         ),
                                                       ),
-                                                      Icon(
-                                                        Icons.star,
-                                                        color:
-                                                            DesignCourseAppTheme
-                                                                .nearlyBlue,
-                                                        size: MediaQuery.of(
+                                                      Container(
+                                                        width: MediaQuery.of(
                                                                     context)
                                                                 .size
                                                                 .width /
                                                             360 *
                                                             20,
-                                                      ),
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            360 *
+                                                            20,
+                                                        child: Image.asset(
+                                                            'assets/icons/trophy.png'),
+                                                      )
                                                     ],
                                                   ),
                                                 )
@@ -457,7 +517,11 @@ class CategoryView extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
-                                                  '\$${category!.money}',
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  CategoryWord(
+                                                      fameInfo['folder']
+                                                          ['category']),
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w600,
@@ -491,19 +555,15 @@ class CategoryView extends StatelessWidget {
                                                                 8.0)),
                                                   ),
                                                   child: Padding(
-                                                    padding: EdgeInsets.all(
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width /
-                                                            360 *
-                                                            4.0),
-                                                    child: Icon(
-                                                      Icons.add,
-                                                      color:
-                                                          DesignCourseAppTheme
-                                                              .nearlyWhite,
-                                                    ),
-                                                  ),
+                                                      padding: EdgeInsets.all(
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width /
+                                                              360 *
+                                                              4.0),
+                                                      child: CategoryIcon(
+                                                          fameInfo['folder']
+                                                              ['category'])),
                                                 )
                                               ],
                                             ),

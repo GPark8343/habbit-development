@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:habbit/Screen/ban_screen.dart';
 import 'package:habbit/Screen/edit_profile_screen.dart';
 import 'package:habbit/Screen/post_detail_screen.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
@@ -65,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: Container(
-                color: backgroundColor,
+                color: Colors.white,
               ),
             );
           }
@@ -213,7 +215,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: Container(
-                color: backgroundColor,
+                color:Colors.white,
               ),
             );
           }
@@ -270,7 +272,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   fit: BoxFit.cover,
                   imageUrl: docs![index]['thumbnail'],
                   placeholder: (context, url) => Center(
-                    child: Container(color: backgroundColor),
+                    child: Container(color: Colors.white),
                   ),
                 ),
               );
@@ -279,10 +281,39 @@ class _ProfileScreenState extends State<ProfileScreen>
         });
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          
+          PopupMenuButton(
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                  onTap: () {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      Navigator.of(context).pushNamed(BanScreen.routeName);
+                    });
+                  },
+                  child: Center(
+                    child: Container(
+                      color: Colors.white,
+                      child: Text(
+                        '차단 리스트',
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width / 360 * 15,
+                            color: mainColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )),
+            ],
+            icon: Icon(Icons.more_vert),
+          ),
+        ],
         iconTheme: IconThemeData(
           color: mainColor, //색변경
         ),
@@ -328,7 +359,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               ),
               SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
               Divider(
-                  color: backgroundColor,
+                  color: Colors.white,
                   thickness: MediaQuery.of(context).size.width / 360 * 2.0),
               SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
               _tabView(),

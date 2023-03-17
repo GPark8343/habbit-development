@@ -34,6 +34,12 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
     super.initState();
   }
 
+  @override
+  dispose() {
+    animationController?.dispose(); // you need this
+    super.dispose();
+  }
+
   Future<void> setData() async {
     animationController?.forward();
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
@@ -62,7 +68,9 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
     var isUploaded = selectedStory.isUploaded;
 
     DateTime now = DateTime.now();
-    DateTime dateTime = DateTime.parse(selectedStory.createdAt);
+    DateTime dateTime = DateTime.parse(selectedStory.createdAt == 'createdAt'
+        ? DateTime.now().toString()
+        : selectedStory.createdAt);
     var isToday = DateTime.utc(dateTime.year, dateTime.month, dateTime.day) ==
         DateTime.utc(now.year, now.month, now.day);
 
@@ -117,6 +125,20 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
       await Provider.of<StoryManage>(context, listen: false)
           .changeIsUploaded(selectedStory);
       await fetchAndSetStories();
+    }
+
+    String CategoryWord(String selectedCategory) {
+      if (selectedCategory == 'Kind.Reading') {
+        return '독서';
+      } else if (selectedCategory == 'Kind.Exercise') {
+        return '운동';
+      } else if (selectedCategory == 'Kind.Language') {
+        return '언어';
+      } else if (selectedCategory == 'Kind.Study') {
+        return '공부';
+      } else {
+        return '기타';
+      }
     }
 
     final GlobalKey<ScaffoldState>? _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -195,7 +217,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                     selectedStory.title,
                                     textAlign: TextAlign.left,
                                     style: TextStyle(
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.bold,
                                       fontSize:
                                           MediaQuery.of(context).size.width /
                                               360 *
@@ -204,7 +226,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                           MediaQuery.of(context).size.width /
                                               360 *
                                               0.27,
-                                      color: DesignCourseAppTheme.darkerText,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
@@ -252,7 +274,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                         child: Row(
                                           children: <Widget>[
                                             Text(
-                                              '4.3',
+                                              selectedStory.title,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w200,
@@ -271,8 +293,15 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                                     DesignCourseAppTheme.grey,
                                               ),
                                             ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  360 *
+                                                  10,
+                                            ),
                                             Icon(
-                                              Icons.star,
+                                              Icons.check,
                                               color: DesignCourseAppTheme
                                                   .nearlyBlue,
                                               size: MediaQuery.of(context)
@@ -297,9 +326,14 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                             8),
                                     child: Row(
                                       children: <Widget>[
-                                        getTimeBoxUI('24', 'Classe'),
-                                        getTimeBoxUI('2hours', 'Time'),
-                                        getTimeBoxUI('24', 'Seat'),
+                                        getTimeBoxUI(
+                                            CategoryWord(
+                                                selectedStory.category),
+                                            '카테고리'),
+                                        getTimeBoxUI(
+                                            isUploaded == 0 ? '업로드 X' : '업로드 O',
+                                            '상태'),
+                                        getTimeBoxUI('0', '좋아요'),
                                       ],
                                     ),
                                   ),
@@ -334,7 +368,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                         selectedStory.description,
                                         textAlign: TextAlign.justify,
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w200,
+                                          fontWeight: FontWeight.bold,
                                           fontSize: MediaQuery.of(context)
                                                   .size
                                                   .width /
@@ -345,7 +379,8 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                                   .width /
                                               360 *
                                               0.27,
-                                          color: DesignCourseAppTheme.grey,
+                                          color:
+                                              DesignCourseAppTheme.darkerText,
                                         ),
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
@@ -475,7 +510,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                                         builder: (ctx) {
                                                           return AlertDialog(
                                                             content: Text(
-                                                                '오늘 올리지 않은 스토리는 내릴 수 없습니다.'),
+                                                                '오늘 올리지 않은 스토리는 삭제할 수 없습니다.'),
                                                             actions: <Widget>[],
                                                           );
                                                         });
@@ -583,7 +618,12 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600,
-                                                          fontSize:  MediaQuery.of(context).size.width / 360 *18,
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              360 *
+                                                              18,
                                                           letterSpacing: 0.0,
                                                           color:
                                                               DesignCourseAppTheme
@@ -608,7 +648,12 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600,
-                                                          fontSize: MediaQuery.of(context).size.width / 360 * 18,
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              360 *
+                                                              18,
                                                           letterSpacing: 0.0,
                                                           color:
                                                               DesignCourseAppTheme
@@ -634,8 +679,10 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                     ),
                   ),
                   Positioned(
-                    top: (MediaQuery.of(context).size.width / 1.2) -  MediaQuery.of(context).size.width / 360 *24.0 -  MediaQuery.of(context).size.width / 360 *35,
-                    right:  MediaQuery.of(context).size.width / 360 *35,
+                    top: (MediaQuery.of(context).size.width / 1.2) -
+                        MediaQuery.of(context).size.width / 360 * 24.0 -
+                        MediaQuery.of(context).size.width / 360 * 35,
+                    right: MediaQuery.of(context).size.width / 360 * 35,
                     child: ScaleTransition(
                       alignment: Alignment.center,
                       scale: CurvedAnimation(
@@ -644,18 +691,16 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                       child: Card(
                         color: DesignCourseAppTheme.nearlyBlue,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular( MediaQuery.of(context).size.width / 360 *50.0)),
+                            borderRadius: BorderRadius.circular(
+                                MediaQuery.of(context).size.width /
+                                    360 *
+                                    50.0)),
                         elevation: 10.0,
                         child: Container(
-                          width:  MediaQuery.of(context).size.width / 360 *60,
+                          width: MediaQuery.of(context).size.width / 360 * 60,
                           height: MediaQuery.of(context).size.width / 360 * 60,
                           child: Center(
-                            child: Icon(
-                              Icons.favorite,
-                              color: DesignCourseAppTheme.nearlyWhite,
-                              size: MediaQuery.of(context).size.width / 360 * 30,
-                            ),
-                          ),
+                              child: CategoryIcon(selectedStory.category)),
                         ),
                       ),
                     ),
@@ -689,23 +734,71 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
         });
   }
 
+  Widget CategoryIcon(String selectedCategory) {
+    if (selectedCategory == 'Kind.Reading') {
+      return Container(
+          width: MediaQuery.of(context).size.width / 360 * 30,
+          height: MediaQuery.of(context).size.width / 360 * 30,
+          child: Image.asset(
+            'assets/icons/reading.png',
+            color: DesignCourseAppTheme.nearlyWhite,
+          ));
+    } else if (selectedCategory == 'Kind.Exercise') {
+      return Container(
+          width: MediaQuery.of(context).size.width / 360 * 30,
+          height: MediaQuery.of(context).size.width / 360 * 30,
+          child: Image.asset(
+            'assets/icons/exercise.png',
+            color: DesignCourseAppTheme.nearlyWhite,
+          ));
+    } else if (selectedCategory == 'Kind.Language') {
+      return Container(
+          width: MediaQuery.of(context).size.width / 360 * 30,
+          height: MediaQuery.of(context).size.width / 360 * 30,
+          child: Image.asset(
+            'assets/icons/language.png',
+            color: DesignCourseAppTheme.nearlyWhite,
+          ));
+    } else if (selectedCategory == 'Kind.Study') {
+      return Container(
+          width: MediaQuery.of(context).size.width / 360 * 30,
+          height: MediaQuery.of(context).size.width / 360 * 30,
+          child: Image.asset(
+            'assets/icons/study.png',
+            color: DesignCourseAppTheme.nearlyWhite,
+          ));
+    } else {
+      return Container(
+          width: MediaQuery.of(context).size.width / 360 * 30,
+          height: MediaQuery.of(context).size.width / 360 * 30,
+          child: Image.asset(
+            'assets/icons/etc.png',
+            color: DesignCourseAppTheme.nearlyWhite,
+          ));
+    }
+  }
+
   Widget getTimeBoxUI(String text1, String txt2) {
     return Padding(
-      padding:  EdgeInsets.all( MediaQuery.of(context).size.width / 360 *8.0),
+      padding: EdgeInsets.all(MediaQuery.of(context).size.width / 360 * 8.0),
       child: Container(
         decoration: BoxDecoration(
           color: DesignCourseAppTheme.nearlyWhite,
-          borderRadius: BorderRadius.all(Radius.circular( MediaQuery.of(context).size.width / 360 *16.0)),
+          borderRadius: BorderRadius.all(
+              Radius.circular(MediaQuery.of(context).size.width / 360 * 16.0)),
           boxShadow: <BoxShadow>[
             BoxShadow(
                 color: DesignCourseAppTheme.grey.withOpacity(0.2),
                 offset: const Offset(1.1, 1.1),
-                blurRadius:  MediaQuery.of(context).size.width / 360 *8.0),
+                blurRadius: MediaQuery.of(context).size.width / 360 * 8.0),
           ],
         ),
         child: Padding(
-          padding:  EdgeInsets.only(
-              left: MediaQuery.of(context).size.width / 360 * 18.0, right: MediaQuery.of(context).size.width / 360 * 18.0, top:  MediaQuery.of(context).size.width / 360 *12.0, bottom:  MediaQuery.of(context).size.width / 360 *12.0),
+          padding: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width / 360 * 18.0,
+              right: MediaQuery.of(context).size.width / 360 * 18.0,
+              top: MediaQuery.of(context).size.width / 360 * 12.0,
+              bottom: MediaQuery.of(context).size.width / 360 * 12.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -716,7 +809,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: MediaQuery.of(context).size.width / 360 * 14,
-                  letterSpacing:  MediaQuery.of(context).size.width / 360 *0.27,
+                  letterSpacing: MediaQuery.of(context).size.width / 360 * 0.27,
                   color: DesignCourseAppTheme.nearlyBlue,
                 ),
               ),
@@ -725,8 +818,8 @@ class _CourseInfoScreenState extends State<CourseInfoScreen>
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.w200,
-                  fontSize:  MediaQuery.of(context).size.width / 360 *14,
-                  letterSpacing:  MediaQuery.of(context).size.width / 360 *0.27,
+                  fontSize: MediaQuery.of(context).size.width / 360 * 14,
+                  letterSpacing: MediaQuery.of(context).size.width / 360 * 0.27,
                   color: DesignCourseAppTheme.grey,
                 ),
               ),

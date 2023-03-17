@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/repository_screen.dart';
+import 'package:habbit/colors.dart';
 import 'package:habbit/design_course/course_info_screen.dart';
 import 'package:habbit/design_course/design_course_app_theme.dart';
 import 'package:habbit/design_course/models/category.dart';
 import 'package:habbit/main.dart';
 import 'package:habbit/models/folder.dart';
+import 'package:habbit/models/story.dart';
 import 'package:habbit/providers/folder_manage.dart';
+import 'package:habbit/providers/story_manage.dart';
 import 'package:habbit/providers/time_manage.dart';
+import 'package:habbit/providers/upload.dart';
 import 'package:provider/provider.dart';
 
 class PopularCourseListView extends StatefulWidget {
-  const PopularCourseListView({Key? key, this.callBack}) : super(key: key);
+  const PopularCourseListView({Key? key}) : super(key: key);
 
-  final Function()? callBack;
   @override
   _PopularCourseListViewState createState() => _PopularCourseListViewState();
 }
@@ -27,7 +30,14 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
     super.initState();
   }
 
+  @override
+  dispose() {
+    animationController?.dispose(); // you need this
+    super.dispose();
+  }
+
   Future<bool> getData() async {
+    await Provider.of<StoryManage>(context, listen: false).fetchAndSetStories();
     await Provider.of<FolderManage>(context, listen: false)
         .fetchAndSetFolders()
         .then((value) {
@@ -40,8 +50,7 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
                 .howManyDaysPassed(folder));
       });
     });
-    await Provider.of<FolderManage>(context, listen: false)
-        .fetchAndSetFolders();
+
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
     return true;
   }
@@ -67,6 +76,16 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
                     .folders
                     .length,
                 (int index) {
+                  List<Story> storiesOfFoler =
+                      Provider.of<StoryManage>(context, listen: false)
+                          .items
+                          .where((element) =>
+                              element.folderId ==
+                              Provider.of<FolderManage>(context, listen: false)
+                                  .folders[index]
+                                  .id)
+                          .toList();
+                  var numberOfstoriesOfFoler = storiesOfFoler.length;
                   final int count =
                       Provider.of<FolderManage>(context, listen: false)
                           .folders
@@ -83,8 +102,8 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
                   return CategoryView(
                     folder: Provider.of<FolderManage>(context, listen: false)
                         .folders[index],
-                    callback: widget.callBack,
-                    category: Category.popularCourseList[index],
+                    numberOfStories: numberOfstoriesOfFoler,
+                    index: index,
                     animation: animation,
                     animationController: animationController,
                   );
@@ -106,23 +125,53 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
 }
 
 class CategoryView extends StatelessWidget {
-  const CategoryView(
-      {Key? key,
-      this.folder,
-      this.category,
-      this.animationController,
-      this.animation,
-      this.callback})
-      : super(key: key);
+  const CategoryView({
+    Key? key,
+    this.folder,
+    this.numberOfStories,
+    this.index,
+    this.animationController,
+    this.animation,
+  }) : super(key: key);
 
-  final VoidCallback? callback;
-  final Category? category;
   final Folder? folder;
+  final int? numberOfStories;
+  final int? index;
   final AnimationController? animationController;
   final Animation<double>? animation;
 
   @override
   Widget build(BuildContext context) {
+    _deleteFolderStoryAndPost(String selectedFolderId) async {
+      await Provider.of<StoryManage>(context, listen: false)
+          .fetchAndSetStories(); //
+      List<Story> storiesOfFoler =
+          Provider.of<StoryManage>(context, listen: false)
+              .findByFolderId(selectedFolderId);
+
+      storiesOfFoler.map((story) {
+        Provider.of<Upload>(context, listen: false).deletePost(story.id);
+        Provider.of<StoryManage>(context, listen: false)
+            .deleteStories(story.id);
+      });
+      await Provider.of<FolderManage>(context, listen: false)
+          .deleteFolders(selectedFolderId);
+    }
+
+    String CategoryPicture(String selectedCategory) {
+      if (selectedCategory == 'Kind.Reading') {
+        return 'assets/icons/reading_picture.jpg';
+      } else if (selectedCategory == 'Kind.Exercise') {
+        return 'assets/icons/exercise_picture.jpg';
+      } else if (selectedCategory == 'Kind.Language') {
+        return 'assets/icons/language_picture.jpg';
+      } else if (selectedCategory == 'Kind.Study') {
+        return 'assets/icons/study_picture.jpg';
+      } else {
+        return 'assets/icons/etc_picture.jpg';
+      }
+    }
+
     return AnimatedBuilder(
       animation: animationController!,
       builder: (BuildContext context, Widget? child) {
@@ -133,6 +182,42 @@ class CategoryView extends StatelessWidget {
                 0.0, 50 * (1.0 - animation!.value), 0.0),
             child: InkWell(
               splashColor: Colors.transparent,
+              onLongPress: () {
+                showDialog(
+                    context: context,
+                    builder: (ctx) {
+                      return AlertDialog(
+                        title: const Text('진짜로 지우시겠습니까?'),
+                        content: Text(
+                            '지금 지우려는 폴더는 ${Provider.of<FolderManage>(context, listen: false).folders[index!].title}입니다.'),
+                        actions: <Widget>[
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: mainColor),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('취소하기'),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: mainColor),
+                            onPressed: () async {
+                              await _deleteFolderStoryAndPost(
+                                  Provider.of<FolderManage>(context,
+                                          listen: false)
+                                      .folders[index!]
+                                      .id);
+
+                              animationController!.forward();
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('삭제하기'),
+                          ),
+                        ],
+                      );
+                    });
+              },
               onTap: () {
                 Navigator.of(context)
                     .pushNamed(RepositoryScreen.routeName, arguments: {
@@ -188,19 +273,44 @@ class CategoryView extends StatelessWidget {
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                fontSize: MediaQuery.of(context).size.width / 360 *16,
-                                                letterSpacing:MediaQuery.of(context).size.width / 360 * 0.27,
+                                                fontSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    16,
+                                                letterSpacing:
+                                                    MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        360 *
+                                                        0.27,
                                                 color: DesignCourseAppTheme
                                                     .darkerText,
                                               ),
                                             ),
                                           ),
                                           Padding(
-                                            padding:  EdgeInsets.only(
-                                                top: MediaQuery.of(context).size.width / 360 *8,
-                                                left: MediaQuery.of(context).size.width / 360 *16,
-                                                right: MediaQuery.of(context).size.width / 360 *16,
-                                                bottom: MediaQuery.of(context).size.width / 360 *8),
+                                            padding: EdgeInsets.only(
+                                                top: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    8,
+                                                left: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    16,
+                                                right: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    16,
+                                                bottom: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    360 *
+                                                    8),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -209,12 +319,22 @@ class CategoryView extends StatelessWidget {
                                                   CrossAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  '${category!.lessonCount} lesson',
+                                                  ' ${numberOfStories}일/60일',
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight: FontWeight.w200,
-                                                    fontSize: MediaQuery.of(context).size.width / 360 *12,
-                                                    letterSpacing: MediaQuery.of(context).size.width / 360 *0.27,
+                                                    fontSize:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            360 *
+                                                            12,
+                                                    letterSpacing:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            360 *
+                                                            0.27,
                                                     color: DesignCourseAppTheme
                                                         .grey,
                                                   ),
@@ -223,25 +343,43 @@ class CategoryView extends StatelessWidget {
                                                   child: Row(
                                                     children: <Widget>[
                                                       Text(
-                                                        '${category!.rating}',
+                                                        numberOfStories! >= 60
+                                                            ? '100%'
+                                                            : ' ${((numberOfStories! / 60) * 100).ceil()}%',
                                                         textAlign:
                                                             TextAlign.left,
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w200,
-                                                          fontSize:MediaQuery.of(context).size.width / 360 * 18,
-                                                          letterSpacing: MediaQuery.of(context).size.width / 360 *0.27,
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              360 *
+                                                              18,
+                                                          letterSpacing:
+                                                              MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width /
+                                                                  360 *
+                                                                  0.27,
                                                           color:
                                                               DesignCourseAppTheme
                                                                   .grey,
                                                         ),
                                                       ),
                                                       Icon(
-                                                        Icons.star,
+                                                        Icons.check,
                                                         color:
                                                             DesignCourseAppTheme
                                                                 .nearlyBlue,
-                                                        size: MediaQuery.of(context).size.width / 360 *20,
+                                                        size: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            360 *
+                                                            20,
                                                       ),
                                                     ],
                                                   ),
@@ -254,40 +392,54 @@ class CategoryView extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    width:MediaQuery.of(context).size.width / 360 * 48,
+                                    width: MediaQuery.of(context).size.width /
+                                        360 *
+                                        48,
                                   ),
                                 ],
                               ),
                             ),
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.width / 360 *48,
+                            height:
+                                MediaQuery.of(context).size.width / 360 * 48,
                           ),
                         ],
                       ),
                     ),
                     Container(
                       child: Padding(
-                        padding:
-                           EdgeInsets.only(top:MediaQuery.of(context).size.width / 360 * 24, right: MediaQuery.of(context).size.width / 360 *16, left: MediaQuery.of(context).size.width / 360 *16),
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.width / 360 * 24,
+                            right: MediaQuery.of(context).size.width / 360 * 16,
+                            left: MediaQuery.of(context).size.width / 360 * 16),
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius:
-                             BorderRadius.all(Radius.circular(MediaQuery.of(context).size.width / 360 *16.0)),
+                            borderRadius: BorderRadius.all(Radius.circular(
+                                MediaQuery.of(context).size.width /
+                                    360 *
+                                    16.0)),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
                                   color: DesignCourseAppTheme.grey
                                       .withOpacity(0.2),
                                   offset: const Offset(0.0, 0.0),
-                                  blurRadius: MediaQuery.of(context).size.width / 360 *6.0),
+                                  blurRadius:
+                                      MediaQuery.of(context).size.width /
+                                          360 *
+                                          6.0),
                             ],
                           ),
                           child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(16.0)),
+                            borderRadius: BorderRadius.all(Radius.circular(
+                                MediaQuery.of(context).size.width /
+                                    360 *
+                                    16.0)),
                             child: AspectRatio(
                                 aspectRatio: 1.28,
-                                child: Image.asset(category!.imagePath)),
+                                child: Image.asset(
+                                    CategoryPicture(folder!.category),
+                                    fit: BoxFit.cover)),
                           ),
                         ),
                       ),

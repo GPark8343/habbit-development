@@ -53,20 +53,28 @@ class _CalendarState extends State<Calendar> {
         .toList();
     int attendanceProgress = items.length;
 
-     _getAttendanceDate() async{
+    _getAttendanceDate() async {
       attendanceDate = [];
 
       items.forEach(
           (story) => attendanceDate.add(DateTime.parse(story.createdAt)));
-    await  Provider.of<MarkerManage>(context, listen: false)
-          .updateAttendanceDate(attendanceDate);
+    }
+
+    void updateScreen() {
+      setState(() {
+        //마커 표시하게 화면 업데이트해주는 함수
+      });
     }
 
     Future? first() async {
       await Provider.of<StoryManage>(context, listen: false)
           .fetchAndSetStories();
+
       await _getAttendanceDate();
+      await Provider.of<MarkerManage>(context, listen: false)
+          .updateAttendanceDate(attendanceDate);
       await Provider.of<MarkerManage>(context, listen: false).addMarker();
+      updateScreen();
     }
 
     return FutureBuilder(
@@ -154,7 +162,6 @@ class _CalendarState extends State<Calendar> {
                           shape: BoxShape.circle),
                       todayDecoration: BoxDecoration(
                           color: Colors.white, shape: BoxShape.circle),
-                      
                       todayTextStyle: TextStyle(
                           fontSize:
                               MediaQuery.of(context).size.width / 360 * 20,

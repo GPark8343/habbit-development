@@ -12,10 +12,16 @@ import 'package:habbit/providers/upload.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AuthScreen extends StatelessWidget {
-    static const routeName = '/auth';
+class AuthScreen extends StatefulWidget {
+  static const routeName = '/auth';
   const AuthScreen({super.key});
 
+  @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
+  bool _isLoading = false;
   Future first(context) async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showDialog(
@@ -128,16 +134,13 @@ class AuthScreen extends StatelessWidget {
           .collection('users')
           .where('uid', isEqualTo: user!.uid)
           .get();
-  
+
       if (data.docs.length == 0) {
         upload.registerUser();
-    
       }
 
       // 오류남-> splash screen으로 가려야 함
-    } catch (error) {
-   
-    }
+    } catch (error) {}
   }
 
   @override
@@ -183,9 +186,17 @@ class AuthScreen extends StatelessWidget {
                                     fit: BoxFit.contain,
                                   ),
                                 ),
-                                onTap: () {
-                                  _signInWithGoogle(context);
-                                },
+                                onTap: _isLoading
+                                    ? () => {}
+                                    : () {
+                                        setState(() {
+                                          _isLoading = true;
+                                        });
+                                        _signInWithGoogle(context);
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                      },
                               ),
                             ],
                           )),
@@ -218,7 +229,6 @@ class AuthScreen extends StatelessWidget {
 //                       //         fit: BoxFit.cover)),
 //                     ),
 //                   ),
-
 
 class PrivacyScreen extends StatelessWidget {
   static const routeName = '/privacy';
