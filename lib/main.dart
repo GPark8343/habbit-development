@@ -23,7 +23,7 @@ import 'package:habbit/Screen/other_profile_screen.dart';
 
 import 'package:habbit/colors.dart';
 import 'package:habbit/design_course/course_info_screen.dart';
-import 'package:habbit/fitness_app/fitness_app_theme.dart';
+
 import 'package:habbit/introduction_animation/introduction_animation_screen.dart';
 import 'package:habbit/introduction_animation/tutorial_screen.dart';
 import 'package:habbit/providers/ban_manage.dart';
@@ -101,9 +101,9 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'FlutterChat',
           theme: ThemeData(
-            scaffoldBackgroundColor: FitnessAppTheme.background,
+            scaffoldBackgroundColor:Color(0xFFF2F3F8),
             appBarTheme: const AppBarTheme(
-              color: FitnessAppTheme.background,
+              color: Color(0xFFF2F3F8),
             ),
           ),
           home: StreamBuilder(

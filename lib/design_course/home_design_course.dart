@@ -28,32 +28,30 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
       //           begin: Alignment.topCenter,
       //           end: Alignment.bottomCenter,
       //           stops: [0.0, 1.0])),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Column(
-          children: <Widget>[
-            SizedBox(
-              height: MediaQuery.of(context).padding.top,
-            ),
-            getAppBarUI(),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: Column(
-                    children: <Widget>[
-                      // getSearchBarUI(),
-                      getCategoryUI(),
-                      Flexible(
-                        child: getPopularCourseUI(),
-                      ),
-                    ],
-                  ),
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: MediaQuery.of(context).padding.top,
+          ),
+          getAppBarUI(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).size.width / 360 * 200,
+                child: Column(
+                  children: <Widget>[
+                    // getSearchBarUI(),
+                    getCategoryUI(),
+                    Flexible(
+                      child: getPopularCourseUI(),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -124,7 +122,8 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 '폴더 목록',

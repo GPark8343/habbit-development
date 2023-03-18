@@ -29,52 +29,55 @@ class _SplashViewState extends State<SplashView> {
         child: Column(
           children: [
             SizedBox(
+              height: MediaQuery.of(context).size.width / 360 * 90,
+            ),
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Image.asset(
-                'assets/introduction_animation/introduction_image.png',
+                'assets/logos/logo_transparent.png',
                 fit: BoxFit.cover,
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+              padding: EdgeInsets.only(top: MediaQuery.of(context).size.width / 360 *8.0, bottom:MediaQuery.of(context).size.width / 360 * 8.0),
               child: Text(
                 "앱 튜토리얼: Habbit 앱 사용법",
-                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: MediaQuery.of(context).size.width / 360 *25.0, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 64, right: 64),
+              padding: EdgeInsets.only(left:MediaQuery.of(context).size.width / 360 *64, right: MediaQuery.of(context).size.width / 360 *64),
               child: Text(
                 "앱을 설치해주셔서 감사합니다!\n이 앱은 습관을 형성하고 유지하는 데 도움을 주는 앱입니다.\n이제부터 간단한 튜토리얼을 통해 앱의 기능을 알려드리겠습니다.",
                 textAlign: TextAlign.center,
               ),
             ),
             SizedBox(
-              height: 48,
+              height: MediaQuery.of(context).size.width / 360 *48,
             ),
             Padding(
               padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom + 16),
+                  bottom: MediaQuery.of(context).padding.bottom +MediaQuery.of(context).size.width / 360 * 16),
               child: InkWell(
                 onTap: () {
                   widget.animationController.animateTo(0.2);
                 },
                 child: Container(
-                  height: 58,
+                  height:MediaQuery.of(context).size.width / 360 * 58,
                   padding: EdgeInsets.only(
-                    left: 56.0,
-                    right: 56.0,
-                    top: 16,
-                    bottom: 16,
+                    left: MediaQuery.of(context).size.width / 360 *56.0,
+                    right:MediaQuery.of(context).size.width / 360 * 56.0,
+                    top: MediaQuery.of(context).size.width / 360 *16,
+                    bottom: MediaQuery.of(context).size.width / 360 *16,
                   ),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(38.0),
+                    borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width / 360 *38.0),
                     color: Color(0xff132137),
                   ),
                   child: Text(
-                    "Let's begin",
+                    "시작하기",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: MediaQuery.of(context).size.width / 360 *18,
                       color: Colors.white,
                     ),
                   ),

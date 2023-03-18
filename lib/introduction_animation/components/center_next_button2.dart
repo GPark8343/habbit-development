@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
+
 class CenterNextButton2 extends StatelessWidget {
   final AnimationController animationController;
   final VoidCallback onNextClick;
@@ -67,13 +67,17 @@ class CenterNextButton2 extends StatelessWidget {
               animation: animationController,
               builder: (context, child) => Padding(
                 padding: EdgeInsets.only(
-                    bottom: 38 - (38 * _signUpMoveAnimation.value)),
+                    bottom: MediaQuery.of(context).size.width /
+                                        360 *(38 - (38 * _signUpMoveAnimation.value))),
                 child: Container(
-                  height: 58,
-                  width: 58 + (200 * _signUpMoveAnimation.value),
+                  height: MediaQuery.of(context).size.width /
+                                        360 *58,
+                  width: MediaQuery.of(context).size.width /
+                                        360 *(58 + (200 * _signUpMoveAnimation.value)),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(
-                        8 + 32 * (1 - _signUpMoveAnimation.value)),
+                       MediaQuery.of(context).size.width /
+                                        360 * (8 + 32 * (1 - _signUpMoveAnimation.value))),
                     color: Color(0xff132137),
                   ),
                   child: PageTransitionSwitcher(
@@ -97,7 +101,9 @@ class CenterNextButton2 extends StatelessWidget {
                             key: ValueKey('Sign Up button'),
                             onTap: onNextClick,
                             child: Padding(
-                              padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                              padding: EdgeInsets.only(left: MediaQuery.of(context).size.width /
+                                        360 *16.0, right: MediaQuery.of(context).size.width /
+                                        360 *16.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -106,7 +112,8 @@ class CenterNextButton2 extends StatelessWidget {
                                     '돌아가기',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: MediaQuery.of(context).size.width /
+                                        360 *18,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -120,7 +127,8 @@ class CenterNextButton2 extends StatelessWidget {
                             key: ValueKey('next button'),
                             onTap: onNextClick,
                             child: Padding(
-                              padding: EdgeInsets.all(16.0),
+                              padding: EdgeInsets.all(MediaQuery.of(context).size.width /
+                                        360 *16.0),
                               child: Icon(Icons.arrow_forward_ios_rounded,
                                   color: Colors.white),
                             ),
@@ -131,14 +139,13 @@ class CenterNextButton2 extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: EdgeInsets.only(top:MediaQuery.of(context).size.width /
+                                        360 * 8),
             child: SlideTransition(
               position: _loginTextMoveAnimation,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                
-                ],
+                children: [],
               ),
             ),
           ),

@@ -6,8 +6,10 @@ class ErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: Text('이 폴더은 삭제되었습니다.'),
+        body: SafeArea(
+      child: Center(
+        child: Text('이 폴더은 삭제되었습니다.'),
+      ),
     ));
   }
 }

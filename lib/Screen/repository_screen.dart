@@ -7,7 +7,7 @@ import 'package:habbit/Screen/story_detail_screen.dart';
 
 import 'package:habbit/colors.dart';
 import 'package:habbit/design_course/course_info_screen.dart';
-import 'package:habbit/fitness_app/fitness_app_theme.dart';
+
 import 'package:habbit/models/folder.dart';
 import 'package:habbit/models/story.dart';
 import 'package:habbit/providers/fame_repository_manage.dart';
@@ -414,7 +414,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
     }
 
     return Container(
-      color: FitnessAppTheme.background,
+      color:Color(0xFFF2F3F8),
       child: FutureBuilder(
         //  FutureBuilder는 서버에서 데이터를 모두 받아오기전 화면을 그려줄수 있게 되는 장점을 가진다.
         future: first(),
@@ -426,7 +426,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
               color: mainColor, //색변경
             ),
             title: Text(
-              'repository',
+              '습관 기록',
               style: TextStyle(
                   fontSize: MediaQuery.of(context).size.width / 360 * 25,
                   color: mainColor,
@@ -582,12 +582,14 @@ class ThankPage extends StatelessWidget {
             color: mainColor, //색변경
           ),
         ),
-        body: Center(
-          child: Text(
-            "첼린지 폴더로 업그레이드 완료🍭",
-            style: TextStyle(
-              color: mainColor,
-              fontWeight: FontWeight.bold,
+        body: SafeArea(
+          child: Center(
+            child: Text(
+              "첼린지 폴더로 업그레이드 완료🍭",
+              style: TextStyle(
+                color: mainColor,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ));

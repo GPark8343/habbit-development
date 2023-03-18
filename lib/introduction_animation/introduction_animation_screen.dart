@@ -139,34 +139,36 @@ class _IntroductionAnimationScreenState
         builder: (context, futureSnapshot) {
           return Scaffold(
             backgroundColor: Color(0xffF7EBE1),
-            body: ClipRect(
-              child: Stack(
-                children: [
-                  SplashView(
-                    animationController: _animationController!,
-                  ),
-                  RelaxView(
-                    animationController: _animationController!,
-                  ),
-                  CareView(
-                    animationController: _animationController!,
-                  ),
-                  MoodDiaryVew(
-                    animationController: _animationController!,
-                  ),
-                  WelcomeView(
-                    animationController: _animationController!,
-                  ),
-                  TopBackSkipView(
-                    onBackClick: _onBackClick,
-                    onSkipClick: _onSkipClick,
-                    animationController: _animationController!,
-                  ),
-                  CenterNextButton(
-                    animationController: _animationController!,
-                    onNextClick: _onNextClick,
-                  ),
-                ],
+            body: SafeArea(
+              child: ClipRect(
+                child: Stack(
+                  children: [
+                    SplashView(
+                      animationController: _animationController!,
+                    ),
+                    RelaxView(
+                      animationController: _animationController!,
+                    ),
+                    CareView(
+                      animationController: _animationController!,
+                    ),
+                    MoodDiaryVew(
+                      animationController: _animationController!,
+                    ),
+                    WelcomeView(
+                      animationController: _animationController!,
+                    ),
+                    TopBackSkipView(
+                      onBackClick: _onBackClick,
+                      onSkipClick: _onSkipClick,
+                      animationController: _animationController!,
+                    ),
+                    CenterNextButton(
+                      animationController: _animationController!,
+                      onNextClick: _onNextClick,
+                    ),
+                  ],
+                ),
               ),
             ),
           );

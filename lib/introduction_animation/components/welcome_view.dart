@@ -56,14 +56,17 @@ class WelcomeView extends StatelessWidget {
       child: SlideTransition(
         position: _secondHalfAnimation,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 100),
+          padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.width / 360 * 100),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SlideTransition(
                 position: _welcomeImageAnimation,
                 child: Container(
-                  constraints: BoxConstraints(maxWidth: 350, maxHeight: 350),
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width / 360 * 350,
+                      maxHeight: MediaQuery.of(context).size.width / 360 * 350),
                   child: Image.asset(
                     'assets/introduction_animation/welcome.png',
                     fit: BoxFit.contain,
@@ -74,12 +77,17 @@ class WelcomeView extends StatelessWidget {
                 position: _welcomeFirstHalfAnimation,
                 child: Text(
                   "Welcome",
-                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width / 360 * 25.0,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
-                padding:
-                    EdgeInsets.only(left: 64, right: 64, top: 16, bottom: 16),
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width / 360 * 64,
+                    right: MediaQuery.of(context).size.width / 360 * 64,
+                    top: MediaQuery.of(context).size.width / 360 * 16,
+                    bottom: MediaQuery.of(context).size.width / 360 * 16),
                 child: Text(
                   "60일 동안 첼린지를 성공하여 자신의 습관 형성 스토리를 뽐내보세요.",
                   textAlign: TextAlign.center,

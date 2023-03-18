@@ -50,7 +50,6 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
                 .howManyDaysPassed(folder));
       });
     });
-
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
     return true;
   }
@@ -66,49 +65,48 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
           if (!snapshot.hasData) {
             return const SizedBox();
           } else {
-            return GridView(
+            return GridView.builder(
+              shrinkWrap: true,
               padding:
                   EdgeInsets.all(MediaQuery.of(context).size.width / 360 * 8),
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
-              children: List<Widget>.generate(
-                Provider.of<FolderManage>(context, listen: false)
-                    .folders
-                    .length,
-                (int index) {
-                  List<Story> storiesOfFoler =
-                      Provider.of<StoryManage>(context, listen: false)
-                          .items
-                          .where((element) =>
-                              element.folderId ==
-                              Provider.of<FolderManage>(context, listen: false)
-                                  .folders[index]
-                                  .id)
-                          .toList();
-                  var numberOfstoriesOfFoler = storiesOfFoler.length;
-                  final int count =
-                      Provider.of<FolderManage>(context, listen: false)
-                          .folders
-                          .length;
-                  final Animation<double> animation =
-                      Tween<double>(begin: 0.0, end: 1.0).animate(
-                    CurvedAnimation(
-                      parent: animationController!,
-                      curve: Interval((1 / count) * index, 1.0,
-                          curve: Curves.fastOutSlowIn),
-                    ),
-                  );
-                  animationController?.forward();
-                  return CategoryView(
-                    folder: Provider.of<FolderManage>(context, listen: false)
-                        .folders[index],
-                    numberOfStories: numberOfstoriesOfFoler,
-                    index: index,
-                    animation: animation,
-                    animationController: animationController,
-                  );
-                },
-              ),
+              itemCount: Provider.of<FolderManage>(context, listen: false)
+                  .folders
+                  .length,
+              itemBuilder: (BuildContext context, int index) {
+                List<Story> storiesOfFoler =
+                    Provider.of<StoryManage>(context, listen: false)
+                        .items
+                        .where((element) =>
+                            element.folderId ==
+                            Provider.of<FolderManage>(context, listen: false)
+                                .folders[index]
+                                .id)
+                        .toList();
+                var numberOfstoriesOfFoler = storiesOfFoler.length;
+                final int count =
+                    Provider.of<FolderManage>(context, listen: false)
+                        .folders
+                        .length;
+                final Animation<double> animation =
+                    Tween<double>(begin: 0.0, end: 1.0).animate(
+                  CurvedAnimation(
+                    parent: animationController!,
+                    curve: Interval((1 / count) * index, 1.0,
+                        curve: Curves.fastOutSlowIn),
+                  ),
+                );
+                animationController?.forward();
+                return CategoryView(
+                  folder: Provider.of<FolderManage>(context, listen: false)
+                      .folders[index],
+                  numberOfStories: numberOfstoriesOfFoler,
+                  index: index,
+                  animation: animation,
+                  animationController: animationController,
+                );
+              },
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 mainAxisSpacing: MediaQuery.of(context).size.width / 360 * 32.0,
@@ -209,8 +207,18 @@ class CategoryView extends StatelessWidget {
                                       .folders[index!]
                                       .id);
 
-                              animationController!.forward();
+                              animationController!.reset();
                               Navigator.of(context).pop();
+                              showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return AlertDialog(
+                                      content: SingleChildScrollView(
+                                        child:
+                                            Text('삭제가 완료되었습니다.\n다시 화면을 로딩해주세요'),
+                                      ),
+                                    );
+                                  });
                             },
                             child: const Text('삭제하기'),
                           ),
@@ -439,7 +447,8 @@ class CategoryView extends StatelessWidget {
                                 aspectRatio: 1.28,
                                 child: Image.asset(
                                     CategoryPicture(folder!.category),
-                                    fit: BoxFit.cover)),
+                                    fit: BoxFit.cover)
+                                    ),
                           ),
                         ),
                       ),

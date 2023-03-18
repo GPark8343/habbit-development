@@ -188,8 +188,11 @@ where orderby 같이 쓰면 안 됨
 storydetail screen에서 isuploaded2로 다시 짜기
 
 
-popular course list view 사진 구해오기 + 자꾸 0일이라 표시되네
+popular course list view 사진 구해오기 + 자꾸 0일이라 표시되네 -> 완료
 
 folder 삭제 버튼 만들기-> 완료
 
+튜토리얼 사진 바꾸기-> 완료
+
 명예의 전당 올릴 때 60일 전부다 업로드 해야 올릴 수 있다는 거 표시 좀
+

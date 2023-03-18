@@ -32,41 +32,43 @@ class _PostChatScreenState extends State<PostChatScreen> {
                 color: mainColor,
                 fontWeight: FontWeight.bold),
           )),
-      body: Column(
-        children: [
-          StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection('messages')
-                  .doc(postId)
-                  .collection(postId)
-                  .orderBy('created_at', descending: true)
-                  .snapshots(),
-              builder: (ctx, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                }
-                var docs = snapshot.data!.docs;
-                return Expanded(
-                  child: ListView.builder(
-                      reverse: true,
-                      shrinkWrap: true,
-                      itemCount: docs.length,
-                      itemBuilder: (context, index) {
-                        // if (docs == null) return const Text('Loading...');
-                        return docs.length == 0
-                            ? Container()
-                            : ChatBox(
-                                docs[index]['text'],
-                                docs[index]['userId'],
-                                (docs[index]['created_at'] as Timestamp)
-                                    .toDate(),
-                                postId,
-                                docs[index]['uid']);
-                      }),
-                );
-              }),
-          NewMessage(postId)
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('messages')
+                    .doc(postId)
+                    .collection(postId)
+                    .orderBy('created_at', descending: true)
+                    .snapshots(),
+                builder: (ctx, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  }
+                  var docs = snapshot.data!.docs;
+                  return Expanded(
+                    child: ListView.builder(
+                        reverse: true,
+                        shrinkWrap: true,
+                        itemCount: docs.length,
+                        itemBuilder: (context, index) {
+                          // if (docs == null) return const Text('Loading...');
+                          return docs.length == 0
+                              ? Container()
+                              : ChatBox(
+                                  docs[index]['text'],
+                                  docs[index]['userId'],
+                                  (docs[index]['created_at'] as Timestamp)
+                                      .toDate(),
+                                  postId,
+                                  docs[index]['uid']);
+                        }),
+                  );
+                }),
+            NewMessage(postId)
+          ],
+        ),
       ),
     );
 

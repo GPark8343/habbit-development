@@ -84,9 +84,13 @@ class RelaxView extends StatelessWidget {
                 position: _textAnimation,
                 child: Padding(
                   padding:
-                      EdgeInsets.only(left: 64, right: 64, top: 16, bottom: 16),
+                      EdgeInsets.only(left: MediaQuery.of(context).size.width /
+                                        360 *64, right: MediaQuery.of(context).size.width /
+                                        360 *64, top: MediaQuery.of(context).size.width /
+                                        360 *16, bottom:MediaQuery.of(context).size.width /
+                                        360 * 16),
                   child: Text(
-                    "앞으로 습관을 형성할 저장공간입니다.\n이 공간에 앞으로 형성할 습관의 카테고리와 설명을 기록할 수 있습니다.\n폴더를 지우려면 폴더를 왼쪽이나 오른쪽으로 밀면 삭제할 수 있습니다.\n하지만 그 폴더 안의 스토리는 영구적으로 삭제됩니다.",
+                    "앞으로 습관을 형성할 저장공간입니다.\n이 공간에 앞으로 형성할 습관의 카테고리와 설명을 기록할 수 있습니다.\n폴더를 지우려면 꾹 누른 뒤 삭제 버튼을 누르면 됩니다.\n하지만 그 폴더 안의 스토리는 영구적으로 삭제됩니다.",
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -94,9 +98,11 @@ class RelaxView extends StatelessWidget {
               SlideTransition(
                 position: _imageAnimation,
                 child: Container(
-                  constraints: BoxConstraints(maxWidth: 350, maxHeight: 250),
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width,
+                      maxHeight: MediaQuery.of(context).size.width / 360 * 250),
                   child: Image.asset(
-                    'assets/introduction_animation/relax_image.png',
+                    'assets/icons/photo_frame_folder.jpg',
                     fit: BoxFit.contain,
                   ),
                 ),

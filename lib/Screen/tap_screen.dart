@@ -12,15 +12,14 @@ import 'package:habbit/Screen/insta_screen.dart';
 import 'package:habbit/Screen/fame_screen.dart';
 import 'package:habbit/design_course/course_info_screen.dart';
 import 'package:habbit/design_course/home_design_course.dart';
-import 'package:habbit/test/test_screen.dart';
+
 import 'package:habbit/Screen/tutorial_screen.dart';
 import 'package:habbit/Screen/repository_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/profile_screen.dart';
 import 'package:habbit/colors.dart';
-import 'package:habbit/fitness_app/fitness_app_theme.dart';
-import 'package:habbit/fitness_app/models/tabIcon_data.dart';
-import 'package:habbit/fitness_app/my_diary/my_diary_screen.dart';
+
+
 import 'package:habbit/introduction_animation/tutorial_screen.dart';
 import 'package:habbit/providers/category_manage.dart';
 import 'package:habbit/widgets/buttons/add_folder_button.dart';
@@ -40,11 +39,11 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
   AnimationController? animationController;
 
   Widget tabBody = Container(
-    color: FitnessAppTheme.background,
+    color: Color(0xFFF2F3F8),
   );
 
   late List<Map<String, Object>> _pages; //
-  int _selectedPageIndex = 0;
+  int _selectedPageIndex = 1;
 
   late String admobBannerId;
   BannerAd? banner;
@@ -64,8 +63,8 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
       request: AdRequest(),
     )..load();
     _pages = [
+        {'page': InstaScreen(), 'title': 'upload'},
       {'page': DesignCourseHomeScreen(), 'title': 'test'},
-      {'page': InstaScreen(), 'title': 'upload'},
       {'page': ChallengeScreen(), 'title': 'challenge'},
     ];
 
@@ -100,9 +99,9 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
     // }
 
     List actionWidget(int chosenPageIndex) {
-      if (chosenPageIndex == 0) {
+      if (chosenPageIndex == 1) {
         return [];
-      } else if (chosenPageIndex == 1) {
+      } else if (chosenPageIndex == 0) {
         return [
           PopupMenuButton(
             itemBuilder: (_) => [
@@ -195,8 +194,8 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
     }
 
     return Scaffold(
-      drawerScrimColor: FitnessAppTheme.background,
-      appBar: _selectedPageIndex == 0
+      drawerScrimColor: Color(0xFFF2F3F8),
+      appBar: _selectedPageIndex == 1
           ? null
           : AppBar(
               // actions: [SignOutButton()],
@@ -223,25 +222,26 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
         // AdWidget(ad: banner!)
       ),
       bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: mainColor,
+          selectedItemColor: Color(0xFF00B6F0),
           onTap: _selectPage,
-          backgroundColor: FitnessAppTheme.background,
+          backgroundColor: Color(0xFFF2F3F8),
           unselectedItemColor: blackColor,
           currentIndex: _selectedPageIndex,
           type: BottomNavigationBarType.fixed,
           items: [
-            BottomNavigationBarItem(
-                backgroundColor: Theme.of(context).primaryColor,
-                icon: Icon(Icons.ten_mp_sharp),
-                label: 'test'),
+           
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.upload_file),
-                label: 'upload'),
+                label: '게시판'),
+                 BottomNavigationBarItem(
+                backgroundColor: Theme.of(context).primaryColor,
+                icon: Icon(Icons.home_outlined),
+                label: '홈'),
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.calendar_today),
-                label: 'challenge'),
+                label: '진행 현황'),
           ]),
     );
   }

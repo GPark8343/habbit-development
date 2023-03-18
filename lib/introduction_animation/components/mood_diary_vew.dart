@@ -75,13 +75,15 @@ class MoodDiaryVew extends StatelessWidget {
       child: SlideTransition(
         position: _secondHalfAnimation,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 100),
+          padding:  EdgeInsets.only(bottom: MediaQuery.of(context).size.width /
+                                        360 *100),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "명예의 전당",
-                style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: MediaQuery.of(context).size.width /
+                                        360 *26.0, fontWeight: FontWeight.bold),
               ),
               SlideTransition(
                 position: _moodFirstHalfAnimation,
@@ -89,7 +91,11 @@ class MoodDiaryVew extends StatelessWidget {
                   position: _moodSecondHalfAnimation,
                   child: Padding(
                     padding: EdgeInsets.only(
-                        left: 64, right: 64, top: 16, bottom: 16),
+                        left: MediaQuery.of(context).size.width /
+                                        360 *64, right:MediaQuery.of(context).size.width /
+                                        360 * 64, top: MediaQuery.of(context).size.width /
+                                        360 *16, bottom:MediaQuery.of(context).size.width /
+                                        360 * 16),
                     child: Text(
                       "폴더에 60개 이상의 스토리를 올려야 등록이 가능합니다.명예의 전당에 등록하면 누구나 해당 스토리를 볼 수 있습니다.앱을 삭제할 시 모든 폴더와 스토리가 동시에 삭제됩니다.하지만 명예의 전당에 등록한 경우 앱 삭제 여부와 상관없이 명예의 전당 스크린에서 데이터가 영구 보존됩니다.",
                       textAlign: TextAlign.center,
@@ -102,9 +108,13 @@ class MoodDiaryVew extends StatelessWidget {
                 child: SlideTransition(
                   position: _imageSecondHalfAnimation,
                   child: Container(
-                    constraints: BoxConstraints(maxWidth: 350, maxHeight: 250),
+                    constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width,
+                        maxHeight:
+                            MediaQuery.of(context).size.width / 360 * 250),
                     child: Image.asset(
-                      'assets/introduction_animation/mood_dairy_image.png',
+                      width: MediaQuery.of(context).size.width,
+                      'assets/icons/photo_frame_fame.jpg',
                       fit: BoxFit.contain,
                     ),
                   ),

@@ -50,9 +50,12 @@ class TopBackSkipView extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         child: Container(
-          height: 58,
+          height: MediaQuery.of(context).size.width /
+                                        360 *58,
           child: Padding(
-            padding: const EdgeInsets.only(left: 8, right: 16),
+            padding:  EdgeInsets.only(left:MediaQuery.of(context).size.width /
+                                        360 * 8, right: MediaQuery.of(context).size.width /
+                                        360 *16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

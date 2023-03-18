@@ -43,11 +43,11 @@ class _CategoryListState extends State<CategoryList> {
       if (_titleController.text.isEmpty ||
           _descriptionController.text.isEmpty ||
           _pickedCategory == null) {
-        Navigator.of(context).pop(); // 빈 스토리는 작성 못하게 해야 함
+ // 빈 스토리는 작성 못하게 해야 함
         return;
       }
       Navigator.of(context).pop();
-      Navigator.of(context).pop();
+  
       Provider.of<FolderManage>(context, listen: false).addFolders(
           _titleController.text, _descriptionController.text, _pickedCategory!);
       Provider.of<FolderManage>(context, listen: false).fetchAndSetFolders();
@@ -218,12 +218,6 @@ class _CategoryListState extends State<CategoryList> {
                                           FocusScope.of(context)
                                               .requestFocus(_priceFocusNode);
                                         },
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Please provide a value.';
-                                          }
-                                          return null;
-                                        },
                                       ),
                                       SizedBox(
                                         height:
@@ -238,15 +232,6 @@ class _CategoryListState extends State<CategoryList> {
                                         maxLines: 3,
                                         keyboardType: TextInputType.multiline,
                                         focusNode: _descriptionFocusNode,
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Please enter a description.';
-                                          }
-                                          if (value.length < 10) {
-                                            return 'Should be  at least 10 characters long.';
-                                          }
-                                          return null;
-                                        },
                                       ),
                                     ],
                                   ),
@@ -264,7 +249,26 @@ class _CategoryListState extends State<CategoryList> {
                                   backgroundColor: mainColor),
                               onPressed: () {
                                 _saveFolder();
-                                // Navigator.of(context).pop();
+                                (_titleController.text.isEmpty ||
+                                        _descriptionController.text.isEmpty)
+                                    ? null
+                                    : Navigator.of(context).pop();
+                                showDialog(
+                                    context: context,
+                                    builder: (_) {
+                                      return AlertDialog(
+                                        content: SingleChildScrollView(
+                                          child: Column(children: [
+                                            _titleController.text.isEmpty
+                                                ? Text('폴더 제목을 입력해주세요.')
+                                                : (_descriptionController
+                                                        .text.isEmpty
+                                                    ? Text('폴더에 대한 설명을 적어주세요.')
+                                                    : Text('폴더 생성이 완료되었습니다.'))
+                                          ]),
+                                        ),
+                                      );
+                                    });
                               },
                               icon: Icon(Icons.add),
                               label: Text('폴더 추가하기'),

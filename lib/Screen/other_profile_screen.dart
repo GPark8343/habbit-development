@@ -412,39 +412,41 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
             color: mainColor, //색변경
           ),
           title: _title()),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.width / 360 * 10),
-            _information(),
-            SizedBox(height: MediaQuery.of(context).size.width / 360 * 20),
-            Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.width / 360 * 2),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                    MediaQuery.of(context).size.width / 360 * 3),
-                border: Border.all(
-                  color: const Color(0xffdedede),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.width / 360 * 10),
+              _information(),
+              SizedBox(height: MediaQuery.of(context).size.width / 360 * 20),
+              Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.width / 360 * 2),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                      MediaQuery.of(context).size.width / 360 * 3),
+                  border: Border.all(
+                    color: const Color(0xffdedede),
+                  ),
+                ),
+                child: Text(
+                  '포스트',
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: MediaQuery.of(context).size.width / 360 * 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
-              child: Text(
-                '포스트',
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: MediaQuery.of(context).size.width / 360 * 14,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
-            Divider(
-                color: Colors.white,
-                thickness: MediaQuery.of(context).size.width / 360 * 2.0),
-            SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
-            _tabView(),
-          ],
+              SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
+              Divider(
+                  color: Colors.white,
+                  thickness: MediaQuery.of(context).size.width / 360 * 2.0),
+              SizedBox(height: MediaQuery.of(context).size.width / 360 * 5),
+              _tabView(),
+            ],
+          ),
         ),
       ),
     );

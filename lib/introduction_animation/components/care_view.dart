@@ -75,7 +75,8 @@ class CareView extends StatelessWidget {
       child: SlideTransition(
         position: _secondHalfAnimation,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 100),
+          padding:  EdgeInsets.only(bottom: MediaQuery.of(context).size.width /
+                                        360 *100),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -84,9 +85,13 @@ class CareView extends StatelessWidget {
                 child: SlideTransition(
                   position: _imageSecondHalfAnimation,
                   child: Container(
-                    constraints: BoxConstraints(maxWidth: 350, maxHeight: 250),
+                    constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width,
+                        maxHeight:
+                            MediaQuery.of(context).size.width / 360 * 250),
                     child: Image.asset(
-                      'assets/introduction_animation/care_image.png',
+                      'assets/icons/photo_frame_story.jpg',
+                      width: MediaQuery.of(context).size.width,
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -99,15 +104,20 @@ class CareView extends StatelessWidget {
                   child: Text(
                     "스토리",
                     style:
-                        TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
+                        TextStyle(fontSize: MediaQuery.of(context).size.width /
+                                        360 *26.0, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
               Padding(
                 padding:
-                    EdgeInsets.only(left: 64, right: 64, bottom: 16, top: 16),
+                    EdgeInsets.only(left: MediaQuery.of(context).size.width /
+                                        360 *64, right:MediaQuery.of(context).size.width /
+                                        360 * 64, bottom: MediaQuery.of(context).size.width /
+                                        360 *16, top: MediaQuery.of(context).size.width /
+                                        360 *16),
                 child: Text(
-                  "폴더 안에 습관 형성의 기록을 남길 수 있는 파일입니다.\n하루에 1개의 스토리만 올릴 수 있으며 당일 올린 스토리만 삭제 가능합니다.\n자신의 스토리를 게시판에 올릴 수 있습니다.\n그 게시물의 단위를 포스트라 합니다.\n포스트를 올리려면 스토리 저장소 화면의 각 스토리를 터치하면 업로드 버튼이 나옵니다.",
+                  "폴더 안에 습관 형성의 기록을 남길 수 있는 파일입니다.\n하루에 1개의 스토리만 올릴 수 있으며 당일 올린 스토리만 삭제 가능합니다.\n자신의 스토리를 게시판에 올릴 수 있습니다.\n그 게시물의 단위를 포스트라 합니다.\n포스트를 올리려면 각 스토리 상세 화면의 업로드 버튼을 누르면 됩니다.",
                   textAlign: TextAlign.center,
                 ),
               ),
