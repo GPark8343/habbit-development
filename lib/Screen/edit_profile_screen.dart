@@ -29,9 +29,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     if (imageFile == null) {
       return;
     }
-    setState(() {
-      _storedImage = File(imageFile.path as String);
-    });
+    if (mounted) {
+      setState(() {
+        _storedImage = File(imageFile.path as String);
+      });
+    }
     final appDir = await syspaths.getApplicationDocumentsDirectory();
     final fileName = path.basename(imageFile.path as String);
     final savedImage = await _storedImage?.copy('${appDir.path}/$fileName');
@@ -103,7 +105,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     Center(
                       child: Container(
                         width: double.infinity,
-                        child: Card(color: Colors.white,
+                        child: Card(
+                          color: Colors.white,
                           child: Padding(
                             padding: EdgeInsets.all(
                                 MediaQuery.of(context).size.width / 360 * 15),

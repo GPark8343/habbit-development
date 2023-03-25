@@ -14,7 +14,8 @@ import 'package:habbit/providers/upload.dart';
 import 'package:provider/provider.dart';
 
 class PopularCourseListView extends StatefulWidget {
-  const PopularCourseListView({Key? key}) : super(key: key);
+  final Function? selectPage;
+  PopularCourseListView({this.selectPage});
 
   @override
   _PopularCourseListViewState createState() => _PopularCourseListViewState();
@@ -38,18 +39,21 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
 
   Future<bool> getData() async {
     await Provider.of<StoryManage>(context, listen: false).fetchAndSetStories();
-    await Provider.of<FolderManage>(context, listen: false)
-        .fetchAndSetFolders()
-        .then((value) {
-      List<Folder> foldersList =
-          Provider.of<FolderManage>(context, listen: false).folders;
-      foldersList.forEach((folder) {
-        Provider.of<FolderManage>(context, listen: false).controlDay(
-            folder,
-            Provider.of<TimeManage>(context, listen: false)
-                .howManyDaysPassed(folder));
+    if (mounted) {
+      await Provider.of<FolderManage>(context, listen: false)
+          .fetchAndSetFolders()
+          .then((value) {
+        List<Folder> foldersList =
+            Provider.of<FolderManage>(context, listen: false).folders;
+        foldersList.forEach((folder) {
+          Provider.of<FolderManage>(context, listen: false).controlDay(
+              folder,
+              Provider.of<TimeManage>(context, listen: false)
+                  .howManyDaysPassed(folder));
+        });
       });
-    });
+    }
+
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));
     return true;
   }
@@ -99,6 +103,7 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
                 );
                 animationController?.forward();
                 return CategoryView(
+                  selectPage: widget.selectPage,
                   folder: Provider.of<FolderManage>(context, listen: false)
                       .folders[index],
                   numberOfStories: numberOfstoriesOfFoler,
@@ -123,15 +128,16 @@ class _PopularCourseListViewState extends State<PopularCourseListView>
 }
 
 class CategoryView extends StatelessWidget {
-  const CategoryView({
-    Key? key,
-    this.folder,
-    this.numberOfStories,
-    this.index,
-    this.animationController,
-    this.animation,
-  }) : super(key: key);
-
+  const CategoryView(
+      {Key? key,
+      this.folder,
+      this.numberOfStories,
+      this.index,
+      this.animationController,
+      this.animation,
+      this.selectPage})
+      : super(key: key);
+  final Function? selectPage;
   final Folder? folder;
   final int? numberOfStories;
   final int? index;
@@ -227,12 +233,33 @@ class CategoryView extends StatelessWidget {
                     });
               },
               onTap: () {
-                Navigator.of(context)
-                    .pushNamed(RepositoryScreen.routeName, arguments: {
-                  'folder_title': folder!.title,
-                  'folder_id': folder!.id,
-                  'category': folder!.category
-                });
+                Route _createRoute() {
+                  return PageRouteBuilder(
+                    settings: RouteSettings(arguments: {
+                      'folder_title': folder!.title,
+                      'folder_id': folder!.id,
+                      'category': folder!.category
+                    }),
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        RepositoryScreen(selectPage: selectPage!),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(0.0, 1.0);
+                      const end = Offset.zero;
+                      const curve = Curves.ease;
+
+                      var tween = Tween(begin: begin, end: end)
+                          .chain(CurveTween(curve: curve));
+
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: child,
+                      );
+                    },
+                  );
+                }
+
+                Navigator.of(context).push(_createRoute());
               },
               child: SizedBox(
                 height: MediaQuery.of(context).size.width / 360 * 280,
@@ -447,8 +474,7 @@ class CategoryView extends StatelessWidget {
                                 aspectRatio: 1.28,
                                 child: Image.asset(
                                     CategoryPicture(folder!.category),
-                                    fit: BoxFit.cover)
-                                    ),
+                                    fit: BoxFit.cover)),
                           ),
                         ),
                       ),

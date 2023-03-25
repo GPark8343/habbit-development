@@ -11,6 +11,9 @@ import 'package:habbit/widgets/buttons/add_folder_button.dart';
 import 'design_course_app_theme.dart';
 
 class DesignCourseHomeScreen extends StatefulWidget {
+  final Function? selectPage;
+  DesignCourseHomeScreen({this.selectPage});
+
   @override
   _DesignCourseHomeScreenState createState() => _DesignCourseHomeScreenState();
 }
@@ -139,21 +142,21 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
             ],
           ),
           Flexible(
-            child: PopularCourseListView(),
+            child: PopularCourseListView(selectPage: widget.selectPage),
           )
         ],
       ),
     );
   }
 
-  void moveTo() {
-    Navigator.push<dynamic>(
-      context,
-      MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => CourseInfoScreen(),
-      ),
-    );
-  }
+  // void moveTo() {
+  //   Navigator.push<dynamic>(
+  //     context,
+  //     MaterialPageRoute<dynamic>(
+  //       builder: (BuildContext context) => CourseInfoScreen(widget.selectPage!),
+  //     ),
+  //   );
+  // }
 
   Widget getButtonUI(CategoryType categoryTypeData, bool isSelected) {
     String txt = '';
@@ -184,9 +187,11 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
             borderRadius: BorderRadius.all(Radius.circular(
                 MediaQuery.of(context).size.width / 360 * 24.0)),
             onTap: () {
-              setState(() {
-                categoryType = categoryTypeData;
-              });
+              if (mounted) {
+                setState(() {
+                  categoryType = categoryTypeData;
+                });
+              }
             },
             child: Padding(
               padding: EdgeInsets.only(

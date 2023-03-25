@@ -120,16 +120,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen>
                       ),
                       SizedBox(
                           width: MediaQuery.of(context).size.width / 360 * 10),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(child: _statisticsOne('Level', 1)),
-                            Expanded(child: _statisticsOne('Followers', 0)),
-                            Expanded(child: _statisticsOne('Following', 0)),
-                          ],
-                        ),
-                      )
+                     
                     ],
                   ),
                   SizedBox(

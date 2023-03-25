@@ -43,11 +43,11 @@ class _CategoryListState extends State<CategoryList> {
       if (_titleController.text.isEmpty ||
           _descriptionController.text.isEmpty ||
           _pickedCategory == null) {
- // 빈 스토리는 작성 못하게 해야 함
+        // 빈 스토리는 작성 못하게 해야 함
         return;
       }
       Navigator.of(context).pop();
-  
+
       Provider.of<FolderManage>(context, listen: false).addFolders(
           _titleController.text, _descriptionController.text, _pickedCategory!);
       Provider.of<FolderManage>(context, listen: false).fetchAndSetFolders();
@@ -78,9 +78,11 @@ class _CategoryListState extends State<CategoryList> {
                   value: Kind.Reading,
                   groupValue: _kind,
                   onChanged: (Kind? value) {
-                    setState(() {
-                      _kind = value;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        _kind = value;
+                      });
+                    }
                   },
                 ),
                 RadioListTile(
@@ -94,9 +96,11 @@ class _CategoryListState extends State<CategoryList> {
                   value: Kind.Exercise,
                   groupValue: _kind,
                   onChanged: (Kind? value) {
-                    setState(() {
-                      _kind = value;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        _kind = value;
+                      });
+                    }
                   },
                 ),
                 RadioListTile(
@@ -110,9 +114,11 @@ class _CategoryListState extends State<CategoryList> {
                   value: Kind.Language,
                   groupValue: _kind,
                   onChanged: (Kind? value) {
-                    setState(() {
-                      _kind = value;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        _kind = value;
+                      });
+                    }
                   },
                 ),
                 RadioListTile(
@@ -126,9 +132,11 @@ class _CategoryListState extends State<CategoryList> {
                   value: Kind.Study,
                   groupValue: _kind,
                   onChanged: (Kind? value) {
-                    setState(() {
-                      _kind = value;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        _kind = value;
+                      });
+                    }
                   },
                 ),
                 RadioListTile(
@@ -142,9 +150,11 @@ class _CategoryListState extends State<CategoryList> {
                   value: Kind.Etc,
                   groupValue: _kind,
                   onChanged: (Kind? value) {
-                    setState(() {
-                      _kind = value;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        _kind = value;
+                      });
+                    }
                   },
                 ),
               ],
@@ -209,10 +219,19 @@ class _CategoryListState extends State<CategoryList> {
                                     children: [
                                       Text('폴더 만들기(2단계)'),
                                       Text('폴더 정보를 입력하세요'),
+                                        SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.width /
+                                                360 *
+                                                10,
+                                      ),
+                                      Divider(height: MediaQuery.of(context).size.width /
+                                                360 * 8,),
+                                      Text('폴더 제목'),
                                       TextFormField(
                                         controller: _titleController,
                                         decoration:
-                                            InputDecoration(labelText: '폴더 제목'),
+                                            InputDecoration(hintText: '철학책 읽기'),
                                         textInputAction: TextInputAction.next,
                                         onFieldSubmitted: (_) {
                                           FocusScope.of(context)
@@ -225,10 +244,11 @@ class _CategoryListState extends State<CategoryList> {
                                                 360 *
                                                 10,
                                       ),
+                                      Text('폴더에 대한 간략한 설명'),
                                       TextFormField(
                                         controller: _descriptionController,
                                         decoration: InputDecoration(
-                                            labelText: '폴더에 대한 간략한 설명'),
+                                            hintText: '아침마다 하루에 책 30분씩 읽기'),
                                         maxLines: 3,
                                         keyboardType: TextInputType.multiline,
                                         focusNode: _descriptionFocusNode,

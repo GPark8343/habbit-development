@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/other_profile_screen.dart';
+import 'package:habbit/Screen/profile_screen.dart';
 import 'package:habbit/colors.dart';
 
 enum AvatarType { TYPE1, TYPE2, TYPE3, TYPE4 }
@@ -55,7 +56,7 @@ class AvatarWidget extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [Color.fromRGBO(255,254,255,1),Colors.white],
+            colors: [Color.fromRGBO(255, 254, 255, 1), Colors.white],
           ),
           shape: BoxShape.circle,
         ),
@@ -67,11 +68,14 @@ class AvatarWidget extends StatelessWidget {
       return Row(
         children: [
           type1Widget(),
-          Text(
-            overflow: TextOverflow.ellipsis,
-            nickname ?? '',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 360 * 100,
+            child: Text(
+              overflow: TextOverflow.ellipsis,
+              nickname ?? '',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -83,7 +87,9 @@ class AvatarWidget extends StatelessWidget {
       return GestureDetector(
           onTap: () {
             isMe
-                ? null
+                ? Navigator.of(context).pushNamed(
+                    ProfileScreen.routeName,
+                  )
                 : Navigator.of(context).pushNamed(OtherProfileScreen.routeName,
                     arguments: {'uid': uid});
           },

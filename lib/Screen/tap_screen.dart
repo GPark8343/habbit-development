@@ -19,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:habbit/Screen/profile_screen.dart';
 import 'package:habbit/colors.dart';
 
-
 import 'package:habbit/introduction_animation/tutorial_screen.dart';
 import 'package:habbit/providers/category_manage.dart';
 import 'package:habbit/widgets/buttons/add_folder_button.dart';
@@ -63,8 +62,17 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
       request: AdRequest(),
     )..load();
     _pages = [
-        {'page': InstaScreen(), 'title': 'upload'},
-      {'page': DesignCourseHomeScreen(), 'title': 'test'},
+      {'page': InstaScreen(), 'title': 'upload'},
+      {
+        'page': DesignCourseHomeScreen(selectPage: (int index) {
+          if (mounted) {
+            setState(() {
+              _selectedPageIndex = index;
+            });
+          }
+        }),
+        'title': 'test'
+      },
       {'page': ChallengeScreen(), 'title': 'challenge'},
     ];
 
@@ -77,10 +85,12 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void _selectPage(int index) {
-    setState(() {
-      _selectedPageIndex = index;
-    });
+  void selectPage(int index) {
+    if (mounted) {
+      setState(() {
+        _selectedPageIndex = index;
+      });
+    }
   }
 
   void _signOut() {
@@ -223,18 +233,17 @@ class _TapScreenState extends State<TapScreen> with TickerProviderStateMixin {
       ),
       bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Color(0xFF00B6F0),
-          onTap: _selectPage,
+          onTap: selectPage,
           backgroundColor: Color(0xFFF2F3F8),
           unselectedItemColor: blackColor,
           currentIndex: _selectedPageIndex,
           type: BottomNavigationBarType.fixed,
           items: [
-           
             BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.upload_file),
                 label: '게시판'),
-                 BottomNavigationBarItem(
+            BottomNavigationBarItem(
                 backgroundColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.home_outlined),
                 label: '홈'),

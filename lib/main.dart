@@ -5,6 +5,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:habbit/Screen/auth_screen.dart';
 import 'package:habbit/Screen/ban_screen.dart';
 import 'package:habbit/Screen/edit_profile_screen.dart';
+import 'package:habbit/Screen/edit_story_screen.dart';
 import 'package:habbit/Screen/error_screen.dart';
 import 'package:habbit/Screen/explain_screen.dart';
 import 'package:habbit/Screen/fame_detail_screen.dart';
@@ -20,6 +21,7 @@ import 'package:habbit/Screen/splash_screen.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
 import 'package:habbit/Screen/tap_screen.dart';
 import 'package:habbit/Screen/other_profile_screen.dart';
+import 'package:habbit/Screen/write_story_screen.dart';
 
 import 'package:habbit/colors.dart';
 import 'package:habbit/design_course/course_info_screen.dart';
@@ -101,7 +103,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'FlutterChat',
           theme: ThemeData(
-            scaffoldBackgroundColor:Color(0xFFF2F3F8),
+            scaffoldBackgroundColor: Color(0xFFF2F3F8),
             appBarTheme: const AppBarTheme(
               color: Color(0xFFF2F3F8),
             ),
@@ -142,6 +144,8 @@ class MyApp extends StatelessWidget {
             ErrorScreen.routeName: (ctx) => ErrorScreen(),
             CourseInfoScreen.routeName: (ctx) => CourseInfoScreen(),
             ProfileScreen.routeName: (ctx) => ProfileScreen(),
+            EditStoryScreen.routeName: (ctx) => EditStoryScreen(),
+            WriteStoryScreen.routeName: (ctx) => WriteStoryScreen(),
 
             // ExplainScreen.routeName: (ctx) =>  ExplainScreen(),
           },

@@ -83,10 +83,17 @@ class StoryManage extends ChangeNotifier {
     DBHelper.updateStory('i_user_stories', updatedStory);
   }
 
+  changeImage(Story findedStory, File pickedImage) {
+    Story updatedStory = findedStory.copyWith(image: pickedImage);
+    DBHelper.updateStory('i_user_stories', updatedStory);
+  }
+
+  changeDescription(Story findedStory, String pickedDescription) {
+    Story updatedStory = findedStory.copyWith(description: pickedDescription);
+    DBHelper.updateStory('i_user_stories', updatedStory);
+  }
+
   Future<void> deleteStories(String id) async {
     DBHelper.deleteStory('i_user_stories', id);
   }
-
- 
-  
 }

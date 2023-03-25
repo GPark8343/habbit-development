@@ -189,13 +189,17 @@ class _AuthScreenState extends State<AuthScreen> {
                                 onTap: _isLoading
                                     ? () => {}
                                     : () {
-                                        setState(() {
-                                          _isLoading = true;
-                                        });
+                                        if (mounted) {
+                                          setState(() {
+                                            _isLoading = true;
+                                          });
+                                        }
                                         _signInWithGoogle(context);
-                                        setState(() {
-                                          _isLoading = false;
-                                        });
+                                        if (mounted) {
+                                          setState(() {
+                                            _isLoading = false;
+                                          });
+                                        }
                                       },
                               ),
                             ],

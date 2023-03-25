@@ -32,26 +32,33 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
     int folderListLength = folderList.length;
     void moveLeftIndex() {
       if (index - 1 < 0) {
-        setState(() {
-          index = folderListLength - 1;
-        });
+        if (mounted) {
+          setState(() {
+            index = folderListLength - 1;
+          });
+        }
       } else {
-        setState(() {
-          index--;
-        });
+        if (mounted) {
+          setState(() {
+            index--;
+          });
+        }
       }
     }
 
     void moveRightIndex() {
- 
       if (index + 1 > folderListLength - 1) {
-        setState(() {
-          index = 0;
-        });
+        if (mounted) {
+          setState(() {
+            index = 0;
+          });
+        }
       } else {
-        setState(() {
-          index++;
-        });
+        if (mounted) {
+          setState(() {
+            index++;
+          });
+        }
       }
     }
 
@@ -80,15 +87,13 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
       //   }
       // }
       folderListLength = folderList.length;
-      
+
       await Provider.of<MarkerManage>(context, listen: false).addMarker();
     }
 
- 
     return FutureBuilder(
         future: first(),
         builder: (context, snapshot) {
-        
           return folderList.length == 0
               ? Center(
                   child: Column(

@@ -31,9 +31,11 @@ class _NewMessageState extends State<NewMessage> {
           enableSuggestions: true,
           decoration: InputDecoration(labelText: 'Send a message...'),
           onChanged: (value) {
-            setState(() {
-              _enteredMessage = value;
-            });
+            if (mounted) {
+              setState(() {
+                _enteredMessage = value;
+              });
+            }
           },
         )),
         IconButton(

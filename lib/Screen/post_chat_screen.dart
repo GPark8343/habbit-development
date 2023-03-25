@@ -66,6 +66,9 @@ class _PostChatScreenState extends State<PostChatScreen> {
                         }),
                   );
                 }),
+            Divider(
+              color: Colors.grey,
+            ),
             NewMessage(postId)
           ],
         ),

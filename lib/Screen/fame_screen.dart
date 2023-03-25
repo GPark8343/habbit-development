@@ -58,9 +58,11 @@ class _FameScreenState extends State<FameScreen> {
                 Switch(
                   value: _isChecked,
                   onChanged: (value) {
-                    setState(() {
-                      _isChecked = value;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        _isChecked = value;
+                      });
+                    }
                   },
                 ),
               ],
@@ -87,7 +89,6 @@ class _FameScreenState extends State<FameScreen> {
                   shrinkWrap: true,
                   itemCount: docs1?.length,
                   itemBuilder: (ctx, i) {
-               
                     return StreamBuilder(
                         stream: FirebaseFirestore.instance
                             .collection('users')

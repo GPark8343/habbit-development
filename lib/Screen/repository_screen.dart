@@ -1,9 +1,11 @@
 import 'dart:io';
 //addstorybutton 함부로 꺼내면 ㅈ됨 ancestor widget 어쩌구 에러남
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:habbit/Screen/story_detail_screen.dart';
+import 'package:habbit/Screen/write_story_screen.dart';
 
 import 'package:habbit/colors.dart';
 import 'package:habbit/design_course/course_info_screen.dart';
@@ -15,100 +17,67 @@ import 'package:habbit/providers/folder_manage.dart';
 import 'package:habbit/providers/story_manage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:habbit/widgets/image_input.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
+
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class RepositoryScreen extends StatefulWidget {
+  final Function? selectPage;
+  RepositoryScreen({this.selectPage});
   static const routeName = '/repository';
-  const RepositoryScreen({super.key});
 
   @override
   State<RepositoryScreen> createState() => _RepositoryScreenState();
 }
 
 class _RepositoryScreenState extends State<RepositoryScreen> {
-  InterstitialAd? _interstitialAd;
-  bool _isAdLoaded = false;
+  // final InAppPurchase _inAppPurchase = InAppPurchase.instance;
+  // List<ProductDetails> view = [];
+  // Future fetch() async {
+  //   final folderTitle =
+  //       (ModalRoute.of(context)?.settings.arguments as Map)['folder_title'];
+  //   final folderId =
+  //       (ModalRoute.of(context)?.settings.arguments as Map)['folder_id'];
+  //   final bool available = await _inAppPurchase.isAvailable();
+  //   if (available) {
+  //     Set<String> ids = Set<String>.from([
+  //       "60challenge_registration_service",
+  //     ]);
+  //     ProductDetailsResponse res =
+  //         await _inAppPurchase.queryProductDetails(ids);
+  //     this.view = res.productDetails;
 
-  void onAdLoaded(InterstitialAd ad) {
-    _interstitialAd = ad;
-    _isAdLoaded = true;
+  //     /// 📌 소모 및 비소모 둘 다
+  //     _inAppPurchase.purchaseStream.listen((List<PurchaseDetails> event) {
+  //       PurchaseDetails e = event[0];
 
-    _interstitialAd!.fullScreenContentCallback =
-        FullScreenContentCallback(onAdDismissedFullScreenContent: (ad) {
-      _interstitialAd?.dispose();
-    }, onAdFailedToShowFullScreenContent: (ad, error) {
-      _interstitialAd?.dispose();
-    });
-  }
+  //       /// 구매 여부 pendingCompletePurchase - 승인 true / 취소 false
+  //       if (e.pendingCompletePurchase) {
+  //         if (!mounted) return;
+  //         FirebaseFirestore.instance.collection('fame_folder').add({
+  //           'folder_title': folderTitle,
+  //           'folderId': folderId,
+  //           'consumerEmail': FirebaseAuth.instance.currentUser!.email,
+  //         });
 
-  void loadInterstitial() async {
-    InterstitialAd.load(
-      adUnitId:
-          // 'ca-app-pub-3940256099942544/1033173712',
-          'ca-app-pub-7806371932663728/1349927845',
-      request: AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: onAdLoaded,
-        onAdFailedToLoad: (LoadAdError error) {
-          // nothing to do
-        },
-      ),
-    );
-  }
+  //         Navigator.of(context)
+  //             .push(MaterialPageRoute(builder: (context) => ThankPage()));
+  //       }
+  //     });
+  //   }
+  //   if (!mounted) return;
+  //   if (mounted) {
+  //     setState(() {});
+  //   }
+  // }
 
-  void showInterstitial() {
-    if (_isAdLoaded) {
-      _interstitialAd?.show();
-    }
-  }
-
-  final InAppPurchase _inAppPurchase = InAppPurchase.instance;
-  List<ProductDetails> view = [];
-  Future fetch() async {
-    final folderTitle =
-        (ModalRoute.of(context)?.settings.arguments as Map)['folder_title'];
-    final folderId =
-        (ModalRoute.of(context)?.settings.arguments as Map)['folder_id'];
-    final bool available = await _inAppPurchase.isAvailable();
-    if (available) {
-      Set<String> ids = Set<String>.from([
-        "60challenge_registration_service",
-      ]);
-      ProductDetailsResponse res =
-          await _inAppPurchase.queryProductDetails(ids);
-      this.view = res.productDetails;
-
-      /// 📌 소모 및 비소모 둘 다
-      _inAppPurchase.purchaseStream.listen((List<PurchaseDetails> event) {
-        PurchaseDetails e = event[0];
-
-        /// 구매 여부 pendingCompletePurchase - 승인 true / 취소 false
-        if (e.pendingCompletePurchase) {
-          if (!mounted) return;
-          FirebaseFirestore.instance.collection('fame_folder').add({
-            'folder_title': folderTitle,
-            'folderId': folderId,
-            'consumerEmail': FirebaseAuth.instance.currentUser!.email,
-          });
-
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ThankPage()));
-        }
-      });
-    }
-    if (!mounted) return;
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    Future(this.fetch);
-    loadInterstitial();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   Future(this.fetch);
+  //   loadInterstitial();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -147,195 +116,19 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
           .then((value) => isRegistered = value.docs.isNotEmpty);
     }
 
-    final _priceFocusNode = FocusNode();
-    final _descriptionFocusNode = FocusNode();
-
-    final _descriptionController = TextEditingController();
-
-    File? _pickedImage;
     Folder findedFolder =
         Provider.of<FolderManage>(context, listen: false).findById(folderId);
-
-    void _selectImage(File pickedImage) {
-      _pickedImage = pickedImage;
-    }
-
-    void _saveStory() async {
-      if (_pickedImage == null || _descriptionController.text.isEmpty) {
-        // 빈 스토리는 작성 못하게 해야 함
-        return;
-      }
-      await Provider.of<StoryManage>(context, listen: false)
-          .fetchAndSetStories();
-      await Provider.of<FolderManage>(context, listen: false)
-          .fetchAndSetFolders();
-      int numberOfStories = stories
-          .where((element) => element.folderId == folder?.id)
-          .toList()
-          .length;
-      await Provider.of<StoryManage>(context, listen: false).addStories(
-          '${numberOfStories + 1}일차',
-          _pickedImage!,
-          _descriptionController.text,
-          category,
-          folderId);
-      // Provider.of<FolderManage>(context, listen: false)
-      //     .plusOneDay(findedFolder);
-      Navigator.of(context).pop();
-    }
-
-    @override
-    void dispose() {
-      _priceFocusNode.dispose();
-      _descriptionFocusNode.dispose();
-      super.dispose();
-    }
 
     Widget AddStoryButton() {
       return IconButton(
           style: IconButton.styleFrom(backgroundColor: mainColor),
           icon: Icon(Icons.edit),
           onPressed: () {
-            showDialog(
-                context: scaffoldKey!.currentContext!,
-                builder: (context) {
-                  return AlertDialog(
-                    content: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SingleChildScrollView(
-                            child: Padding(
-                              padding: EdgeInsets.all(
-                                  MediaQuery.of(context).size.width /
-                                      360 *
-                                      10.0),
-                              child: Column(
-                                children: [
-                                  Text('스토리를 작성하세요',
-                                      style: TextStyle(
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              360 *
-                                              15,
-                                          color: mainColor,
-                                          fontWeight: FontWeight.bold)),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.width /
-                                        360 *
-                                        10,
-                                  ),
-                                  ImageInput(_selectImage),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.width /
-                                        360 *
-                                        10,
-                                  ),
-                                  TextFormField(
-                                    controller: _descriptionController,
-                                    decoration:
-                                        InputDecoration(labelText: '설명'),
-                                    maxLines: 3,
-                                    keyboardType: TextInputType.multiline,
-                                    focusNode: _descriptionFocusNode,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Please enter a description.';
-                                      }
-                                      if (value.length < 10) {
-                                        return 'Should be  at least 10 characters long.';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.width /
-                                        360 *
-                                        10,
-                                  ),
-                                  Text('스토리 작성 시 다음과 같은 이용약관에 동의하는 것으로 간주합니다.',
-                                      style: TextStyle(
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              360 *
-                                              15,
-                                          color: mainColor,
-                                          fontWeight: FontWeight.bold)),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.width /
-                                        360 *
-                                        5,
-                                  ),
-                                  Text.rich(
-                                    TextSpan(
-                                        style: TextStyle(
-                                            color: Colors.blue,
-                                            decoration:
-                                                TextDecoration.underline),
-                                        //make link blue and underline
-                                        text:
-                                            "https://sites.google.com/view/habbit-terms-of-use",
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () async {
-                                            //on tap code here, you can navigate to other page or URL
-                                            String url =
-                                                "https://sites.google.com/view/habbit-terms-of-use";
-                                            var urllaunchable = await canLaunch(
-                                                url); //canLaunch is from url_launcher package
-                                            if (urllaunchable) {
-                                              await launch(
-                                                  url); //launch is from url_launcher package to launch URL
-                                            } else {}
-                                          }),
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    actions: [
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            foregroundColor: Colors.white,
-                            backgroundColor: mainColor),
-                        onPressed: () {
-                          _saveStory();
-                          (_pickedImage == null ||
-                                  _descriptionController.text.isEmpty)
-                              ? null
-                              : Navigator.of(context).pop();
-
-                          showDialog(
-                              context: context,
-                              builder: (_) {
-                                return AlertDialog(
-                                  content: SingleChildScrollView(
-                                    child: Column(children: [
-                                      _pickedImage == null
-                                          ? Text('스토리에 올릴 사진을 올려주세요.')
-                                          : (_descriptionController.text.isEmpty
-                                              ? Text('스토리에 대한 설명을 적어주세요.')
-                                              : Text('스토리 업로드가 완료되었습니다.'))
-                                    ]),
-                                  ),
-                                );
-                              });
-                          (_pickedImage == null ||
-                                  _descriptionController.text.isEmpty)
-                              ? null
-                              : showInterstitial();
-                        },
-                        icon: Icon(Icons.add),
-                        label: Text('스토리 추가하기 '),
-                      )
-                    ],
-                  );
+            Navigator.of(context).pushNamed(WriteStoryScreen.routeName,
+                arguments: {
+                  'folder': folder,
+                  'stories': stories,
+                  'category': category
                 });
           });
     }
@@ -414,7 +207,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
     }
 
     return Container(
-      color:Color(0xFFF2F3F8),
+      color: Color(0xFFF2F3F8),
       child: FutureBuilder(
         //  FutureBuilder는 서버에서 데이터를 모두 받아오기전 화면을 그려줄수 있게 되는 장점을 가진다.
         future: first(),
@@ -505,16 +298,45 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                               15,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    subtitle: Text(
-                                      (storiesOfFoler[i].description) as String,
-                                      style: TextStyle(
-                                          fontSize: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              360 *
-                                              12,
-                                          fontWeight: FontWeight.bold),
+                                    subtitle: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.grey,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                360 *
+                                                1),
+                                        borderRadius: BorderRadius.circular(
+                                            MediaQuery.of(context).size.width /
+                                                360 *
+                                                1),
+                                      ),
+                                      child: ExpandableText(
+                                        (storiesOfFoler[i].description)
+                                            as String,
+                                        prefixStyle: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                        expandText: '더보기',
+                                        collapseText: '접기',
+                                        maxLines: 2,
+                                        expandOnTextTap: true,
+                                        collapseOnTextTap: true,
+                                        linkColor: Colors.grey,
+                                      ),
                                     ),
+                                    // Text(
+                                    //   maxLines: 1,
+                                    //   overflow: TextOverflow.clip,
+                                    //   (storiesOfFoler[i].description) as String,
+                                    //   style: TextStyle(
+                                    //       fontSize: MediaQuery.of(context)
+                                    //               .size
+                                    //               .width /
+                                    //           360 *
+                                    //           12,
+                                    //       fontWeight: FontWeight.bold),
+                                    // ),
                                     onTap: () {
                                       Route _createRoute() {
                                         return PageRouteBuilder(
@@ -523,7 +345,9 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                           }),
                                           pageBuilder: (context, animation,
                                                   secondaryAnimation) =>
-                                              CourseInfoScreen(),
+                                              CourseInfoScreen(
+                                                  selectPage:
+                                                      widget.selectPage),
                                           transitionsBuilder: (context,
                                               animation,
                                               secondaryAnimation,
@@ -549,7 +373,7 @@ class _RepositoryScreenState extends State<RepositoryScreen> {
                                           .push(_createRoute());
                                     },
                                     trailing: Text(
-                                      '업로드${storiesOfFoler[i].isUploaded == 0 ? ' 미완료' : ' 완료'}',
+                                      '자세히 보기',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),

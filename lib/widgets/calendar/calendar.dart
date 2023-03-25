@@ -16,27 +16,6 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
-  //
-
-  // void addAll() {
-  //   int folderYear = DateTime.parse(widget.folder.createdAt).year;
-  //   String folderMonth = DateTime.parse(widget.folder.createdAt).month < 10
-  //       ? '0${DateTime.parse(widget.folder.createdAt).month.toString()}'
-  //       : DateTime.parse(widget.folder.createdAt).month.toString();
-  //   String folderDay = DateTime.parse(widget.folder.createdAt).day < 10
-  //       ? '0${DateTime.parse(widget.folder.createdAt).day.toString()}'
-  //       : DateTime.parse(widget.folder.createdAt).day.toString();
-
-  //   DateTime folderCreatedAt =
-  //       DateTime.parse('${folderYear}-${folderMonth}-${folderDay} 00:00:00');
-
-  //   for (int i = 0; i < widget.folder.days; i++) {
-  //     events.addAll({
-  //       folderCreatedAt.add(const Duration(days: 1)): [Event('')]
-  //     });
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     List<DateTime> attendanceDate =
@@ -61,9 +40,11 @@ class _CalendarState extends State<Calendar> {
     }
 
     void updateScreen() {
-      setState(() {
-        //마커 표시하게 화면 업데이트해주는 함수
-      });
+      if (mounted) {
+        setState(() {
+          //마커 표시하게 화면 업데이트해주는 함수
+        });
+      }
     }
 
     Future? first() async {

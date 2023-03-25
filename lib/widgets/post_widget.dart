@@ -23,28 +23,53 @@ class PostWidget extends StatelessWidget {
     Widget CategoryIcon(String selectedCategory) {
       if (selectedCategory == 'Kind.Reading') {
         return Container(
-            width: MediaQuery.of(context).size.width / 360 * 20,
-            height: MediaQuery.of(context).size.width / 360 * 20,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 1),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            width: MediaQuery.of(context).size.width / 360 * 30,
+            height: MediaQuery.of(context).size.width / 360 * 30,
+            padding: EdgeInsets.all(3.0),
             child: Image.asset('assets/icons/reading.png'));
       } else if (selectedCategory == 'Kind.Exercise') {
         return Container(
-            width: MediaQuery.of(context).size.width / 360 * 20,
-            height: MediaQuery.of(context).size.width / 360 * 20,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 1),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            width: MediaQuery.of(context).size.width / 360 * 30,
+            height: MediaQuery.of(context).size.width / 360 * 30,
+            padding: EdgeInsets.all(3.0),
             child: Image.asset('assets/icons/exercise.png'));
       } else if (selectedCategory == 'Kind.Language') {
         return Container(
-            width: MediaQuery.of(context).size.width / 360 * 20,
-            height: MediaQuery.of(context).size.width / 360 * 20,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 1),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            width: MediaQuery.of(context).size.width / 360 * 30,
+            height: MediaQuery.of(context).size.width / 360 * 30,
+            padding: EdgeInsets.all(3.0),
             child: Image.asset('assets/icons/language.png'));
       } else if (selectedCategory == 'Kind.Study') {
         return Container(
-            width: MediaQuery.of(context).size.width / 360 * 20,
-            height: MediaQuery.of(context).size.width / 360 * 20,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 1),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            width: MediaQuery.of(context).size.width / 360 * 30,
+            height: MediaQuery.of(context).size.width / 360 * 30,
+            padding: EdgeInsets.all(3.0),
             child: Image.asset('assets/icons/study.png'));
       } else {
         return Container(
-            width: MediaQuery.of(context).size.width / 360 * 20,
-            height: MediaQuery.of(context).size.width / 360 * 20,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 1),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            width: MediaQuery.of(context).size.width / 360 * 30,
+            height: MediaQuery.of(context).size.width / 360 * 30,
+            padding: EdgeInsets.all(3.0),
             child: Image.asset('assets/icons/etc.png'));
       }
     }
@@ -58,9 +83,7 @@ class PostWidget extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: Container(
-                  color: Colors.white
-                ),
+                child: Container(color: Colors.white),
               );
             }
             final docData = snapshot.data?.docs.first.data();
@@ -98,9 +121,7 @@ class PostWidget extends StatelessWidget {
         width: double.infinity,
         imageUrl: post.thumbnail!,
         placeholder: (context, url) => Center(
-          child: Container(
-            color: Colors.white
-          ),
+          child: Container(color: Colors.white),
         ),
       );
     }
@@ -112,37 +133,41 @@ class PostWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 360 * 60,
-                  child: IconButton(
-                    onPressed: () async {
-                      Navigator.of(context).pushNamed(PostChatScreen.routeName,
-                          arguments: {'postId': post.uid});
-                    },
-                    icon: Icon(Icons.message),
-                  ),
+            GestureDetector(
+              onTap: () async {
+                Navigator.of(context).pushNamed(PostChatScreen.routeName,
+                    arguments: {'postId': post.uid});
+              },
+              child: Container(
+                height: MediaQuery.of(context).size.width / 360 * 35,
+                child: Row(
+                  children: [
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width / 360 * 60,
+                        child: Icon(Icons.message)),
+                    StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('messages')
+                            .doc(post.uid)
+                            .collection(post.uid!)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          }
+                          var number = snapshot.data!.docs.length;
+                          return Text('댓글 ${number}개');
+                        }),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width / 360 * 10),
+                    // ImageFrame(
+                    //   IconsPath.directMessage,
+                    //   width: MediaQuery.of(context).size.width / 360 * 55,
+                    // ),
+                  ],
                 ),
-                StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('messages')
-                        .doc(post.uid)
-                        .collection(post.uid!)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      }
-                      var number = snapshot.data!.docs.length;
-                      return Text('댓글 ${number}개');
-                    }),
-                SizedBox(width: MediaQuery.of(context).size.width / 360 * 10),
-                // ImageFrame(
-                //   IconsPath.directMessage,
-                //   width: MediaQuery.of(context).size.width / 360 * 55,
-                // ),
-              ],
+              ),
             ),
           ],
         ),
@@ -158,9 +183,7 @@ class PostWidget extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: Container(
-                  color: Colors.white
-                ),
+                child: Container(color: Colors.white),
               );
             }
             final docData = snapshot.data?.docs.first.data();
